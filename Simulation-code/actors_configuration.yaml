@@ -1,0 +1,68 @@
+Actors: 
+  Actor_A:
+    Name: Company_A
+    Id: 1
+    Time_Average: 2
+    Time_variance: 3
+    safety_stock: 4
+    initial_stock: 5
+    max_inventory: 6
+    Reorder_history_days: 7 
+    precedence: [2]
+    products: 
+      ProdA: 
+        Name: Cerveja
+  Actor_B:
+    Name: Company_B
+    Id: 2
+    Time_Average: 4
+    Time_variance: 1
+    safety_stock: 25
+    initial_stock: 10
+    max_inventory: 1000
+    Reorder_history_days: 10 
+    precedence: [3]
+    products: 
+      ProdA: 
+        Name: Cerveja
+  Actor_C:
+    Name: Company_C
+    Id: 3
+    Time_Average: 5
+    Time_variance: 1
+    safety_stock: 25
+    initial_stock: 10    
+    max_inventory: 1000
+    Reorder_history_days: 10 
+    precedence: [4]
+    products: 
+      ProdA: 
+        Name: Cerveja      
+  Actor_D:
+    Name: Company_D
+    Id: 4
+    Time_Average: 6
+    Time_variance: 1
+    safety_stock: 25
+    initial_stock: 10    
+    max_inventory: 1000
+    Reorder_history_days: 10 
+    precedence: [5]
+    products: 
+      ProdA: 
+        Name: Cerveja       
+  Actor_E:
+    Name: Company_E
+    Id: 5
+    Time_Average: 7
+    Time_variance: 1
+    safety_stock: 25
+    initial_stock: 10    
+    max_inventory: 1000
+    Reorder_history_days: 10 
+    precedence: [6]
+    products: 
+      ProdA: 
+        Name: Cerveja
+
+
