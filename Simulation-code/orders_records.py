@@ -13,8 +13,7 @@ class ClassOrdersRecord:
         # columns = ["Time","Product", "Qty","Client"]  
         columns = [-1, -2,-3, -4 ]  
         self.ClassOrdersRecord = np.array([columns])
-        log(debug_msg="created order_record of "+str(actor))
-        
+        log(info_msg="[Created Object] Order_record  actor:"+str(actor.name)) 
      
     def filter_by_product(self,complete_history,product):
             filter_arr = []

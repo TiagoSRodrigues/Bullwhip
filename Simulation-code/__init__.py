@@ -11,7 +11,7 @@ ee.print_start(log.Logging_level)
 
 #Cria simulação 
 Object_Simulation=simulation.ClassSimulation()
-log.log(debug_msg="[Created Obeject]"+Object_Simulation.simulation_id)
+log.log(info_msg="[Created Object] Simulation    "+Object_Simulation.simulation_id)
 
 
 #Cria atores
@@ -31,9 +31,8 @@ Object_Simulation.record_simulation_status(simulation_status=3)
 # main.main(input,Object_Simulation )
 
 
-log.get_variables()
+# log.get_variables()
 
-print(__loader__, __builtins__)
 #termina simulação
 Object_Simulation.change_simulation_status(status=99)
 #registos de tempos e final 

@@ -25,32 +25,44 @@ def log(critical_msg = None, error_msg = None):
     pass
 
 
-def log(debug_msg = None, info_msg = None, message_warning = None):
+def log(debug_msg = None, info_msg = None, warning_msg = None):
     #Receive the logging level from envirement
     log_level = logging.root.level
 
     if debug_msg == None and info_msg != None:
         debug_msg=info_msg
         
-    if debug_msg == None and info_msg == None and message_warning != None:
-        debug_msg=message_warning
+    if debug_msg == None and info_msg == None and warning_msg != None:
+        debug_msg=warning_msg
 
     #check veriable for printing
     if print_log_in_terminal == True:
-        if Terminal_printting_level == "WARNING" and message_warning !=None:
-            print(message_warning)        
+        if Terminal_printting_level == "WARNING" and warning_msg !=None:
+            print(warning_msg)        
         elif Terminal_printting_level == "INFO" and info_msg !=None:
             print(info_msg)        
         elif Terminal_printting_level == "DEBUG":
             print(debug_msg)
     
     #records log        
-    if  log_level == 30 and message_warning != None:
-        logging.warning(message_warning)
+    if  log_level == 30 and warning_msg != None:
+        logging.warning(str(warning_msg))
+    
+    
     elif log_level == 20 and info_msg != None:
-        logging.info(info_msg)
+        logging.info(str(info_msg))
+        if warning_msg != None:
+            logging.warning(str(warning_msg))
+    
+    
     elif log_level == 10 and debug_msg != None :
-        logging.debug(debug_msg)
+        logging.debug(str(debug_msg))
+        if warning_msg != None:
+            logging.warning(str(warning_msg))
+        if info_msg != None:
+            logging.info(str(info_msg))
+        
+
 
 #this funcion delete old logs, to avoid excessive trash        
 def delete_old_logs(nr_of_files):

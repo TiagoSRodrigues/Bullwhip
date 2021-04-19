@@ -10,15 +10,16 @@ if Run_tests: import tests
 
 class ClassSimulation:
     def __init__(self):
-        self.simulation_id="sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   
-        
         self.simulation_status = "0-Created"
+        self.simulation_id="sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   
 
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain()
+        log(debug_msg="[Created Object] Supply Chain  "+str( self.Object_supply_chain))
+
 
         log(debug_msg="Simulation created")
-
+        
     def get_sim_id(self):
         return ClassSimulation.simulation_id
 
@@ -30,7 +31,7 @@ class ClassSimulation:
 
     def create_actors(self,actors_configuration_file):
         log(debug_msg="create_actors function called")
-        configs_dict=self.get_actors_configu0rations(actors_configuration_file)
+        configs_dict=self.get_actors_configurations(actors_configuration_file)
         actors_list=(configs_dict['Actors'].keys())
 
         for actor_name in actors_list:
@@ -40,7 +41,7 @@ class ClassSimulation:
             
             #Cria o ator
             actor_name = actors.actor( name=name, id=a_id, avg=avg, var=var, safety_stock=safety_stock, initial_stock=initial_stock,
-            max_inventory=max_inventory, reorder_history_size=reorder_history_size, precedence=precedence)
+                                        max_inventory=max_inventory, reorder_history_size=reorder_history_size, precedence=precedence)
            
             #Cria o Registo de encomendas
             actor_stock_record = orders_records.ClassOrdersRecord(actor_name)

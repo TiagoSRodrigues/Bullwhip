@@ -9,6 +9,9 @@ class inventory:
         self.actual_stock = initial_stock
         self.safety_stock =safety_stock
         self.max_inventory = max_inventory
+        log(info_msg="[Created Object] inventory     actor:"+str(self.actor.name))
+
+
 
     def get_inventory(self):
         print("get_inventory",self.actual_stock)

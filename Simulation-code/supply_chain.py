@@ -1,8 +1,11 @@
-import logging_management as log
+from logging_management import *
+import datetime
 class ClassSupplyChain:
     def __init__(self):
         self.supply_chain_structure = []
-        log.log(debug_msg="Supply chain crated")
+        self.supply_chain_id="sc_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   
+
+        log(info_msg="[Created Object] Supply chain  id:"+str(self.supply_chain_id)) 
 
     def add_to_supply_chain(self,actor):
         self.supply_chain_structure.append(actor)

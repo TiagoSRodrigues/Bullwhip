@@ -25,15 +25,15 @@ class actor:
         ### Variable Properties  ######
         self.state="idle"
 
-        
+        log(info_msg="[Created Object] Actor         id="+str(self.id)+" "+self.name)
+
         #Initializes the ClassOrdersRecord
         #order_record.stock_record()
         try:
             log(debug_msg = "ACTORS    Created actor: "+str(id)+" " + str(name) + " AVG: "+ str(avg) + " VAR: "+ str(var) + 
                 " Initial Stock" + str(initial_stock) + " safety_stock " +str(safety_stock) +
                 " max_inventory " + str(max_inventory) + " reorder_history_size " + str(reorder_history_size) +
-                " Precedence " + str(precedence),
-                info_msg = "Created actor: "+str(id)+" " + str(name))
+                " Precedence " + str(precedence))
         except:
             log(debug_msg="Error in Actors logging")
 
