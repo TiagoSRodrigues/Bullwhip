@@ -22,7 +22,7 @@ Terminal_printting_level="INFO"
 
 
 #Run tests before simulations
-Run_tests=False
+Run_tests=True
 
 
 

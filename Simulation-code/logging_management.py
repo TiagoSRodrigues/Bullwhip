@@ -1,7 +1,6 @@
 import logging, time, os, gc
 from tqdm import tqdm
-from simulation_configuration import * #logs_file_location , Logging_level 
-
+import simulation_configuration  as sim_cfg
 # from os import listdir
 # from os.path import isfile, join
 
@@ -16,10 +15,10 @@ from simulation_configuration import * #logs_file_location , Logging_level
 
 
 #create the log file
-logging.basicConfig(filename=logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+'.log', 
-        level=Logging_level,
+logging.basicConfig(filename=sim_cfg.logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+'.log', 
+        level=sim_cfg.Logging_level,
          format='%(asctime)s %(levelname)s %(message)s')
-getattr(logging, Logging_level.lower() )("--->   Simulation Started   <----")
+getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")
 
 def log(critical_msg = None, error_msg = None):
     pass
@@ -36,12 +35,12 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
         debug_msg=warning_msg
 
     #check veriable for printing
-    if print_log_in_terminal == True:
-        if Terminal_printting_level == "WARNING" and warning_msg !=None:
+    if sim_cfg.print_log_in_terminal == True:
+        if sim_cfg.Terminal_printting_level == "WARNING" and warning_msg !=None:
             print(warning_msg)        
-        elif Terminal_printting_level == "INFO" and info_msg !=None:
+        elif sim_cfg.Terminal_printting_level == "INFO" and info_msg !=None:
             print(info_msg)        
-        elif Terminal_printting_level == "DEBUG":
+        elif sim_cfg.Terminal_printting_level == "DEBUG":
             print(debug_msg)
     
     #records log        
@@ -66,13 +65,13 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 #this funcion delete old logs, to avoid excessive trash        
 def delete_old_logs(nr_of_files):
-    arr = os.listdir(logs_file_location)
+    arr = os.listdir(sim_cfg.logs_file_location)
         
     if nr_of_files == all:
         return
     for el in range(0,len(arr)-nr_of_files):
         try:
-            os.remove(logs_file_location+arr[el])
+            os.remove(sim_cfg.logs_file_location+arr[el])
         except:
             pass
 
@@ -81,6 +80,11 @@ def simulation_time(x):
     steps = [1,2,3,4,5,6,7,8,9,10,11]
     for i in tqdm(steps):
         pass
+def show_object_attributes(object):
+    from pprint import pprint
+    print(3*"\n","Attributes of",object,"\n")
+    pprint(vars(object))
+    print(3*"\n")
 
 def open_object(object):
     print(10*"======","\n\n DIR:")
@@ -129,11 +133,11 @@ def save_all_objects():
 
 
 
-delete_old_logs(nr_of_log_to_save)
+delete_old_logs(sim_cfg.nr_of_log_to_save)
 
 
     
     #chamar uma função de forma dinâmica
-    # #getattr(logging, Logging_level.lower() )(debug_msg)
-    # getattr(logging, Terminal_printting_level.lower() )(debug_msg)
+    # #getattr(logging, sim_cfg.Logging_level.lower() )(debug_msg)
+    # getattr(logging, sim_cfg.Terminal_printting_level.lower() )(debug_msg)
     
