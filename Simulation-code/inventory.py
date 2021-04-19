@@ -14,15 +14,6 @@ class inventory:
         print("get_inventory",self.actual_stock)
         return self.actual_stock
 
-    # ## ACho que esta já n serve para nada
-    # def check_inventory_status(self):
-    #     if self.actual_stock==self.max_inventory:
-    #         return "Full"
-    #     elif self.actual_stock==0:
-    #         return "Empty"
-    #     else: 
-    #         return self.actual_stock
-    
     def check_inventory_full(self):
         return self.actual_stock==self.max_inventory
 

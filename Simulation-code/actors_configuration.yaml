@@ -5,8 +5,8 @@ Actors:
     Time_Average: 2
     Time_variance: 3
     safety_stock: 4
-    initial_stock: 5
-    max_inventory: 6
+    initial_stock: 15
+    max_inventory: 60
     Reorder_history_days: 7 
     precedence: [2]
     products: 

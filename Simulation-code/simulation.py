@@ -8,16 +8,19 @@ log(debug_msg="Started simulation.py")
 ## check if testes are configurated to run
 if Run_tests: import tests
 
-class simulation:
+class ClassSimulation:
     def __init__(self):
-        global simulation_id 
-        simulation_id="sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   
-        simulation_status = simulation  ## ver isto  ##
+        self.simulation_id="sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   
         
+        self.simulation_status = "0-Created"
+
+        #create supply chain
+        self.Object_supply_chain=sc.ClassSupplyChain()
+
         log(debug_msg="Simulation created")
-        
+
     def get_sim_id(self):
-        return simulation.simulation_id
+        return ClassSimulation.simulation_id
 
     #Import Configurations
     def get_actors_configurations(self,actors_configuration):
@@ -25,12 +28,9 @@ class simulation:
             actors_config = yaml.load(file, Loader=yaml.FullLoader)
         return actors_config
 
-    def create_supply_chain(self):
-        supply_chain=sc.supply_chain()
-
-
     def create_actors(self,actors_configuration_file):
-        configs_dict=self.get_actors_configurations(actors_configuration_file)
+        log(debug_msg="create_actors function called")
+        configs_dict=self.get_actors_configu0rations(actors_configuration_file)
         actors_list=(configs_dict['Actors'].keys())
 
         for actor_name in actors_list:
@@ -43,14 +43,14 @@ class simulation:
             max_inventory=max_inventory, reorder_history_size=reorder_history_size, precedence=precedence)
            
             #Cria o Registo de encomendas
-            actor_stock_record = orders_records.orders_record(actor_name)
+            actor_stock_record = orders_records.ClassOrdersRecord(actor_name)
             
             #Cria os inventários                                   #!   ↓ Produt is forced to 1   !
             actor_inventary=inventory.inventory(actor=actor_name,product=1, initial_stock=initial_stock,safety_stock=safety_stock,max_inventory=max_inventory)
             actor_name.get_actor_precedence()
 
             #add to supply chain
-            x=sc.add_to_supply_chain()
+            self.Object_supply_chain.add_to_supply_chain(a_id)
             log(debug_msg="actor "+str(a_id)+"Added to supply chain")
 # 
 
@@ -71,3 +71,16 @@ class simulation:
 
         return name, id, avg, var, safety_stock, initial_stock, max_inventory, reorder_history_size,precedence
 
+    def change_simulation_status(self, status):
+        if status == 1:
+            self.simulation_status="1-Prepating Simulation"
+        if status == 2:
+            self.simulation_status="2-Prepating Simulation"
+        if status == 3:
+            self.simulation_status="3-Running Simulation"    
+        if status == 99:
+            self.simulation_status="99-Simulation ended"            
+        self.record_simulation_status(status)
+
+    def record_simulation_status(self,simulation_status):
+        log(debug_msg="The simulation status changed to "+str(simulation_status))

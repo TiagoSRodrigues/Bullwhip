@@ -26,10 +26,10 @@ class actor:
         self.state="idle"
 
         
-        #Initializes the orders_record
+        #Initializes the ClassOrdersRecord
         #order_record.stock_record()
         try:
-            log(debug_msg = "Created actor: "+str(id)+" " + str(name) + " AVG: "+ str(avg) + " VAR: "+ str(var) + 
+            log(debug_msg = "ACTORS    Created actor: "+str(id)+" " + str(name) + " AVG: "+ str(avg) + " VAR: "+ str(var) + 
                 " Initial Stock" + str(initial_stock) + " safety_stock " +str(safety_stock) +
                 " max_inventory " + str(max_inventory) + " reorder_history_size " + str(reorder_history_size) +
                 " Precedence " + str(precedence),
@@ -44,19 +44,6 @@ class actor:
     def get_inventory(self): 
         print("the length is: ", len(self.inventory))
         return len(self.inventory)
-
-    # Adding of element to queue
-    # def add_to_inventory(self, element):
-    #     self.inventory.append(element)
-
-    # remove of element 
-    # def remove_from_inventory(self, element=0):
-    #     self.inventory.pop(element)
-
-    # def show_inventory(self):
-    #     for el in self.inventory:
-    #         print(el)
-    #     #    box=self.inventory.get
 
     def receive_order(self):
 

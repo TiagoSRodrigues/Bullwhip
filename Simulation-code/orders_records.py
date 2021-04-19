@@ -6,13 +6,13 @@ log(debug_msg="Started Order_records.py")
 ############################################################################################
 #       Classe dos regitos individuais dos actores                                         #
 ############################################################################################
-class orders_record:
+class ClassOrdersRecord:
     def __init__(self,actor ):
         self.actor = actor
         #Acho que o nome n vai servir para nada,
         # columns = ["Time","Product", "Qty","Client"]  
         columns = [-1, -2,-3, -4 ]  
-        self.orders_record = np.array([columns])
+        self.ClassOrdersRecord = np.array([columns])
         log(debug_msg="created order_record of "+str(actor))
         
      
@@ -45,6 +45,7 @@ class orders_record:
     def add_to_record(self, Time, Product, Qty, Client):
         to_add = np.array([[Time, Product, Qty,  Client]])
         self.record=np.append(self.record,to_add,axis=0)
+        log(debug_msg=str(to_add)+" products ordered from"+str(self.actor))
 
     def get_history(self,time_interval=None,product=None):
         print("\n inputs: \n",self,time_interval,product)      

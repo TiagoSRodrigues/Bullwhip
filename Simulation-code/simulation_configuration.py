@@ -1,7 +1,13 @@
+import  os
+
+directory_path = r'%s' % os.getcwd().replace('\\','//')
+
 
 #Files Directories
-actors_configuration_file="C://Users//Tiago//Google Drive//Tese//GitHub//Bullwhip//Simulation-code//actors_configuration.yaml"
-logs_file_location = 'C://Users//Tiago//Google Drive//Tese//GitHub//Bullwhip//Data//Logs//'
+actors_configuration_file=directory_path + "//Simulation-code//actors_configuration.yaml"
+logs_file_location = directory_path + '//Data//Logs//'
+source_data =  directory_path + '//Data//input//input_data.csv'
+
 
 
 #paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
@@ -16,4 +22,9 @@ Terminal_printting_level="INFO"
 
 
 #Run tests before simulations
-Run_tests=True
+Run_tests=False
+
+
+
+"C:\\Users\\Tiago\\Google Drive\\Tese\\GitHub\\BullwhipBu"
+

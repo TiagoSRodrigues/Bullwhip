@@ -1,4 +1,4 @@
-import logging, time, os
+import logging, time, os, gc
 from tqdm import tqdm
 from simulation_configuration import * #logs_file_location , Logging_level 
 
@@ -13,7 +13,6 @@ from simulation_configuration import * #logs_file_location , Logging_level
     médio: level == INFO    == 20   Regita os eventos principais para acompanhar os detalhes da simulação
     alto:  level == DEBUG   == 10   Regista todos os eventos da simulação 
 '''
-
 
 
 #create the log file
@@ -70,6 +69,52 @@ def simulation_time(x):
     steps = [1,2,3,4,5,6,7,8,9,10,11]
     for i in tqdm(steps):
         pass
+
+def open_object(object):
+    print(10*"======","\n\n DIR:")
+    for el in dir(object):
+        print(el)
+    print(10*"======","\n\n VARS")
+    for el in vars(object):
+        print(el)
+
+    print(10*"======","\n\n\n")
+
+def get_variables(var=None):
+    if var == "globals":
+        for el in globals():
+            print(el)       
+    if var == "locals":
+        for el in locals():
+            print(el)     
+
+    else:
+        print("\n GLOBALS \n")
+        for el in globals():
+            print(el) 
+
+        print("\n LOCALS \n")
+        for el in locals():
+            print(el)   
+
+
+def save_all_objects():
+    filename="All_objects_"+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+".txt"
+    with open(filename, 'w') as filehandle:
+        errors=0
+        for el in gc.get_objects():
+            try:
+                filehandle.write( str(el)+'\n')
+            except:
+                errors+=1
+        filehandle.write( '\n and more '+str(errors)+" Errors")
+
+
+
+
+
+
+
 
 
 delete_old_logs(nr_of_log_to_save)

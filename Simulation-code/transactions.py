@@ -12,7 +12,7 @@ log.log(debug_msg="Started transactions.py")
 #     def transfer(self, sender, receiver):
 #         pass
 
-def process_order(sender, receiver, qty):
+def process_order(sender, receiver, quantity, product=None):
     pass
 
 
@@ -23,13 +23,15 @@ def process_order(sender, receiver, qty):
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor            #
 ###############################################################################################
 # from main import simulation_id
-# from actors import orders_record
+# from actors import ClassOrdersRecord
 
 
-def receive_order(self):
-    pass
+def receive_order(actor, quantity, product=None):
+    if product== None:
+        product=1
+    actor.get_inventory()
 
 
-def place_order(self):
-    pass
-
+def place_order(actor, quantity, product=None):
+    if product== None:
+        product=1
