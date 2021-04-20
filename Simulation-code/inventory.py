@@ -1,15 +1,19 @@
 import transactions
-from logging_management import *
-log(debug_msg="Started Inventory.py")
+import logging_management as logs
+logs.log(debug_msg="Started Inventory.py")
 
-class inventory:
-    def __init__(self, actor,product, initial_stock:int ,safety_stock:int, max_inventory:int):
+"""
+PARA JÁ O INVENTÁRIO TERÁ APENAS UM PRODUTO, FICA A IDEIA DE DEPOIS ADICIONAR OUTROS, 
+a classe inventário passará a ter uma classe filha de produtos
+""""
+
+
+class ClassInventory:
+    def __init__(self, actor,max_capacity:int):
         self.actor = actor
-        self.product = product ## n serve de nada ??? 
-        self.actual_stock = initial_stock
-        self.safety_stock =safety_stock
         self.max_inventory = max_inventory
-        log(info_msg="[Created Object] inventory     actor:"+str(self.actor.name))
+
+        logs.log(info_msg="[Created Object] inventory     actor:"+str(actor))
 
 
 
@@ -54,7 +58,21 @@ class inventory:
             transactions.process_order(historical_order)
     
 
-    
+class ClassProductInventory(ClassInventory):
+    def __init__(self,
+                actor,
+                initial_stock,
+                safety_stock,
+                max_inventory,
+                product=None):
+        super().__init__(actor,
+                         initial_stock,
+                         safety_stock,
+                         max_inventory,
+                         product=product)
+
+
+
 
 
 

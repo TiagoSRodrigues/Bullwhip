@@ -1,9 +1,7 @@
+## LOGGING MANAGEMENT FILE
 import logging, time, os, gc
 from tqdm import tqdm
 import simulation_configuration  as sim_cfg
-# from os import listdir
-# from os.path import isfile, join
-
 
 ##Logging level    log detail : 50 CRITICAL  >  40 ERROR  >  30 WARNING  >   20 INFO  >   10 DEBUG  >  0 NOTSET
 
