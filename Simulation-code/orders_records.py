@@ -2,7 +2,6 @@ from logging_management import log
 import numpy as np
 log(debug_msg="Started Order_records.py")
 
-
 ############################################################################################
 #       Classe dos regitos individuais dos actores                                         #
 ############################################################################################
@@ -12,9 +11,11 @@ class ClassOrdersRecord:
         #Acho que o nome n vai servir para nada,
         # columns = ["Time","Product", "Qty","Client"]  
         columns = [-1, -2,-3, -4 ]  
-        self.ClassOrdersRecord = np.array([columns])
-        log(info_msg="[Created Object] Order_record  actor:"+str(actor.name)) 
-     
+        self.OrdersRecord = np.array([columns])
+        # log(info_msg="[Created Object] Order_record  actor:"+str(actor.name)) 
+
+
+#---------------------------------------------------------------------     
     def filter_by_product(self,complete_history,product):
             filter_arr = []
             
@@ -31,14 +32,14 @@ class ClassOrdersRecord:
         complete_order_record=self.record
          #Filter by product
         if product != None:
-            order_record=self.filter_by_product(complete_inventory,product)
+            order_record=self.filter_by_product(complete_order_record,product)
         else:
-            inventory=complete_inventory
+            inventory=complete_order_record
         print("\n inventory size: \n",inventory.shape[0])
         return inventory.shape[0]
 
-    def get_order_record(self):
-        print("\n get inventory: \n",self.record)
+    def get_orders_record(self):
+        print("\n get inventory: \n",self.OrdersRecord)
         return self.record
 
     def add_to_record(self, Time, Product, Qty, Client):
