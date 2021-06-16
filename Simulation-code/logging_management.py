@@ -11,11 +11,11 @@ import simulation_configuration  as sim_cfg
     alto:  level == DEBUG   == 10   Regista todos os eventos da simulação 
 '''
 
-
 #create the log file
 logging.basicConfig(filename=sim_cfg.logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+'.log', 
         level=sim_cfg.Logging_level,
          format='%(asctime)s %(levelname)s %(message)s')
+
 getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")
 
 def log(critical_msg = None, error_msg = None):
@@ -31,7 +31,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
         
     if debug_msg == None and info_msg == None and warning_msg != None:
         debug_msg=warning_msg
-
+        print(warning_msg) 
     #check veriable for printing
     if sim_cfg.print_log_in_terminal == True:
         if sim_cfg.Terminal_printting_level == "WARNING" and warning_msg !=None:

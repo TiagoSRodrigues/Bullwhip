@@ -1,3 +1,4 @@
+from typing import Dict
 import actors, orders_records, inventory, supply_chain as sc, logging_management as logs
 import datetime, yaml
 from simulation_configuration import *
@@ -17,7 +18,6 @@ class ClassSimulation:
         self.Object_supply_chain=sc.ClassSupplyChain()
         logs.log(debug_msg="[Created Object] Supply Chain  "+str( self.Object_supply_chain))
 
-
         logs.log(debug_msg="Simulation created")
         
         #Lista que guarda todos os objectos atores
@@ -29,22 +29,27 @@ class ClassSimulation:
     #Import Configurations
     def get_actors_configurations(self,actors_configuration):
         with open(actors_configuration) as file:
-            actors_config = yaml.load(file, Loader=yaml.FullLoader)
+            actors_config_yaml = yaml.load(file, Loader=yaml.FullLoader)
+        
+        #create the dict
+        actors_config=dict()
+        for actor in actors_config_yaml["Actors"]:
+            actors_config[actor["Id"]]=actor
+
         return actors_config
 
     def create_actors(self,actors_configuration_file):
         logs.log(debug_msg="create_actors function called")
         configs_dict=self.get_actors_configurations(actors_configuration_file)
-        actors_list=(configs_dict['Actors'].keys())
-
-        for actor_name in actors_list:
-            
-            logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_name))
-            name, a_id, avg, var, safety_stock, initial_stock, max_inventory, reorder_history_size, precedence = self.get_actor_parameters(configs_dict, actor_name)
+        
+        actors_list=(configs_dict.keys())
+        for actor_id in actors_list:
+            logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
+            name, a_id, avg, var, max_inventory, products, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
             
             #Cria o ator
-            actor_name = actors.actor(self, name=name, id=a_id, avg=avg, var=var, safety_stock=safety_stock, initial_stock=initial_stock,
-                                        max_inventory=max_inventory, reorder_history_size=reorder_history_size, precedence=precedence)
+            actor_id = actors.actor(self, name=name, id=a_id, avg=avg, var=var, 
+                                        max_inventory=max_inventory, reorder_history_size=reorder_history_size, products=products)
            
 
 
@@ -61,17 +66,16 @@ class ClassSimulation:
 
 
     def get_actor_parameters(self,configs_dict,actor):
-        name                 = configs_dict['Actors'][actor]["Name"]
-        id                   = configs_dict['Actors'][actor]["Id"]
-        avg                  = configs_dict['Actors'][actor]["Time_Average"]
-        var                  = configs_dict['Actors'][actor]["Time_variance"]
-        initial_stock        = configs_dict['Actors'][actor]["initial_stock"]
-        safety_stock         = configs_dict['Actors'][actor]["safety_stock"]
-        max_inventory        = configs_dict['Actors'][actor]["max_inventory"]
-        reorder_history_size = configs_dict['Actors'][actor]["Reorder_history_days"]
-        precedence           = configs_dict['Actors'][actor]["precedence"]
+        name                 = configs_dict[actor]["Name"]
+        id                   = configs_dict[actor]["Id"]
+        avg                  = configs_dict[actor]["Time_Average"]
+        var                  = configs_dict[actor]["Time_variance"]
+        max_inventory        = configs_dict[actor]["Max_inventory"]
+        products          = configs_dict[actor]["Products"]
+        reorder_history_size = configs_dict[actor]["Reorder_history_size"]
 
-        return name, id, avg, var, safety_stock, initial_stock, max_inventory, reorder_history_size,precedence
+
+        return name, id, avg, var, max_inventory, products, reorder_history_size
 
     def change_simulation_status(self, status):
         if status == 1:
@@ -86,3 +90,6 @@ class ClassSimulation:
 
     def record_simulation_status(self,simulation_status):
         logs.log(debug_msg="The simulation status changed to "+str(simulation_status))
+
+
+

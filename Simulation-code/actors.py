@@ -5,22 +5,17 @@ logs.log(debug_msg="Started actors.py")
 #       Classe das funções de gestão interna do actor da cadeia de valor                   #
 ############################################################################################
 class actor:
-    def __init__(self , simulation_object , id:int , name:str , avg:int ,
-        var:int, initial_stock:int, safety_stock:int,
-        max_inventory:int, reorder_history_size:int,
-        precedence:list, state=None):
+    def __init__(self , simulation_object , id:int , name:str , avg:int , var:int, max_inventory:int, reorder_history_size:int,
+        products:dict, state=None):
         
         ### Constants Properties  ###
         self.id                   = id
         self.name                 = name
         self.average_time         = avg
         self.variation_time       = var
-        self.initial_stock        = initial_stock 
-        self.safety_stock         = safety_stock
         self.max_inventory        = max_inventory
         self.reorder_history_size = reorder_history_size # nr of days to consider to reeorder
-        self.precedence           = precedence
-       
+        self.products             = products
        
         ### Variable Properties  ######
         self.state="idle"
@@ -29,10 +24,9 @@ class actor:
         self.actor_stock_record = orders_records.ClassOrdersRecord(name)
             
         #Cria os inventários                                   #   ↓ Produt is forced to 1   !  this is commented becouse is the crations
-        self.actor_inventary = inventory.inventory( actor = name , #product = 1,
-                                                    initial_stock = initial_stock ,
-                                                     safety_stock = safety_stock ,
-                                                    max_inventory = max_inventory)
+        self.actor_inventory = inventory.ClassInventory( actor = name , #product = 1,
+                                                    max_capacity = max_inventory,
+                                                    products=products)
 
 
         logs.log(info_msg="[Created Object] Actor         id="+str(self.id)+" "+self.name)
@@ -54,13 +48,12 @@ class actor:
     def get_state(self):
         return self.state
     
-    def get_inventory(self): 
-        print("the length is: ", len(self.inventory))
-        return len(self.inventory)
 
     def receive_order(self, quantity, product ):
-        stock = self.actor_stock_record
-        in_inventory=self.check_inventory( product = product )
+        self.state = "BUSY"
+
+        in_inventory = self.actor_inventory.check_product_inventory(product)
+        in_inventory = self.check_inventory( product = product )
         
         print("there are",in_inventory,"avaiable")
 
@@ -73,7 +66,7 @@ class actor:
         print("the safety stock is "+self.safety_stock)
 
     def check_inventory(self,product):
-        return self.actor_inventary.get_inventory_size(self,product)
+        return self.actor_inventory.get_inventory_size(self,product)
 
 
     def get_actor_precedence(self):

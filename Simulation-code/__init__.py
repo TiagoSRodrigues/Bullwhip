@@ -3,7 +3,7 @@ os.system('cls' if os.name == 'nt' else 'clear')
 start_time = time.perf_counter()
 import main, easter_eggs as ee, simulation, transactions, orders_records, actors, data_input, logging_management as logs, simulation_configuration as sim_cfg
 
-## VERSION 1.2
+## VERSION 1.3
 
 ## CONFIGS
 sim_cfg.Run_tests=False
@@ -25,7 +25,7 @@ ObjectActors=Object_Simulation.create_actors(actors_configuration_file=sim_cfg.a
 input = data_input.get_input(days=10,min=1,max=5)
 
 ### RUN SIMULATION
-main.main(input_data=input, simulation=Object_Simulation)
+# main.main(input_data=input, simulation=Object_Simulation)
 
 
 
