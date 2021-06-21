@@ -16,12 +16,13 @@ class actor:
         self.max_inventory        = max_inventory
         self.reorder_history_size = reorder_history_size # nr of days to consider to reeorder
         self.products             = products
-       
+
         ### Variable Properties  ######
         self.state="idle"
 
         #Cria o Registo de encomendas
-        self.actor_stock_record = orders_records.ClassOrdersRecord(name)
+        self.actor_stock_record = orders_records.ClassOrdersRecord(self.id)
+
             
         #Cria os inventários                                   #   ↓ Produt is forced to 1   !  this is commented becouse is the crations
         self.actor_inventory = inventory.ClassInventory( actor = name , #product = 1,
@@ -37,46 +38,36 @@ class actor:
 
         #logs
         try:
-            logs.log(debug_msg = "ACTORS    Created actor: "+str(id)+" " + str(name) + " AVG: "+ str(avg) + " VAR: "+ str(var) + 
-                " Initial Stock" + str(initial_stock) + " safety_stock " +str(safety_stock) +
-                " max_inventory " + str(max_inventory) + " reorder_history_size " + str(reorder_history_size) +
-                " Precedence " + str(precedence))
+            logs.log(debug_msg = "ACTORS    Created actor: "+str(self.id)+" " + str(self.name) + " AVG: "+ str(self.average_time) + " VAR: "+ str(self.variation_time) + 
+                " max_inventory " + str(self.max_inventory) + " reorder_history_size " + str(self.reorder_history_size) +
+                " Products " + str(self.products) )
         except:
-            logs.log(debug_msg="Error in Actors logging")
+            logs.log(debug_msg = "Error in Actors logging")
 #-------------------------------------------------------------------------------------------------------------------------#
 
     def get_state(self):
         return self.state
     
 
-    def receive_order(self, quantity, product ):
+    def receive_order(self, ordered_quantity, product ):
+        logs.log(debug_msg = "[Ordered recived] from:"+ str(self.id) + "received an order of "+ str(ordered_quantity) + "of the product" + str(product) )
         self.state = "BUSY"
-
-        in_inventory = self.actor_inventory.check_product_inventory(product)
-        in_inventory = self.check_inventory( product = product )
         
-        print("there are",in_inventory,"avaiable")
+        # in_inventory = self.actor_inventory.get_product_inventory(product)       #[APAGAR
+       
+        #print("The product " , product , " has " , in_inventory ,  " in stock")   #[APAGAR]
 
-        min_stock = self.safety_stock
-        if stock <= min_stock:
-            pass # place_order()
-        else:
-            pass #deliver()
+        print( self.Object_Simulation.time)
+        self.actor_stock_record.add_to_orders_record( self.time, "Product", "Qty", "Client")
+
+
+
+        #AQUI adicionar as variaveis para a order
+ 
         
-        print("the safety stock is "+self.safety_stock)
 
     def check_inventory(self,product):
         return self.actor_inventory.get_inventory_size(self,product)
-
-
-    def get_actor_precedence(self):
-        if len(self.precedence)==1:
-            return self.precedence[0]
-        else:
-            print("Supply chain precedence with erros")
-            return ReferenceError
-
-
 
 
 

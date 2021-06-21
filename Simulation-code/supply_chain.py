@@ -10,7 +10,7 @@ class ClassSupplyChain:
 
     def add_to_supply_chain(self,actor):
         self.supply_chain_structure.append(actor)
-        # log.log(debug_msg=str(actor)+"Added to supply chain")
+        logs.log(debug_msg=str(actor)+"[Function add_to_supply_chain] chain")
         
     def show_supply_chain(self):
         print(self.supply_chain_structure)

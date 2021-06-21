@@ -14,7 +14,7 @@ Logging_level="DEBUG"
 nr_of_log_to_save= 10
 
 #Define if the logs are printed in the terminal while running
-print_log_in_terminal=False
+print_log_in_terminal=True
 Terminal_printting_level="INFO"
 
 #Run tests before simulations

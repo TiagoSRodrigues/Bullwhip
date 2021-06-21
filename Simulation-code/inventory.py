@@ -64,7 +64,6 @@ class ClassInventory:
         else:
             self.products_inventory[product] = self.products_inventory.get(product) - quantity
             return True 
-
         
     def check_inventory_composition(self):
         header = "Inventory of: "+ str( self.actor )+  "\nPresent capacity: " + str(self.present_capacity) +" of  a max  of  " +str( self.max_capacity )
@@ -75,6 +74,23 @@ class ClassInventory:
         
         x=pd.DataFrame(data=table, columns=cols)
         print("\n",header,"\n",  x.to_string(index=False), "\n")
+
+
+
+
+#############################################
+    def get_product_inventory(self, product_id):
+        try:
+            return self.main_inventory[product_id]["in_stock"]
+        except:
+            logs.log(warning_msg="Error on get_product_inventory, check product id")
+            print("Error on product inventory")
+
+
+
+
+
+
 
 
 

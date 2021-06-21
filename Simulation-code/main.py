@@ -3,19 +3,29 @@ import logging_management as logs
 
 
 def main(input_data, simulation):
-    last_element=get_last_element(simulation)
+    logs.log(info_msg="[Function Call] main.main")
+
+    last_element = get_last_element(simulation)
 
     for quantity in input_data:
-        place_main_order(last_element, quantity, product=1  )
+        # print("TIME IS: ",simulation.time)
+        
+        place_main_order(simulation, last_element, quantity, product=1001  )
+        print(last_element.name, quantity, "product"  )
+
+        ## INCREASE TIME
+        simulation.time += 1
+
 
     ########### Start orders
     simulation.record_simulation_status(simulation_status=3)
-   
+    
 
-
-def place_main_order(last_element, quantity, product):
+def place_main_order(simulation, last_element, quantity, product):
     last_element.receive_order(quantity , product)
     
+def get_all_elements(simulation):
+    return simulation.Object_supply_chain.get_supply_chain()
 
 def get_last_element(simulation):
     last_sc_element_id=simulation.Object_supply_chain.get_supply_chain()[0]

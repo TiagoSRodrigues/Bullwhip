@@ -19,13 +19,12 @@ Object_Simulation=simulation.ClassSimulation()
 logs.log(info_msg="[Created Object] Simulation    "+str(Object_Simulation.simulation_id))
 
 #Cria atores
-ObjectActors=Object_Simulation.create_actors(actors_configuration_file=sim_cfg.actors_configuration_file)
+ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-input = data_input.get_input(days=10,min=1,max=5)
-
+input = data_input.get_input(days=20,min=1,max=10)
 ### RUN SIMULATION
-# main.main(input_data=input, simulation=Object_Simulation)
+main.main(input_data=input, simulation=Object_Simulation)
 
 
 

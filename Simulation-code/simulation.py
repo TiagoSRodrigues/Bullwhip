@@ -11,6 +11,7 @@ class ClassSimulation:
     def __init__(self):
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
+        self.time=1
 
         #"sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   #deve ser para apagar
 
@@ -21,7 +22,7 @@ class ClassSimulation:
         logs.log(debug_msg="Simulation created")
         
         #Lista que guarda todos os objectos atores
-        self.actors_collection=[]
+        self.actors_collection=[] ### CHECK acho que isto não serve para nada
 
     def get_sim_id(self):
         return ClassSimulation.simulation_id
@@ -50,10 +51,7 @@ class ClassSimulation:
             #Cria o ator
             actor_id = actors.actor(self, name=name, id=a_id, avg=avg, var=var, 
                                         max_inventory=max_inventory, reorder_history_size=reorder_history_size, products=products)
-           
-
-
-
+ 
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
             logs.log(debug_msg="actor "+str(a_id)+"Added to supply chain")
@@ -61,9 +59,6 @@ class ClassSimulation:
 
         logs.log(debug_msg="All Actors created")
         return actors_list
-
-
-
 
     def get_actor_parameters(self,configs_dict,actor):
         name                 = configs_dict[actor]["Name"]

@@ -13,7 +13,7 @@ log.log(debug_msg="Started transactions.py")
 #         pass
 
 def process_order(sender, receiver, quantity, product=None):
-    pass
+    sender
 
 
 

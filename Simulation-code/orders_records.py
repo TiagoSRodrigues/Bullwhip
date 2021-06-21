@@ -1,6 +1,6 @@
-from logging_management import log
+import logging_management as logs
 import numpy as np
-log(debug_msg="Started Order_records.py")
+logs.log(debug_msg="Started Order_records.py")
 
 ############################################################################################
 #       Classe dos regitos individuais dos actores                                         #
@@ -8,11 +8,15 @@ log(debug_msg="Started Order_records.py")
 class ClassOrdersRecord:
     def __init__(self,actor ):
         self.actor = actor
+
+        #Status order 0-Received 1-waiting 3-sended
         #Acho que o nome n vai servir para nada,
-        # columns = ["Time","Product", "Qty","Client"]  
-        columns = [-1, -2,-3, -4 ]  
+        # columns = ["Time","Product", "Qty","Client","Order_id","Status"]  
+        columns = [-1, -2, -3, -4, -5, -6]  
         self.OrdersRecord = np.array([columns])
-        # log(info_msg="[Created Object] Order_record  actor:"+str(actor.name)) 
+
+        logs.log(info_msg="[Created Object] Order_record  actor:"+str(self.actor)) 
+        
 
 
 #---------------------------------------------------------------------     
@@ -42,10 +46,18 @@ class ClassOrdersRecord:
         print("\n get inventory: \n",self.OrdersRecord)
         return self.record
 
-    def add_to_record(self, Time, Product, Qty, Client):
-        to_add = np.array([[Time, Product, Qty,  Client]])
-        self.record=np.append(self.record,to_add,axis=0)
-        log(debug_msg=str(to_add)+" products ordered from"+str(self.actor))
+
+# \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ 
+    def add_to_orders_record(self, Time, Product, Qty, Client):
+        logs.log(debug_msg="[FUNCION] with parameters: time:" + str(Time) + " product: "+ str(Product) + " Qty " + str(Qty) + " Client: "+ str(Client))
+        actor_id = self.actor
+        
+        #initial status = 0
+        to_add = np.array([[Time, Product, Qty,  Client, actor_id, 0]])
+
+        self.OrdersRecord=np.append(self.OrdersRecord,to_add,axis=0)
+        logs.log(debug_msg="[ORDERED ADDED]  Products ordered from"+str(self.actor)+" Parameters "+str(to_add))
+        # print(self.OrdersRecord)
 
     def get_history(self,time_interval=None,product=None):
         print("\n inputs: \n",self,time_interval,product)      
@@ -62,12 +74,11 @@ class ClassOrdersRecord:
         elif time_interval != None:
             history=complete_history[-time_interval:,:]
             # print("\n history shape:" ,history.shape)
-            # print("\n history: \n" ,history)
         return history
 
     def get_ordered_products(self,time_interval=None,product=None):
         history=self.get_history(time_interval,product=None)
-        log(debug_msg="Ordered products: "+history.shape[0]-1)
+        logs.log(debug_msg="Ordered products: "+history.shape[0]-1)
         return history.shape[0]-1
 
 
