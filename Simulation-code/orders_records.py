@@ -14,8 +14,7 @@ class ClassOrdersRecord:
         #Acho que o nome n vai servir para nada,
         # columns = ["Time","Product", "Qty","Client","Order_id","Status"]  
         columns = [-1, -2, -3, -4, -5, -6]  
-        self.OrdersRecord = np.array([columns])
-        self.OrdersRecord.astype(np.int)
+        self.OrdersRecord =[columns]
 
         logs.log(info_msg="[Created Object] Order_record  actor:"+str(self.actor)) 
         
@@ -55,9 +54,9 @@ class ClassOrdersRecord:
         
         self.last_order_id = self.last_order_id + 1
         #initial status = 0
-        to_add = np.array([[Time, Product, Qty,  Client, self.last_order_id, 0]])
+        to_add = [Time, Product, Qty,  Client, self.last_order_id, 0]
 
-        self.OrdersRecord=np.append(self.OrdersRecord,to_add,axis=0)
+        self.OrdersRecord.append(to_add) 
 
         logs.log(debug_msg="[ORDERED ADDED]  Products ordered from"+str(self.actor)+" Parameters "+str(to_add))
         

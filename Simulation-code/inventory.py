@@ -19,7 +19,9 @@ class ClassInventory:
         self.products        = products
 
         self.main_inventory=dict()
+        
         for product in products:
+
             #change the key initial to in_stock
             product["in_stock"] = product["initial_stock"]
             del product["initial_stock"]
@@ -36,7 +38,7 @@ class ClassInventory:
         if quantity < 0:
             return False 
         #check if exists and if will not pass the max if created
-        elif self.products_inventory.get(product) == None and quantity + self.check_inventory_composition() <= self.max_capacity :
+        elif self.products_inventory.get_product_inventory(product) == None and quantity + self.check_inventory_composition() <= self.max_capacity :
             self.products_inventory[product] = quantity
             return True
         
@@ -44,15 +46,15 @@ class ClassInventory:
             return False
         
         else:
-            self.products_inventory[product] = self.products_inventory.get(product)  + quantity
+            self.products_inventory[product] = self.products_inventory.get_product_inventory(product)  + quantity
             return True 
 
     def remove_from_inventory(self, product, quantity):
         logs.log(debug_msg  = "[method] remove_from_inventory" + str(product) + str(quantity))
         present_capacity    = self.check_inventory_composition()
-        product_stock       = self.products_inventory.get(product)
+        product_stock       = self.get_product_inventory(product)
         
-        if self.products_inventory.get(product) == None:
+        if self.get_product_inventory(product) == None:
             product_stock=0
         
         if quantity < 0:
@@ -62,7 +64,7 @@ class ClassInventory:
             return False
         
         else:
-            self.products_inventory[product] = self.products_inventory.get(product) - quantity
+            self.main_inventory[product]["in_stock"] = product_stock - quantity
             return True 
         
     def check_inventory_composition(self):
@@ -86,6 +88,12 @@ class ClassInventory:
             logs.log(warning_msg="Error on get_product_inventory, check product id")
             print("Error on product inventory")
 
+    def get_product_safety_inventory(self, product_id):
+        try:
+            return self.main_inventory[product_id]["safety_stock"]
+        except:
+            logs.log(warning_msg="Error on get_product_inventory, check product id")
+            print("Error on product inventory")
 
 
 

@@ -33,17 +33,6 @@ def get_last_element(simulation):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 # print(simulation.actors_collection[0].name)
 """    try: 
         logs.show_object_attributes(logs.show_object_attributes(simulation))
