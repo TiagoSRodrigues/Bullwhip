@@ -33,6 +33,8 @@ class ClassInventory:
         logs.log(info_msg="[Created Object] inventory     actor:"+str(actor))
 #-----------------------------------------------------------------
     def add_to_inventory(self, product, quantity):
+        logs.log(debug_msg="[Function] inventory.add_to_inventory"+str( self)+str(product)+str(quantity))
+
         #check if product inventory exists, if not creats it
         present_capacity=self.check_inventory_composition()
         if quantity < 0:
@@ -51,20 +53,22 @@ class ClassInventory:
 
     def remove_from_inventory(self, product, quantity):
         logs.log(debug_msg  = "[method] remove_from_inventory" + str(product) + str(quantity))
-        present_capacity    = self.check_inventory_composition()
         product_stock       = self.get_product_inventory(product)
         
         if self.get_product_inventory(product) == None:
             product_stock=0
         
         if quantity < 0:
+            print("if 62")
             return False
         
         elif product_stock - quantity <=0 :
+            print("ELIF DO INVENTORY LINE 64 ")
             return False
         
         else:
-            self.main_inventory[product]["in_stock"] = product_stock - quantity
+            print("else:" ,product_stock - quantity)
+            self.main_inventory[product]["in_stock"] = (product_stock - quantity)
             return True 
         
     def check_inventory_composition(self):
@@ -75,25 +79,30 @@ class ClassInventory:
             table.append( [ product['id'] , product['Name'] ,product['in_stock'] ,product['safety_stock'] ] )
         
         x=pd.DataFrame(data=table, columns=cols)
-        print("\n",header,"\n",  x.to_string(index=False), "\n")
+        # print("\n",header,"\n",  x.to_string(index=False), "\n")
 
 
 
 
 #############################################
     def get_product_inventory(self, product_id):
+        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self)+str(product_id))
         try:
+            print(self.main_inventory[product_id]["in_stock"], "id",product_id)
             return self.main_inventory[product_id]["in_stock"]
         except:
             logs.log(warning_msg="Error on get_product_inventory, check product id")
-            print("Error on product inventory")
+            print("Error on get_product_inventory")
 
     def get_product_safety_inventory(self, product_id):
-        try:
+        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self)+str(product_id))
+        try:     
             return self.main_inventory[product_id]["safety_stock"]
         except:
-            logs.log(warning_msg="Error on get_product_inventory, check product id")
-            print("Error on product inventory")
+            print(self.main_inventory)
+
+            logs.log(warning_msg="Error on get_product_safety_inventory, check product id")
+            print("Error on get_product_safety_inventory")
 
 
 
@@ -103,6 +112,8 @@ class ClassInventory:
 
 
     def refresh_inventory_capacity(self):
+        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self))
+
         self.present_capacity=0
         for product in self.main_inventory:
             self.present_capacity = self.present_capacity + self.main_inventory[product]['in_stock']
@@ -117,68 +128,4 @@ class ClassInventory:
             print(key, value) #self.products_inventory[key]) 
         
 
-    def manage_stock(self):
-        actor=self.actor
-        historical_order = actor.get_ordered_products(self,time_interval=None,product=None)
-        if self.actual_stock <= self.safety_stock:
-            transactions.process_order(historical_order)
-    
 
-
-
-# a=ClassInventory("Simone",max_capacity=400)
-
-# a.show_present_composition()                                    
-# a.add_to_inventory(product      ="Bananas",quantity=100)    #100
-# a.remove_from_inventory(product ="Bananas",quantity=10)     #110
-# a.add_to_inventory(     product ="mor",    quantity=10)     #120
-# a.add_to_inventory(     product ="franb",  quantity=110)    #230 
-# a.add_to_inventory(     product ="franb",  quantity=70)     #300
-# a.add_to_inventory(     product ="franb",  quantity=90)     #390
-# a.add_to_inventory(     product ="Ananas", quantity=20)     #390
-# a.add_to_inventory(     product ="mel",    quantity=10)     #400
-# a.add_to_inventory(     product ="mela",   quantity=100)    #400
-
-
-# print("product inventory", a.check_product_inventory( "Bananas"))
-# a.remove_from_inventory(product="Ananas",quantity=1000)#product="mel",quantity=100)
-
-
-# a.show_present_composition()
-
-
-
-#Esta função analisa o histórico definido e se o stock for inferior ao minimo encomenda
-# # a quantidade igual à expedida, até ao máximo definido (se existir). 
-# # TLDR Verifica se deve encomendar mais
-# def manage_stock(actor, min_stock, history_size, max_stock=None,):
-#     stock = actor.get_stock()
-#     pass
-
-
-# {
-#     "productA":"qty",
-#     "productB":"qty"
-
-# }
-
-
-
-
-# a=inventory("tiago","a",95,5,100)
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=3))
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=-2))
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=1))
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=2))
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=3))
-# a.get_inventory()
-# print("\n",a.add_to_inventory(qty=1))
-# a.get_inventory()
-
-# print("\n",a.remove_from_inventory(qty=101))
-# a.get_inventory()

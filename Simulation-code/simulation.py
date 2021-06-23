@@ -22,7 +22,7 @@ class ClassSimulation:
         self.ObejctTransationsRecords = tns.transactionsClass(self)
         
         #Lista que guarda todos os objectos atores
-        self.actors_collection=[] ### CHECK acho que isto não serve para nada
+        self.actors_collection=[] 
         logs.log(debug_msg="Simulation created")
 
     def get_sim_id(self):
