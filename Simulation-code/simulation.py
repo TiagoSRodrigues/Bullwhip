@@ -54,10 +54,12 @@ class ClassSimulation:
  
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
+            self.actors_collection.append(actor_id)
             logs.log(debug_msg="actor "+str(a_id)+"Added to supply chain")
 
 
         logs.log(debug_msg="All Actors created")
+    
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):

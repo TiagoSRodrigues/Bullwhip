@@ -10,6 +10,10 @@ Configuration_backups= directory_path + '//data//Configuration backups//'
 #paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
 Logging_level="DEBUG"
 
+orders_record_file = directory_path + '//Data//orders_record.csv'
+
+
+
 #Max number of logs to save, if all = False 
 nr_of_log_to_save= 10
 
