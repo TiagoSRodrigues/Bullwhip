@@ -1,4 +1,5 @@
 import  orders_records, inventory, simulation ,logging_management as logs
+import numpy as np
 logs.log(debug_msg="Started actors.py")
 
 ############################################################################################
@@ -69,14 +70,57 @@ class actor:
         #AQUI adicionar as variaveis para a order
  
     def manage_stock(self):
+        day= self.simulation.time
+
         orders          =   self.actor_stock_record.OrdersRecord
         max_capacity    =   self.actor_inventory.max_capacity
         intentory    =   self.actor_inventory.main_inventory
         
-        x=intentory.
-        
-        print(x)
 
+
+        # verifica se tem encomendas para receber
+        to_receive = self.simulation.ObejctTransationsRecords.get_todays_transactions(self)
+        if len(to_receive)>0:
+            pass
+            # todo add to invendory
+            
+        # verifica se tem encomendas para enviar
+        to_send = self.get_orders_pending()
+        print(len(to_send), to_send)
+        if len(to_send>0):
+            for order in to_send:
+            #    def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
+
+                #verifica stock
+                product=to_send[1]
+                quantity=to_send[2]
+                client=to_send[3]
+                order_id=to_send[-2]
+                order_status=to_send[-1]
+                self.simulation.ObejctTransationsRecords.add_transaction(self.id, client, quantity, product, day+ self.average_time, day)
+                self.actor_stock_record.set_order_status(1000002,status = 1) #changes status to sended
+        
+        
+        stock = intentory
+
+        # to_send = print(self.name, orders)
+
+        #envia encomendas
+
+        # self.actor_stock_record.set_delivered_order(1)
+        # Verifica se tem encomendas para encomendar
+        
+        
+    def get_orders_pending(self):
+        pending=np.array([]).astype(np.int)
+
+        for record in self.actor_stock_record.OrdersRecord:
+            if record[-1] == 0:
+                pending = np.append(pending, record, axis=0) 
+                pending = np.append(pending, record, axis=0) 
+                pending = np.append(pending, record, axis=0) 
+        print(pending)
+        return pending
 
     def check_inventory(self,product):
         return self.actor_inventory.get_inventory_size(self,product)

@@ -13,7 +13,7 @@ def main(input_data, simulation):
 
         ## INCREASE TIME
         simulation.time += 1
-
+        break
 
     ########### Start orders
     simulation.record_simulation_status(simulation_status=3)

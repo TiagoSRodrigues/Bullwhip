@@ -8,13 +8,15 @@ logs.log(debug_msg="Started Order_records.py")
 class ClassOrdersRecord:
     def __init__(self,actor ):
         self.actor = actor
-        self.last_order_id = int(str(self.actor)+"000000")      #tracks the last product id
+        self.last_order_id = self.actor * 10**6       #tracks the last product id
 
         #Status order 0-Received 1-waiting 3-sended
         #Acho que o nome n vai servir para nada,
-        columns = ["Time","Product", "Qty","Client","Order_id","Status"]  
-        # columns = [-1, -2, -3, -4, -5, -6]  
+        # columns = ["Time","Product", "Qty","Client","Order_id","Status"]  
+        columns = [-1, -2, -3, -4, -5, -6]  
         self.OrdersRecord = np.array([columns])
+        self.OrdersRecord.astype(np.int)
+
         logs.log(info_msg="[Created Object] Order_record  actor:"+str(self.actor)) 
         
 
@@ -62,6 +64,11 @@ class ClassOrdersRecord:
         with open(sim_cfg.orders_record_file, 'a') as file:
             file.write( str(Time) +","+ str(Product) + "," + str(Qty) + ","+ str(Client)+"," + str(self.last_order_id) + ",0\n")
         
+    #check the order id and changes the status
+    def set_order_status(self, order_id, status):
+        for record in self.OrdersRecord:
+            if record[-2] == order_id:
+                record[-1] = status
 
 
     def get_history(self,time_interval=None,product=None):

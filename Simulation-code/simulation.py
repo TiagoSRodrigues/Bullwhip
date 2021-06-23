@@ -1,5 +1,5 @@
 from typing import Dict
-import actors, orders_records, inventory, supply_chain as sc, logging_management as logs
+import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 import datetime, yaml
 from simulation_configuration import *
  
@@ -19,10 +19,11 @@ class ClassSimulation:
         self.Object_supply_chain=sc.ClassSupplyChain()
         logs.log(debug_msg="[Created Object] Supply Chain  "+str( self.Object_supply_chain))
 
-        logs.log(debug_msg="Simulation created")
+        self.ObejctTransationsRecords = tns.transactionsClass(self)
         
         #Lista que guarda todos os objectos atores
         self.actors_collection=[] ### CHECK acho que isto não serve para nada
+        logs.log(debug_msg="Simulation created")
 
     def get_sim_id(self):
         return ClassSimulation.simulation_id

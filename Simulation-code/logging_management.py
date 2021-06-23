@@ -125,11 +125,17 @@ def save_all_objects():
 
 
 
+def pretty(d, indent=0):
+    import emoji
+    for key, value in d.items():
+        print(' ' * indent + str(key))
+        if isinstance(value, dict):
+            pretty(value, indent+1)
+        else:
+            print( emoji.emojize('  :shell: ' , use_aliases=True ) * (indent+1) + str(value)) 
 
 
-
-
-
+    #https://www.webfx.com/tools/emoji-cheat-sheet/
 
 delete_old_logs(sim_cfg.nr_of_log_to_save)
 
