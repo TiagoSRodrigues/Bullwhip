@@ -1,4 +1,4 @@
-import logging_management as logs
+from . import logging_management as logs
 import datetime
 
 class ClassSupplyChain:

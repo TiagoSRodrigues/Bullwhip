@@ -1,4 +1,4 @@
-import  orders_records, inventory, simulation ,logging_management as logs
+from . import  orders_records, inventory, simulation ,logging_management as logs
 import numpy as np
 logs.log(debug_msg="Started actors.py")
 

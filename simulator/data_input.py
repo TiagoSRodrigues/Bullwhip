@@ -1,6 +1,6 @@
-from simulation_configuration import source_data
+# from simulation_configuration import source_data
 import datetime, pandas as pd, random
-from logging_management import log
+# from logging_management import log
 
 def get_input(days=None, min=None, max=None):
     

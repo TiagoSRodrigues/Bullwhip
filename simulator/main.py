@@ -1,4 +1,4 @@
-import logging_management as logs
+from . import logging_management as logs
 # Funções para correr a simulação, o pré simulação fica no init
 
 

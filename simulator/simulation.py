@@ -1,7 +1,7 @@
 from typing import Dict
-import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
+from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 import datetime, yaml
-from simulation_configuration import *
+# from simulation_configuration import *
  
 logs.log(debug_msg="Started simulation.py")
 

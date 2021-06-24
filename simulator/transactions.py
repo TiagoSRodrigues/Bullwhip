@@ -1,4 +1,4 @@
-import logging_management as logs
+from . import logging_management as logs
 logs.log(debug_msg="Started transactions.py")
 #############################################################################################################
 #       Classe que contem todas as funções associadas às transações entre atores                            #

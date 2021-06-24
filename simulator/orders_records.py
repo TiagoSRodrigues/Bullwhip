@@ -1,4 +1,5 @@
-import logging_management as logs, simulation_configuration as sim_cfg
+from . import logging_management as logs
+import simulation_configuration as sim_cfg
 import numpy as np
 logs.log(debug_msg="Started Order_records.py")
 

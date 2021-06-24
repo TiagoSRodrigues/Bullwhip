@@ -1,9 +1,12 @@
 import sys,  pandas as pd, numpy as np, time, os, gc
 os.system('cls' if os.name == 'nt' else 'clear')
 start_time = time.perf_counter()
-import main, easter_eggs as ee, simulation, transactions, orders_records, actors, data_input, logging_management as logs, simulation_configuration as sim_cfg
-import dashboard.dashboar_data as ds
-## VERSION 1.3
+from simulator import main as main, easter_eggs as ee, simulation, transactions, orders_records, actors, data_input, logging_management as logs
+import simulation_configuration as sim_cfg
+from dashboard import dashboard_data as ds
+
+
+## VERSION 3
 
 ## CONFIGS
 sim_cfg.Run_tests=False
@@ -29,7 +32,7 @@ main.main(input_data=input, simulation=Object_Simulation)
 
 
 #DashBoard
-dashboard.dashboar_data.show_data()
+ds.show_data()
 
 
 # logs.get_variables()

@@ -1,5 +1,4 @@
-import transactions
-import logging_management as logs
+from . import transactions, logging_management as logs
 import pandas as pd
 logs.log(debug_msg="Started Inventory.py")
 
