@@ -98,7 +98,7 @@ class actor:
             
         # verifica se tem encomendas para enviar
         to_send = self.get_orders_pending()
-        
+        return
         if len(to_send)>0:
             for order in to_send:
                 print("Managing actor:",self.name)
