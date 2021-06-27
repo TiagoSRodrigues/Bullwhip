@@ -12,9 +12,9 @@ def main(input_data, simulation):
         print("day ",simulation.time)
 
         last_element.receive_order(quantity = quantity, product=1001, client = 0  )
-        simulation.dashboard.update_datasets()
+        # simulation.dashboard.update_datasets(simulation)
         ## INCREASE TIME
-        time.sleep(0.5)
+        # time.sleep(0.1)
         simulation.time += 1
 
     ########### Start orders
@@ -29,7 +29,7 @@ def get_last_element(simulation):
         
     for actor in simulation.actors_collection:
         if actor.id == last_sc_element_id:
-            Last_Object=actor
+            Last_Object = actor
     return Last_Object
 
 

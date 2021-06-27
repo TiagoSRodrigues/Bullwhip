@@ -1,5 +1,3 @@
+x = {'1': ['Retailer', [[-1, -2, -3, -4, -5, -6], [1, 1001, 3, 0, 1000001, 1], [2, 1001, 6, 0, 1000002, 1]], [[-1, -2, -3, -4, -5, -6]], {1001: {'Composition': {'1001': 100, '2001': 12}, 'Name': 'ProductAB', 'id': 1001, 'safety_stock': 2, 'in_stock': 91}}], '2': ['Distributor', [[-1, -2, -3, -4, -5, -6]], [[-1, -2, -3, -4, -5, -6]], {2001: {'Composition': {'3001': 1}, 'Name': 'ProductB', 'id': 2001, 'safety_stock': 4, 'in_stock': 10}}], '3': ['Factory', [[-1, -2, -3, -4, -5, -6]], [[-1, -2, -3, -4, -5, -6]], {3001: {'Composition': {'4001': 1}, 'Name': 'ProductC', 'id': 3001, 'safety_stock': 5, 'in_stock': 15}}], '4': ['Raw Material Supplier', [[-1, -2, -3, -4, -5, -6]], [[-1, -2, -3, -4, -5, -6]], {4001: {'Composition': {'5001': 1}, 'Name': 'ProductD', 'id': 4001, 'safety_stock': 2, 'in_stock': 5}}], '5': ['Base Raw Material supplier', [[-1, -2, -3, -4, -5, -6]], [[-1, -2, -3, -4, -5, -6]], {5001: {'Name': 'ProductE', 'id': 5001, 'safety_stock': 1, 'in_stock': 5}}]}
 
-
-x= 'dacfsadfsad
-
-print()
+print(x.keys())

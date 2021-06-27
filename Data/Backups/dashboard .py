@@ -7,16 +7,14 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 import dash_table
-from pandas.core.frame import DataFrame
 try: import simulation_configuration as sim_cfg 
 except: 
     sys.path.append('N:/TESE/Bullwhip')
     import simulation_configuration as sim_cfg 
 
-class datasets():
-    def __init__(self,object,  object_name):
-        self.object = object
-        self.name   = object_name
+
+
+dir_files =  os.listdir( __file__[:-17].replace('\\','//') )
 
 
 # Set up the app
@@ -25,51 +23,28 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 
-#sim_cfg_orders_record_path
+orders_datasets={}
+# transactions_datasets={}
+for file in dir_files:
+    if file[0:6] == "orders":
+       orders_datasets[file] = pd.read_csv(file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
+
+    # elif file[0:12] == "transactions":
+    #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
+
 
 def get_transactions_dataset():
     with open(sim_cfg.transactions_record_file, 'r') as file:
         data=file.read()+"]"
         data=data.replace("'", '"')
         data=data.replace("False", str('"'+"False"+'"'))
-    
-    return pd.read_json(data)
+    return data
+
+transactions=get_transactions_dataset()
+
+transactions_dataset =  pd.read_json(transactions)
 
 
-
-transactions_dataset =  get_transactions_dataset()
-
-def get_actors_oders():
-    orders_datasets={}
-    # transactions_datasets={}
-    dir_files=os.listdir(sim_cfg.orders_record_path)
-
-    for file in dir_files:
-        if file[0:6] == "orders":
-            orders_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path+file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
-
-            # elif file[0:12] == "transactions":
-            #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
-    return orders_datasets
-
-actores_main_dataset = get_actors_oders()
-
-nr_of_actors=len(actores_main_dataset)
-
-open_orders_dataset={}
-
-for actor in actores_main_dataset:
-    actor_dataset = actores_main_dataset[actor]
-    open_orders_a1 = actor_dataset[actor_dataset["Status"]!=1]
-    open_orders_dataset["open_"+str(actor)]=open_orders_a1
-
-
-# print(actores_main_dataset["orders_record_1"])
-
-actor1_dataset = actores_main_dataset["orders_record_1"]
-open_orders_a1 = actor1_dataset[actor1_dataset["Status"]!=1]
-
-# print(open_orders_a1)
 
 # Format the Table columns
 transactions_columns=transactions_dataset.columns
@@ -168,35 +143,6 @@ header = dbc.Navbar(
 
 # Define Cards
 
-actors_tables = datasets(object=[], object_name="actors_tables")
-
-for actor in open_orders_dataset:
-    print(actor)
-    dataset = pd.read_json(actor)
-    actors_tables.opject.append(
-    
-            dbc.CardBody(
-                dbc.Row(
-                    dbc.Col(
-                        
-                            dash_table.DataTable(
-                                id="actors-table",
-                                columns=[
-                                        {"name": i, "id": i} for i in sorted(dataset.columns)
-                                    ],
-                                data=dataset.to_dict('records')
-    ,
-                            ),
-                        
-                    )
-                )
-            ),
-        )
-    
-print(actors_tables)
-
-
-
 left_card = dbc.Card(
     [
         dbc.CardHeader(html.H2("Actors Orders")),
@@ -279,10 +225,10 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 
-@app.callback(
-    Output("transactions-table", "data"),
-     Input('interval-component', 'n_intervals'))
-def update_table(n):
+# @app.callback(
+#     Output("transactions-table", "data"),
+#      Input('interval-component', 'n_intervals'))
+def update_table(self):
     
     transactions_dataset = pd.read_json(get_transactions_dataset() )
     return transactions_dataset.to_dict('records')
@@ -290,4 +236,3 @@ def update_table(n):
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-

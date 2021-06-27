@@ -27,7 +27,7 @@ class ClassSimulation:
         self.actors_collection=[] 
 
         #DashBoard
-        self.dashboard = ds.dashboard_data(self)
+        # self.dashboard = ds.dashboard_data(self)
         logs.log(debug_msg="Simulation created")
 
     def get_sim_id(self):
