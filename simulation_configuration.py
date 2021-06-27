@@ -10,7 +10,10 @@ Configuration_backups= directory_path + '//data//Configuration backups//'
 #paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
 Logging_level="DEBUG"
 
-orders_record_file = directory_path + '//Data//orders_record.csv'
+orders_record_file = directory_path + '//Data//records//orders_record.csv'
+orders_record_path = directory_path + '//Data//records//'
+transactions_record_file = directory_path + '//Data//records//transactions_record_file.json'
+
 
 
 

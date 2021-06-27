@@ -1,17 +1,20 @@
-from . import logging_management as logs
+from.import logging_management as logs
 # Funções para correr a simulação, o pré simulação fica no init
-
+import time
 
 def main(input_data, simulation):
     logs.log(info_msg="[Function Call] main.main")
-
+    
+    
     last_element = get_last_element(simulation)
 
     for quantity in input_data:
+        print("day ",simulation.time)
 
         last_element.receive_order(quantity = quantity, product=1001, client = 0  )
-
+        simulation.dashboard.update_datasets()
         ## INCREASE TIME
+        time.sleep(0.5)
         simulation.time += 1
 
     ########### Start orders

@@ -27,7 +27,7 @@ class ClassInventory:
             self.main_inventory[product['id']]=product
             
 
-        present_capacity = self.refresh_inventory_capacity()
+        self.present_capacity = self.refresh_inventory_capacity()
 
         logs.log(info_msg="[Created Object] inventory     actor:"+str(actor))
 #-----------------------------------------------------------------
@@ -55,18 +55,14 @@ class ClassInventory:
         product_stock       = self.get_product_inventory(product)
         
         if self.get_product_inventory(product) == None:
-            product_stock=0
-        
-        if quantity < 0:
-            print("if 62")
-            return False
-        
+            product_stock = 0
+
         elif product_stock - quantity <=0 :
-            print("ELIF DO INVENTORY LINE 64 ")
+            print("ERRO A REMOVER PRODUCTO - ELIF DO INVENTORY LINE 64 ")
             return False
         
         else:
-            print("else:" ,product_stock - quantity)
+            # print("else:" ,product_stock - quantity)
             self.main_inventory[product]["in_stock"] = (product_stock - quantity)
             return True 
         
@@ -87,7 +83,6 @@ class ClassInventory:
     def get_product_inventory(self, product_id):
         logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self)+str(product_id))
         try:
-            print(self.main_inventory[product_id]["in_stock"], "id",product_id)
             return self.main_inventory[product_id]["in_stock"]
         except:
             logs.log(warning_msg="Error on get_product_inventory, check product id")
@@ -103,22 +98,17 @@ class ClassInventory:
             logs.log(warning_msg="Error on get_product_safety_inventory, check product id")
             print("Error on get_product_safety_inventory")
 
-
-
-
-
-
-
-
     def refresh_inventory_capacity(self):
         logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self))
 
         self.present_capacity=0
         for product in self.main_inventory:
             self.present_capacity = self.present_capacity + self.main_inventory[product]['in_stock']
+        
         if self.present_capacity > self.max_capacity:
             logs.log(warning_msg="OVERCAPACITY in actor: "+str(self.actor)+"  | Stock is " + str(self.present_capacity) + " of a max of "+ str(self.max_capacity)) 
 
+        return self.present_capacity
 
 ######################################################################
     def show_present_composition(self):

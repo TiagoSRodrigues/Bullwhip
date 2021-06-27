@@ -1,4 +1,5 @@
 from . import logging_management as logs
+import simulation_configuration as sim_cfg
 logs.log(debug_msg="Started transactions.py")
 #############################################################################################################
 #       Classe que contem todas as funções associadas às transações entre atores                            #
@@ -7,25 +8,38 @@ logs.log(debug_msg="Started transactions.py")
 
 class transactionsClass:
     def __init__(self, simulation):
-        self.transactions_log =  []
+        self.open_transactions =  []
         self.delivered_transactions =[]     
         self.transaction_id = 0 
         self.simulation = simulation
-    '''        estrutura
-        [
-            {
-                "transaction_id":"id",
-                "deliver_day":"ddd",
-                "sending_day":"ddd",
-                "receiver":"actor_id",
-                "sender":"actor_id",
-                "product":"product_id",
-                "quantity": "int",
-                "delivered": False
-                }
-        ]
+        '''        estrutura
+            [
+                {
+                    "transaction_id":"id",
+                    "deliver_day":"ddd",
+                    "sending_day":"ddd",
+                    "receiver":"actor_id",
+                    "sender":"actor_id",
+                    "product":"product_id",
+                    "quantity": "int",
+                    "delivered": False
+                    }
+            ]
 
-    ''' 
+            ''' 
+        # for i in range(1,10,1):
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+
+        # print(self.open_transactions)
+
+        #Start transaction log
+        with open(sim_cfg.transactions_record_file, 'a') as file:
+            file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
+
+
     def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
         self.transaction_id = self.transaction_id + 1
         values_to_add =  {
@@ -36,20 +50,27 @@ class transactionsClass:
                 "sender":sender,
                 "product":product,
                 "quantity": quantity,
-                "delivered": False
+                "delivered": False,
+                "recording_time": self.simulation.time
                 }
-        self.transactions_log.append(values_to_add)
+        self.open_transactions.append(values_to_add)
+        self.add_to_orders_log( record=values_to_add)
 
 
-    def deliver_transaction(self,transaction_id ):
-        for record in self.transactions_log:
+    def record_delivered(self,transaction_id ):
+        for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
                 record['delivered']=True
+                record['recording_time']=self.time
                 self.delivered_transactions.append(record)
-                self.transactions_log.remove(record)
-                return
+                self.open_transactions.remove(record)
+               
+                self.add_to_orders_log(record = record)               
+                return True
+
         print("Trasaction {} not found!!".format(transaction_id))
         logs.log(info_msg="[FUNCTION deliver_transaction]  Trasaction {} not found!!".format(transaction_id))
+        
         
 
     def show_transactions_record(self, record_object, title=None):
@@ -70,33 +91,35 @@ class transactionsClass:
 
             
             print(string)
+            
+    def get_transaction_by_id(self,id):
+         for record in self.open_transactions:
+            if record['transaction_id']== id:
+                return record
 
     def get_todays_transactions(self, actor):
         pending_transactions=[]
         day= self.simulation.time
+        # print("getting transactions for actor ",actor.name)
 
-        for record in self.transactions_log:
+        for record in self.open_transactions:
             if record['deliver_day']== day  and  record['receiver'] == actor.id:
-                pending_transactions.append['transaction_id']
+                # print(record)
+                pending_transactions.append(record['transaction_id'])
         return pending_transactions
         
         # self.delivered_transactions.append(record)
-        # self.transactions_log.remove(record)
+        # self.open_transactions.remove(record)
         
+    def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+        with open(sim_cfg.transactions_record_file, 'a') as file:
+            file.write(",\n" +str(record)  )
+
+
 ###############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor            #
 ###############################################################################################
 # from main import simulation_id
 # from actors import ClassOrdersRecord
 
-
-def receive_order(actor, quantity, product=None):
-    if product== None:
-        product=1
-    actor.get_inventory()
-
-
-def place_order(actor, quantity, product=None):
-    if product== None:
-        product=1
 

@@ -1,9 +1,10 @@
 import sys,  pandas as pd, numpy as np, time, os, gc
 os.system('cls' if os.name == 'nt' else 'clear')
+gc.collect()
+
 start_time = time.perf_counter()
 from simulator import main as main, easter_eggs as ee, simulation, transactions, orders_records, actors, data_input, logging_management as logs
 import simulation_configuration as sim_cfg
-from dashboard import dashboard_data as ds
 
 
 ## VERSION 3
@@ -26,13 +27,13 @@ logs.log(info_msg="[Created Object] Simulation    "+str(Object_Simulation.simula
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-input = data_input.get_input(days=20,min=1,max=10)
+input = data_input.get_input(days=30,min=1,max=10)
+
+
+
 ### RUN SIMULATION
 main.main(input_data=input, simulation=Object_Simulation)
 
-
-#DashBoard
-ds.show_data()
 
 
 # logs.get_variables()

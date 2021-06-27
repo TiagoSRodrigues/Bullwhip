@@ -1,6 +1,8 @@
 from typing import Dict
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 import datetime, yaml
+from dashboard import dashboard_data as ds
+
 # from simulation_configuration import *
  
 logs.log(debug_msg="Started simulation.py")
@@ -23,6 +25,9 @@ class ClassSimulation:
         
         #Lista que guarda todos os objectos atores
         self.actors_collection=[] 
+
+        #DashBoard
+        self.dashboard = ds.dashboard_data(self)
         logs.log(debug_msg="Simulation created")
 
     def get_sim_id(self):

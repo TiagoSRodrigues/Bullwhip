@@ -1,0 +1,7 @@
+- Otimizar o packadge
+- Verificar o envirement
+- Criar os requisitos
+#pipfreeze lista de dependencias
+#install packadge from a file : pip install -r <requisits file>
+
+ver: youtube https://www.youtube.com/watch?v=RKHMnevITF0

@@ -1,143 +1,238 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import os, sys, json
+from dash_html_components.Title import Title 
 import pandas as pd
-import plotly.express as px
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output, State
+import dash_table
+try: import simulation_configuration as sim_cfg 
+except: 
+    sys.path.append('N:/TESE/Bullwhip')
+    import simulation_configuration as sim_cfg 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
+
+dir_files =  os.listdir( __file__[:-17].replace('\\','//') )
+
+
+# Set up the app
+external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/object_properties_style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
-
-available_indicators = df['Indicator Name'].unique()
+server = app.server
 
 
+orders_datasets={}
+# transactions_datasets={}
+for file in dir_files:
+    if file[0:6] == "orders":
+       orders_datasets[file] = pd.read_csv(file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
 
-rigth_panel_width = 100
+    # elif file[0:12] == "transactions":
+    #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
 
 
-app.layout = html.Div([
-    html.Div([
+def get_transactions_dataset():
+    with open(sim_cfg.transactions_record_file, 'r') as file:
+        data=file.read()+"]"
+        data=data.replace("'", '"')
+        data=data.replace("False", str('"'+"False"+'"'))
+    return data
 
-        html.h1("Panel1"),
-            dcc.RadioItems(
-                id='crossfilter-xaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                value='Linear',
-                labelStyle={'display': 'inline-block', 'marginTop': '5px'}
-        ,
-        style={'width': '49%', 'display': 'inline-block'}),
+transactions=get_transactions_dataset()
 
-        html.Div([
-            dcc.Dropdown(
-                id='crossfilter-yaxis-column',
-                options=[{'label': i, 'value': i} for i in available_indicators],
-                value='Life expectancy at birth, total (years)'
+transactions_dataset =  pd.read_json(transactions)
+
+
+
+# Format the Table columns
+transactions_columns=transactions_dataset.columns
+# print(columns)
+# Define Modal - Botão top ritgh 
+with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
+    howto_md = f.read()
+
+modal_overlay = dbc.Modal(
+    [
+        dbc.ModalBody(html.Div([dcc.Markdown(howto_md)], id="howto-md")),
+        dbc.ModalFooter(dbc.Button("Close", id="howto-close", className="howto-bn")),
+    ],
+    id="modal",
+    size="lg",
+)
+
+
+
+# Buttons
+button_gh = dbc.Button(
+    "Learn more",
+    id="howto-open",
+    outline=True,
+    color="secondary",
+    # Turn off lowercase transformation for class .button in stylesheet
+    style={"textTransform": "none"},
+)
+
+button_howto = dbc.Button(
+    "View Code on github",
+    outline=True,
+    color="primary",
+    href="https://github.com/TiagoSRodrigues/Bullwhip",
+    id="gh-link",
+    style={"text-transform": "none"},
+)
+
+
+
+# Define Header Layout
+header = dbc.Navbar(
+    dbc.Container(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        html.A(
+                            html.Img(
+                                src=app.get_asset_url("dash-logo-new.png"),
+                                height="30px",
+                            ),
+                            href="https://plotly.com/dash/",
+                        )
+                    ),
+                    dbc.Col(dbc.NavbarBrand("Bullwhip simulator - Development mode")),
+                    modal_overlay,
+                ],
+                align="center",
             ),
-            dcc.RadioItems(
-                id='crossfilter-yaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                value='Linear',
-                labelStyle={'display': 'inline-block', 'marginTop': '5px'}
+            dbc.Row(
+                dbc.Col(
+                    [  dbc.NavbarToggler(id="navbar-toggler"),
+                        dbc.Collapse(
+                            dbc.Nav(
+                                [dbc.NavItem(dbc.NavLink("by: Tiago Rodrigues", href="#")),dbc.NavItem(button_howto), dbc.NavItem(button_gh)],
+                                className="ml-auto",
+                                navbar=True,
+                            ),
+                            id="navbar-collapse",
+                            navbar=True,
+                        ),
+                    ]
+                ),
+                align="center",
+            ),
+        ],
+        fluid=True,
+    ),
+    color="dark",
+    dark=True,
+)
+
+# # Color selector dropdown
+# color_drop = dcc.Dropdown(
+#     id="color-drop-menu",
+#     options=[
+#         {"label": col_name.capitalize(), "value": col_name}
+#         for col_name in table.columns
+#     ],
+#     value="label",
+# )
+
+
+
+
+# Define Cards
+
+left_card = dbc.Card(
+    [
+        dbc.CardHeader(html.H2("Actors Orders")),
+        dbc.CardBody(
+            dbc.Row(
+                dbc.Col(
+                    # dcc.Graph(
+                    #     id="graph",
+                    #     figure=image_with_contour(
+                    #         img,
+                    #         current_labels,
+                    #         table,
+                    #         color_column="area",
+                    #     ),
+                    # ),
+                )
             )
-        ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
-    ], style={
-        'padding': '10px 5px'
-    }),
-
-    html.Div([
-        dcc.Graph(
-            id='crossfilter-indicator-scatter',
-            hoverData={'points': [{'customdata': 'Japan'}]}
-        )
-    ], style={'width': '49%', 'display': 'inline-block', 'padding': '0 20'}),
-    html.Div([
-        dcc.Graph(id='x-time-series'),
-        dcc.Graph(id='y-time-series'),
-    ], style={'display': 'inline-block', 'width': '49%'}),
-
-    html.Div(dcc.Slider(
-        id='crossfilter-year--slider',
-        min=df['Year'].min(),
-        max=df['Year'].max(),
-        value=df['Year'].max(),
-        marks={str(year): str(year) for year in df['Year'].unique()},
-        step=None
-    ), style={'width': '49%', 'padding': '0px 20px 20px 20px'})
-])
+        ),
+        dbc.CardFooter(
+            dbc.Row(
+                [
+                ],
+                align="center",
+            ),
+        ),
+    ]
+)
 
 
-@app.callback(
-    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
-    [dash.dependencies.Input('crossfilter-xaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-yaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-xaxis-type', 'value'),
-     dash.dependencies.Input('crossfilter-yaxis-type', 'value'),
-     dash.dependencies.Input('crossfilter-year--slider', 'value')])
-def update_graph(xaxis_column_name, yaxis_column_name,
-                 xaxis_type, yaxis_type,
-                 year_value):
-    dff = df[df['Year'] == year_value]
-
-    fig = px.scatter(x=dff[dff['Indicator Name'] == xaxis_column_name]['Value'],
-            y=dff[dff['Indicator Name'] == yaxis_column_name]['Value'],
-            hover_name=dff[dff['Indicator Name'] == yaxis_column_name]['Country Name']
+transactions_card = dbc.Card(
+    [
+        dbc.CardHeader(html.H2("Transactions")),
+        dbc.CardBody(
+            dbc.Row(
+                dbc.Col(
+                    
+                        dash_table.DataTable(
+                            id="transactions-table",
+                            columns=[
+                                    {"name": i, "id": i} for i in sorted(transactions_dataset.columns)
+                                ],
+                            data=transactions_dataset.to_dict('records')
+,
+                        ),
+                    
+                )
             )
-
-    fig.update_traces(customdata=dff[dff['Indicator Name'] == yaxis_column_name]['Country Name'])
-
-    fig.update_xaxes(title=xaxis_column_name, type='linear' if xaxis_type == 'Linear' else 'log')
-
-    fig.update_yaxes(title=yaxis_column_name, type='linear' if yaxis_type == 'Linear' else 'log')
-
-    fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, hovermode='closest')
-
-    return fig
+        ),
+    ]
+)
 
 
-def create_time_series(dff, axis_type, title):
-
-    fig = px.scatter(dff, x='Year', y='Value')
-
-    fig.update_traces(mode='lines+markers')
-
-    fig.update_xaxes(showgrid=False)
-
-    fig.update_yaxes(type='linear' if axis_type == 'Linear' else 'log')
-
-    fig.add_annotation(x=0, y=0.85, xanchor='left', yanchor='bottom',
-                       xref='paper', yref='paper', showarrow=False, align='left',
-                       text=title)
-
-    fig.update_layout(height=225, margin={'l': 20, 'b': 30, 'r': 10, 't': 10})
-
-    return fig
+app.layout = html.Div(
+    [
+        header,
+        dbc.Container(
+            [dbc.Row([dbc.Col(left_card, md=6), dbc.Col(transactions_card, md=6)])],
+            fluid=True,
+        ),
+   dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # in milliseconds
+            n_intervals=0
+        ) ]
+)
 
 
-@app.callback(
-    dash.dependencies.Output('x-time-series', 'figure'),
-    [dash.dependencies.Input('crossfilter-indicator-scatter', 'hoverData'),
-     dash.dependencies.Input('crossfilter-xaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-xaxis-type', 'value')])
-def update_y_timeseries(hoverData, xaxis_column_name, axis_type):
-    country_name = hoverData['points'][0]['customdata']
-    dff = df[df['Country Name'] == country_name]
-    dff = dff[dff['Indicator Name'] == xaxis_column_name]
-    title = '<b>{}</b><br>{}'.format(country_name, xaxis_column_name)
-    return create_time_series(dff, axis_type, title)
+
+
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+
+# we use a callback to toggle the collapse on small screens
+def toggle_navbar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 
 @app.callback(
-    dash.dependencies.Output('y-time-series', 'figure'),
-    [dash.dependencies.Input('crossfilter-indicator-scatter', 'hoverData'),
-     dash.dependencies.Input('crossfilter-yaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-yaxis-type', 'value')])
-def update_x_timeseries(hoverData, yaxis_column_name, axis_type):
-    dff = df[df['Country Name'] == hoverData['points'][0]['customdata']]
-    dff = dff[dff['Indicator Name'] == yaxis_column_name]
-    return create_time_series(dff, axis_type, yaxis_column_name)
+    Output("transactions-table", "data"),
+     Input('interval-component', 'n_intervals'))
+def update_table(n):
+    
+    transactions_dataset = pd.read_json(get_transactions_dataset() )
+    return transactions_dataset.to_dict('records')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=True)

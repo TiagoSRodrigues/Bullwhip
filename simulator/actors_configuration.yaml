@@ -1,6 +1,6 @@
 Actors:
 - Id: 1
-  Max_inventory: 160
+  Max_inventory: 60
   Name: Retailer
   Products:
   - Composition:
@@ -13,12 +13,12 @@ Actors:
       '1001': 100
       '2001': 12
     Name: ProductAB
-    id: 1002
+    id: 1001
     initial_stock: 100
     safety_stock: 2
   Reorder_history_size: 7
-  Time_Average: 2
-  Time_variance: 3
+  Time_Average: 1
+  Time_variance: 1
 - Id: 2
   Max_inventory: 60
   Name: Distributor
@@ -30,8 +30,8 @@ Actors:
     initial_stock: 10
     safety_stock: 4
   Reorder_history_size: 7
-  Time_Average: 2
-  Time_variance: 3
+  Time_Average: 1
+  Time_variance: 1
 - Id: 3
   Max_inventory: 60
   Name: Factory
@@ -43,8 +43,8 @@ Actors:
     initial_stock: 15
     safety_stock: 5
   Reorder_history_size: 7
-  Time_Average: 2
-  Time_variance: 3
+  Time_Average: 1
+  Time_variance: 1
 - Id: 4
   Max_inventory: 60
   Name: Raw Material Supplier
@@ -56,8 +56,8 @@ Actors:
     initial_stock: 5
     safety_stock: 2
   Reorder_history_size: 7
-  Time_Average: 2
-  Time_variance: 3
+  Time_Average: 1
+  Time_variance: 1
 - Id: 5
   Max_inventory: 60
   Name: Base Raw Material supplier
@@ -67,5 +67,5 @@ Actors:
     initial_stock: 5
     safety_stock: 1
   Reorder_history_size: 7
-  Time_Average: 2
-  Time_variance: 3
+  Time_Average: 1
+  Time_variance: 1

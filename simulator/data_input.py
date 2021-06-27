@@ -1,12 +1,11 @@
 # from simulation_configuration import source_data
 import datetime, pandas as pd, random
-# from logging_management import log
+from.import logging_management as logs
 
 def get_input(days=None, min=None, max=None):
     
     if days == None:
         good_values, errors, values = check_input_datafile()
-        print(values)
         return values
     else:
         values = []
@@ -32,7 +31,7 @@ def check_input_datafile():
                 errors+=1
 
     finally:
-        log(debug_msg = "DATA_INPUT  input file checked good values: "+str(good_values)+"  errors: "+str(errors))
+        logs.log(debug_msg = "DATA_INPUT  input file checked good values: "+str(good_values)+"  errors: "+str(errors))
     
     return good_values, errors, values
     

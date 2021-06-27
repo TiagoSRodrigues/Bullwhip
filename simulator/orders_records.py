@@ -9,23 +9,24 @@ logs.log(debug_msg="Started Order_records.py")
 class ClassOrdersRecord:
     def __init__(self,actor ):
         self.actor = actor
-        self.last_order_id = self.actor * 10**6       #tracks the last product id
+        self.last_order_id = self.actor.id * 10**6       #tracks the last product id
 
-        #Status order 0-Received 1-waiting 3-sended
+        #Status order 0-Received 1-sended
         #Acho que o nome n vai servir para nada,
-        # columns = ["Time","Product", "Qty","Client","Order_id","Status"]  
-        columns = [-1, -2, -3, -4, -5, -6]  
-        self.OrdersRecord =[columns]
+        # columns = ["Time", "Product", "Qty","Client","Order_id","Status"]  
+        columns = [-1, -2, -3, -4, -5, -6 ]
+        self.Open_Orders_Record = [columns]
+        self.closed_orders_record = [columns]  #Já existe um outro registo do histórico, isto deve perder a função
 
         logs.log(info_msg="[Created Object] Order_record  actor:"+str(self.actor)) 
         
-
+        
 #---------------------------------------------------------------------     
     def filter_by_product(self,complete_history,product):
             filter_arr = []
             
             for element in complete_history:
-                if element[3] == product:
+                if element[1] == product:
                     filter_arr.append(True)
                 else:
                     filter_arr.append(False)
@@ -44,31 +45,45 @@ class ClassOrdersRecord:
         return inventory.shape[0]
 
     def get_orders_record(self):
-        print("\n get inventory: \n",self.OrdersRecord)
+        print("\n get inventory: \n",self.Open_Orders_Record)
         return self.record
 
 
 # \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ 
-    def add_to_orders_record(self, Time, Product, Qty, Client):
-        logs.log(debug_msg="[FUNCION] with parameters: time:" + str(Time) + " product: "+ str(Product) + " Qty " + str(Qty) + " Client: "+ str(Client))
+    def add_to_open_orders(self,  product, qty, client):
+        logs.log(debug_msg="[FUNCION] with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + " Client: "+ str(client))
         actor_id = self.actor
         
         self.last_order_id = self.last_order_id + 1
         #initial status = 0
-        to_add = [Time, Product, Qty,  Client, self.last_order_id, 0]
+        to_add = [self.actor.simulation.time  ,product, qty,  client, self.last_order_id, 0]
 
-        self.OrdersRecord.append(to_add) 
+        self.Open_Orders_Record.append(to_add) 
 
         logs.log(debug_msg="[ORDERED ADDED]  Products ordered from"+str(self.actor)+" Parameters "+str(to_add))
         
-        with open(sim_cfg.orders_record_file, 'a') as file:
-            file.write( str(Time) +","+ str(Product) + "," + str(Qty) + ","+ str(Client)+"," + str(self.last_order_id) + ",0\n")
-        
-    #check the order id and changes the status
-    def set_order_status(self, order_id, status):
-        for record in self.OrdersRecord:
-            if record[-2] == order_id:
-                record[-1] = status
+        self.add_to_orders_log( product, qty, client, self.last_order_id ,  status = 0)
+    
+    def add_to_orders_log(self, product, qty, client, order_id, status): 
+        with open( str( sim_cfg.orders_record_path ) + "orders_record_" + str( self.actor.id ) + ".csv", 'a') as file:
+            file.write( str(self.actor.simulation.time)  +","+ str(product) + "," + str(qty) + "," + str(client)+ "," + str(order_id) + ","+ str(status)+ "\n")
+
+
+    # #check the order id and changes the status
+    # def set_order_status(self, order_id, status):
+    #     for record in self.Open_Orders_Record:
+    #         if record[-2] == order_id:
+    #             record[-1] = status
+    #     self.remove_from_open_orders(order_id)
+
+    def remove_from_open_orders(self,  order_id):
+        time = self.actor.simulation.time 
+
+        for record in self.Open_Orders_Record:
+            if record[-2] == order_id and record[-1] == 1:
+                record[1] = time
+                self.Open_Orders_Record.remove(record) 
+                self.closed_orders_record.append(record)
 
 
     def get_history(self,time_interval=None,product=None):

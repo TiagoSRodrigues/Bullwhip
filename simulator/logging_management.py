@@ -32,6 +32,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
     if debug_msg == None and info_msg == None and warning_msg != None:
         debug_msg=warning_msg
         print(warning_msg) 
+
     #check veriable for printing
     if sim_cfg.print_log_in_terminal == True:
         if sim_cfg.Terminal_printting_level == "WARNING" and warning_msg !=None:
@@ -62,27 +63,33 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 
 #this funcion delete old logs, to avoid excessive trash        
-def delete_old_logs(nr_of_files):
-    arr = os.listdir(sim_cfg.logs_file_location)
+def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
+    try:
+        if folder != None:
+            arr = os.listdir(sim_cfg.logs_file_location)
+                
+            if nr_of_log_to_save == all:
+                os.remove(sim_cfg.logs_file_location)
         
-    if nr_of_files == all:
-        return
-    for el in range(0,len(arr)-nr_of_files):
-        try:
-            os.remove(sim_cfg.logs_file_location+arr[el])
-        except:
-            pass
+            for el in range(0,len(arr)-nr_of_log_to_save):
+                os.remove(sim_cfg.logs_file_location+arr[el])
+        
+        elif file != None:
+            os.remove(file)
+    except:
+        print("No files to delete!")
 
 ##Ainda n está implemnetado, a idea é fazer uma barra deprogresso
-def simulation_time(x):
-    steps = [1,2,3,4,5,6,7,8,9,10,11]
-    for i in tqdm(steps):
-        pass
+# def simulation_time(x):
+#     steps = [1,2,3,4,5,6,7,8,9,10,11]
+#     for i in tqdm(steps):
+#         pass
+
 def show_object_attributes(object):
     from pprint import pprint
-    print(3*"\n","Attributes of",object,"\n")
-    pprint(vars(object))
-    print(3*"\n")
+    print( 3*"\n","Attributes of",object,"\n" )
+    pprint( vars(object) )
+    print( 3*"\n" )
 
 def open_object(object):
     print(10*"======","\n\n DIR:")
@@ -137,10 +144,15 @@ def pretty(d, indent=0):
 
     #https://www.webfx.com/tools/emoji-cheat-sheet/
 
-delete_old_logs(sim_cfg.nr_of_log_to_save)
+delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
 
 
-    
+
+delete_old_logs( file = sim_cfg.transactions_record_file        )
+
+
     #chamar uma função de forma dinâmica
     # #getattr(logging, sim_cfg.Logging_level.lower() )(debug_msg)
     # getattr(logging, sim_cfg.Terminal_printting_level.lower() )(debug_msg)
