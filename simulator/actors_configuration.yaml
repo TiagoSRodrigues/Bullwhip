@@ -4,6 +4,7 @@ Actors:
   Name: Retailer
   Products:
   - Composition:
+      '1002': 2
       '2001': 1
     Name: ProductA
     id: 1001
@@ -13,7 +14,7 @@ Actors:
       '1001': 100
       '2001': 12
     Name: ProductAB
-    id: 1001
+    id: 1002
     initial_stock: 100
     safety_stock: 2
   Reorder_history_size: 7
@@ -64,7 +65,7 @@ Actors:
   Products:
   - Name: ProductE
     id: 5001
-    initial_stock: 5
+    initial_stock: 9999999999
     safety_stock: 1
   Reorder_history_size: 7
   Time_Average: 1

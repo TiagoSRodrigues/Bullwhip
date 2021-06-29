@@ -19,3 +19,5 @@ class ClassSupplyChain:
         return self.supply_chain_structure
 
 
+    #todo criar uma função para construir o SC a aprtir da leitura da configuração
+    # ciar um grafo a partir da analise da config 

@@ -1,5 +1,6 @@
 from . import transactions, logging_management as logs
-import pandas as pd
+import pandas as pd,  simulation_configuration  as sim_cfg
+
 logs.log(debug_msg="Started Inventory.py")
 
 """
@@ -16,9 +17,9 @@ class ClassInventory:
         self.actor           = actor
         self.max_capacity    = max_capacity
         self.products        = products
-
-        self.main_inventory=dict()
         
+        self.main_inventory=dict()
+    
         for product in products:
 
             #change the key initial to in_stock
@@ -48,6 +49,7 @@ class ClassInventory:
         
         else:
             self.products_inventory[product] = self.products_inventory.get_product_inventory(product)  + quantity
+            self.update_to_inventory_record( actor_id= self.actor.id, product=product, quantity=quantity)
             return True 
 
     def remove_from_inventory(self, product, quantity):
@@ -67,7 +69,7 @@ class ClassInventory:
             return True 
         
     def check_inventory_composition(self):
-        header = "Inventory of: "+ str( self.actor )+  "\nPresent capacity: " + str(self.present_capacity) +" of  a max  of  " +str( self.max_capacity )
+        header = "Inventory of: "+ str( self.actor.id )+  "\nPresent capacity: " + str(self.present_capacity) +" of  a max  of  " +str( self.max_capacity )
         table , cols =[], [ " id "," Name "," in_stock "," safety_stock "]
        
         for product in self.products:
@@ -81,40 +83,47 @@ class ClassInventory:
 
 #############################################
     def get_product_inventory(self, product_id):
-        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self)+str(product_id))
-        try:
+        logs.log(debug_msg="[Function] inventory.get_product_inventory "+str( self.actor.id)+' product '+str(product_id))
+
+        try: 
             return self.main_inventory[product_id]["in_stock"]
         except:
-            logs.log(warning_msg="Error on get_product_inventory, check product id")
-            print("Error on get_product_inventory")
+            logs.log(debug_msg="[Function] inventory.get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO"+str( self.actor.id)+' product '+str(product_id)+"")
+            return 0
+
+
 
     def get_product_safety_inventory(self, product_id):
-        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self)+str(product_id))
+        logs.log(debug_msg="[Function] inventory.get_product_safety_inventory "+str( self.actor.id)+' product '+str(product_id))
         try:     
             return self.main_inventory[product_id]["safety_stock"]
         except:
             print(self.main_inventory)
 
-            logs.log(warning_msg="Error on get_product_safety_inventory, check product id")
+            logs.log(warning_msg="Error on get_product_safety_inventory, check product id "+str(product_id))
             print("Error on get_product_safety_inventory")
 
     def refresh_inventory_capacity(self):
-        logs.log(debug_msg="[Function] inventory.get_product_inventory"+str( self))
+        logs.log(debug_msg="[Function] inventory.get_product_inventory "+str( self.actor.id))
 
         self.present_capacity=0
         for product in self.main_inventory:
             self.present_capacity = self.present_capacity + self.main_inventory[product]['in_stock']
         
         if self.present_capacity > self.max_capacity:
-            logs.log(warning_msg="OVERCAPACITY in actor: "+str(self.actor)+"  | Stock is " + str(self.present_capacity) + " of a max of "+ str(self.max_capacity)) 
+            logs.log(warning_msg="OVERCAPACITY in actor: "+str(self.actor.id)+"  | Stock is " + str(self.present_capacity) + " of a max of "+ str(self.max_capacity)) 
 
         return self.present_capacity
 
 ######################################################################
     def show_present_composition(self):
-        # print("Inventory present size=" ,self.check_inventory_composition(),"\n")
-        for key ,value  in self.products_inventory.items():
-            print(key, value) #self.products_inventory[key]) 
+        print("\nInventory present size=" ,self.check_inventory_composition())
+        print("\nInventory present size=" ,self.main_inventory)
+
+        for key ,value  in self.main_inventory.items():
+            print("xx",key, value) #self.products_inventory[key]) 
         
-
-
+############################################
+    def update_to_inventory_record(self_,actor_id,product,quantity):
+        with open (sim_cfg.inventory_file ) as file:
+             file.write(actor_id,product,quantity)

@@ -116,6 +116,8 @@ class transactionsClass:
             file.write(",\n" +str(record)  )
 
 
+    def deliver_to_final_client(self):
+        pass
 ###############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor            #
 ###############################################################################################

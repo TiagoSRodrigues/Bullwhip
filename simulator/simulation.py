@@ -1,7 +1,7 @@
 from typing import Dict
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
-import datetime, yaml
-from dashboard import dashboard_data as ds
+import datetime, yaml, time, pandas as pd
+# from dashboard import dashboard_data as ds
 
 # from simulation_configuration import *
  
@@ -14,8 +14,6 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
-
-        #"sim_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))   #deve ser para apagar
 
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain()
@@ -35,9 +33,12 @@ class ClassSimulation:
 
     #Import Configurations
     def get_actors_configurations(self,actors_configuration):
+
         with open(actors_configuration) as file:
             actors_config_yaml = yaml.load(file, Loader=yaml.FullLoader)
-        
+
+
+
         #create the dict
         actors_config=dict()
         for actor in actors_config_yaml["Actors"]:
@@ -48,8 +49,17 @@ class ClassSimulation:
     def create_actors(self,actors_configuration_file):
         logs.log(debug_msg="create_actors function called")
         configs_dict=self.get_actors_configurations(actors_configuration_file)
-        
+
+        ###############################
+        #ADD  the final customer ###
+
+        configs_dict["0"]= {'Id': 0, 'Max_inventory': 999999999, 'Name': 'Customer', 'Products': [], "Time_Average":0,"Time_variance":0, "Reorder_history_size":0}
+
         actors_list=(configs_dict.keys())
+
+
+
+ 
         for actor_id in actors_list:
             logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
             name, a_id, avg, var, max_inventory, products, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
@@ -60,7 +70,6 @@ class ClassSimulation:
  
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
-            self.actors_collection.append(actor_id)
             logs.log(debug_msg="actor "+str(a_id)+"Added to supply chain")
 
 

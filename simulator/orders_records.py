@@ -84,6 +84,7 @@ class ClassOrdersRecord:
                 record[1] = time
                 self.Open_Orders_Record.remove(record) 
                 self.closed_orders_record.append(record)
+        logs.log(debug_msg=" order "+str(order_id)+" removed from actor "+str(self.actor))
 
 
     def get_history(self,time_interval=None,product=None):

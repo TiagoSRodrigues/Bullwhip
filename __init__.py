@@ -27,7 +27,7 @@ logs.log(info_msg="[Created Object] Simulation    "+str(Object_Simulation.simula
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-input = data_input.get_input(days=30,min=1,max=10)
+input = data_input.get_input(days=60,min=1,max=8)
 
 
 

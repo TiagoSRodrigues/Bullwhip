@@ -1,3 +1,4 @@
+import  time
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -26,54 +27,73 @@ server = app.server
 
 
 #sim_cfg_orders_record_path
+transactions_dataset={}
+
+def get_actos_inventaries():
+    inventaries_datasets={}
+    dir_files=os.listdir(sim_cfg.orders_record_path)
+
+    for file in dir_files:
+        if file[0:6] == "orders":
+            inventaries_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path + file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
+
+            # elif file[0:12] == "transactions":
+            #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
+    return inventaries_datasets
 
 def get_transactions_dataset():
-    with open(sim_cfg.transactions_record_file, 'r') as file:
-        data=file.read()+"]"
-        data=data.replace("'", '"')
-        data=data.replace("False", str('"'+"False"+'"'))
     
-    return pd.read_json(data)
+    transactions_file = sim_cfg.transactions_record_file
+    try:
+        with open(transactions_file, 'r') as file:
+            data=file.read()+"]"
+            data=data.replace("'", '"')
+            data=data.replace("False", str('"'+"False"+'"'))
+            
+            print(len(data),"\n\n\n\n\n\n\n")
 
-
+        return pd.read_json(data)
+    except:
+        time.sleep(0.5)
+        get_transactions_dataset()
+()
 
 transactions_dataset =  get_transactions_dataset()
 
 def get_actors_oders():
     orders_datasets={}
-    # transactions_datasets={}
     dir_files=os.listdir(sim_cfg.orders_record_path)
 
     for file in dir_files:
         if file[0:6] == "orders":
-            orders_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path+file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
+            orders_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path + file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
 
             # elif file[0:12] == "transactions":
             #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
     return orders_datasets
 
-actores_main_dataset = get_actors_oders()
+# actores_main_dataset = get_actors_oders()
+# 
+# nr_of_actors=len(actores_main_dataset)
 
-nr_of_actors=len(actores_main_dataset)
+def update_open_orders_dataset():
+    actores_main_dataset = get_actors_oders()
 
-open_orders_dataset={}
+    open_orders_dataset={}
 
-for actor in actores_main_dataset:
-    actor_dataset = actores_main_dataset[actor]
-    open_orders_a1 = actor_dataset[actor_dataset["Status"]!=1]
-    open_orders_dataset["open_"+str(actor)]=open_orders_a1
+    for actor in actores_main_dataset:
+        actor_dataset = actores_main_dataset[actor]
+        open_orders_a1 = actor_dataset[actor_dataset["Status"]!=1]
+        
+        open_orders_dataset["open_"+str(actor)]=open_orders_a1
 
 
-# print(actores_main_dataset["orders_record_1"])
+    return open_orders_dataset
 
-actor1_dataset = actores_main_dataset["orders_record_1"]
-open_orders_a1 = actor1_dataset[actor1_dataset["Status"]!=1]
-
-# print(open_orders_a1)
 
 # Format the Table columns
-transactions_columns=transactions_dataset.columns
-# print(columns)
+transactions_columns = transactions_dataset.columns
+
 # Define Modal - Botão top ritgh 
 with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
     howto_md = f.read()
@@ -163,68 +183,48 @@ header = dbc.Navbar(
 #     value="label",
 # )
 
+def create_actor_table():
 
+    open_orders_dataset=update_open_orders_dataset()
 
+    # Define Cards
+    ### ACTORS
+    actors_tables = datasets(object=[], object_name="actors_tables")
+    table_name=[]
+    for actor in open_orders_dataset:
 
-# Define Cards
+        dataset = open_orders_dataset[actor]
+        table_name.append(str(actor)+"-table")
 
-actors_tables = datasets(object=[], object_name="actors_tables")
-
-for actor in open_orders_dataset:
-    print(actor)
-    dataset = pd.read_json(actor)
-    actors_tables.opject.append(
-    
-            dbc.CardBody(
-                dbc.Row(
-                    dbc.Col(
-                        
-                            dash_table.DataTable(
-                                id="actors-table",
-                                columns=[
-                                        {"name": i, "id": i} for i in sorted(dataset.columns)
-                                    ],
-                                data=dataset.to_dict('records')
-    ,
-                            ),
-                        
+        actors_tables.object.append(
+                dbc.CardHeader(actor))
+        actors_tables.object.append(
+                dbc.CardBody(
+                    dbc.Row(
+                        dbc.Col(
+                            
+                                dash_table.DataTable(
+                                    id=str(actor)+"-table",
+                                    columns=[
+                                            {"name": i, "id": i} for i in sorted(dataset.columns)
+                                        ],
+                                    data=dataset.to_dict('records')
+        ,
+                               style_table={'height': '300px', 'overflowY': 'auto'} ),      
+                        )
                     )
-                )
-            ),
+              ),
         )
-    
-print(actors_tables)
+    return actors_tables
+
+actors_tables =  create_actor_table().object
 
 
 
 left_card = dbc.Card(
-    [
-        dbc.CardHeader(html.H2("Actors Orders")),
-        dbc.CardBody(
-            dbc.Row(
-                dbc.Col(
-                    # dcc.Graph(
-                    #     id="graph",
-                    #     figure=image_with_contour(
-                    #         img,
-                    #         current_labels,
-                    #         table,
-                    #         color_column="area",
-                    #     ),
-                    # ),
-                )
-            )
-        ),
-        dbc.CardFooter(
-            dbc.Row(
-                [
-                ],
-                align="center",
-            ),
-        ),
-    ]
+    actors_tables  
 )
-
+ ## TRANSACTIONS
 
 transactions_card = dbc.Card(
     [
@@ -253,7 +253,11 @@ app.layout = html.Div(
     [
         header,
         dbc.Container(
-            [dbc.Row([dbc.Col(left_card, md=6), dbc.Col(transactions_card, md=6)])],
+            [dbc.Row(
+                [dbc.Col(  html.Div(left_card, id="actors_data_table", className="actors_row") ,  md=6), 
+            dbc.Col(transactions_card, md=6)
+            ])
+    ],
             fluid=True,
         ),
    dcc.Interval(
@@ -278,16 +282,28 @@ def toggle_navbar_collapse(n, is_open):
         return not is_open
     return is_open
 
+# print(actors_tables.object)
+
+@app.callback(
+        Output(  "actors_data_table" , component_property='children'),
+        Input('interval-component', 'n_intervals'))
+def update_actors_tables(n):
+
+    actor_table = create_actor_table().object
+
+
+    return actor_table
+
+
 
 @app.callback(
     Output("transactions-table", "data"),
      Input('interval-component', 'n_intervals'))
-def update_table(n):
-    
-    transactions_dataset = pd.read_json(get_transactions_dataset() )
+def update_transactions_table(n):
+    transactions_dataset = get_transactions_dataset() 
     return transactions_dataset.to_dict('records')
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=False)
 

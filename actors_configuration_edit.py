@@ -14,11 +14,12 @@ actors= {
                "initial_stock":10,
                "safety_stock":2,
                "Composition":{
-                  "2001":1
+                  "2001":1,
+                  "1002":2
                }
             }, {
                "Name":"ProductAB",
-               "id":1001,
+               "id":1002,
                "initial_stock":100,
                "safety_stock":2,
                "Composition":{
@@ -33,7 +34,7 @@ actors= {
          "Name":"Distributor",
          "Time_Average":1,
          "Time_variance":1,
-         "Max_inventory":60,
+         "Max_inventory":100,
          "Reorder_history_size":7,
          "Products":[
             {
@@ -96,7 +97,7 @@ actors= {
             {
                "Name":"ProductE",
                "id":5001,
-               "initial_stock":5,
+               "initial_stock":9999999999,
                "safety_stock":1
             }
          ]
@@ -118,3 +119,6 @@ def Save_Configurations(actors):
     print("actors_configuration.yaml updated!")
 
 Save_Configurations(actors)
+
+
+#Todo: adicionar uma função para verificar se os ids n se repetem

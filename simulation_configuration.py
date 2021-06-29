@@ -7,6 +7,7 @@ actors_configuration_file=directory_path + "//simulator//actors_configuration.ya
 logs_file_location = directory_path + '//data//logs//'
 source_data =  directory_path + '//data//input//input_data.csv'
 Configuration_backups= directory_path + '//data//Configuration backups//'
+
 #paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
 Logging_level="DEBUG"
 
@@ -14,6 +15,7 @@ orders_record_file = directory_path + '//Data//records//orders_record.csv'
 orders_record_path = directory_path + '//Data//records//'
 transactions_record_file = directory_path + '//Data//records//transactions_record_file.json'
 
+inventory_file = directory_path + '//Data//records//inventory_file.json'
 
 
 
