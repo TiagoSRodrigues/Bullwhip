@@ -3,29 +3,34 @@ from.import logging_management as logs
 import time
 
 def main(input_data, simulation):
-    logs.log(info_msg="[Function Call] main.main")
-    
+    logs.log(info_msg="| FUNCTION         | main.main")
     
     first_element = get_first_active_actor(simulation)
+    simulation.speed()  ## SPEED
 
+    print("cookbook",simulation.cookbook)
     for quantity in input_data:
-
-   
-
-        logs.log(info_msg="[-------------] day "+str(simulation.time))
         print("day ",simulation.time, "quantity ",quantity)
 
-        print(            first_element.actor_inventory.show_present_composition() )
-        first_element.receive_order(quantity = quantity, product=1001, client = 0  )
+        
+
+
+        simulation.reset_all_actors_status()
+        logs.log(info_msg="day "+str(simulation.time) +"\n")
+
+        # print(            first_element.actor_inventory.show_present_composition() )
+        first_element.receive_order(supplier=first_element.id, quantity = quantity, product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
+            time.sleep(.05) ## SPEED
+
             if not actor.is_customer:
 
                 # print(actor.actor_inventory.show_present_composition())
                 actor.manage_stock()
 
+
         
-            time.sleep(.5) ## SPEED
         simulation.time += 1
         
 

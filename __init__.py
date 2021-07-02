@@ -20,7 +20,7 @@ ee.print_start(sim_cfg.Logging_level)
 
 #Cria simulação 
 Object_Simulation=simulation.ClassSimulation()
-logs.log(info_msg="[Created Object] Simulation    "+str(Object_Simulation.simulation_id))
+logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.simulation_id))
 
 
 #Cria atores

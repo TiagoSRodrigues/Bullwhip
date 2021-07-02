@@ -18,7 +18,7 @@ class ClassOrdersRecord:
         self.Open_Orders_Record = [columns]
         self.closed_orders_record = [columns]  #Já existe um outro registo do histórico, isto deve perder a função
 
-        logs.log(info_msg="[Created Object] Order_record  actor:"+str(self.actor)) 
+        logs.log(info_msg="| CREATED OBJECT   | Order_record  actor:"+str(self.actor)) 
         
         
 #---------------------------------------------------------------------     
@@ -51,7 +51,7 @@ class ClassOrdersRecord:
 
 # \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ 
     def add_to_open_orders(self,  product, qty, client):
-        logs.log(debug_msg="[FUNCION] with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + " Client: "+ str(client))
+        logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + " Client: "+ str(client))
         actor_id = self.actor
         
         self.last_order_id = self.last_order_id + 1
@@ -60,7 +60,7 @@ class ClassOrdersRecord:
 
         self.Open_Orders_Record.append(to_add) 
 
-        logs.log(debug_msg="[ORDERED ADDED]  Products ordered from"+str(self.actor)+" Parameters "+str(to_add))
+        logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Products ordered from: "+str(self.actor.id)+" Parameters "+str(to_add))
         
         self.add_to_orders_log( product, qty, client, self.last_order_id ,  status = 0)
     
@@ -84,7 +84,7 @@ class ClassOrdersRecord:
                 record[1] = time
                 self.Open_Orders_Record.remove(record) 
                 self.closed_orders_record.append(record)
-        logs.log(debug_msg=" order "+str(order_id)+" removed from actor "+str(self.actor))
+        logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor))
 
 
     def get_history(self,time_interval=None,product=None):

@@ -1,6 +1,6 @@
 from typing import Dict
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
-import datetime, yaml, time, pandas as pd
+import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
 # from dashboard import dashboard_data as ds
 
 # from simulation_configuration import *
@@ -14,19 +14,39 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
-
+        self.sleep_time=0.01
         #create supply chain
-        self.Object_supply_chain=sc.ClassSupplyChain()
-        logs.log(debug_msg="[Created Object] Supply Chain  "+str( self.Object_supply_chain))
+        self.Object_supply_chain=sc.ClassSupplyChain(self)
+        logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
 
         self.ObejctTransationsRecords = tns.transactionsClass(self)
         
         #Lista que guarda todos os objectos atores
         self.actors_collection=[] 
 
+
+        self.global_inventory={}
         #DashBoard
         # self.dashboard = ds.dashboard_data(self)
-        logs.log(debug_msg="Simulation created")
+
+        self.cookbook = {}
+
+        logs.log(debug_msg="| status           | Simulation created")
+
+        
+    def update_global_inventory(self, actor_id, product_id, quantity):
+        inventory = self.global_inventory 
+
+        actor_id, product_id, quantity  = int(actor_id), int(product_id), int(quantity)
+        try:
+            ator = inventory[actor_id]
+            ator[product_id] = ator[product_id]+quantity 
+        except:
+            inventory[actor_id]= {product_id : quantity}
+
+        with open(sim_cfg.inventory_file, 'w') as file:
+            json.dump(inventory, file)
+        
 
     def get_sim_id(self):
         return ClassSimulation.simulation_id
@@ -41,20 +61,18 @@ class ClassSimulation:
 
         #create the dict
         actors_config=dict()
-        for actor in actors_config_yaml["Actors"]:
-            actors_config[actor["Id"]]=actor
+        for actor in actors_config_yaml["actors"]:
+            actors_config[actor["id"]]=actor
 
         return actors_config
 
     def create_actors(self,actors_configuration_file):
-        logs.log(debug_msg="create_actors function called")
         configs_dict=self.get_actors_configurations(actors_configuration_file)
 
         ###############################
         #ADD  the final customer ###
-
-        configs_dict["0"]= {'Id': 0, 'Max_inventory': 999999999, 'Name': 'Customer', 'Products': [], "Time_Average":0,"Time_variance":0, "Reorder_history_size":0}
-
+        
+        configs_dict["0"]= {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [], "time_average":0,"time_variance":0}
         actors_list=(configs_dict.keys())
 
 
@@ -62,32 +80,30 @@ class ClassSimulation:
  
         for actor_id in actors_list:
             logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
-            name, a_id, avg, var, max_inventory, products, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
+            name, a_id, avg, var, max_inventory, products = self.get_actor_parameters(configs_dict, actor_id)
             
             #Cria o ator
             actor_id = actors.actor(self, name=name, id=a_id, avg=avg, var=var, 
-                                        max_inventory=max_inventory, reorder_history_size=reorder_history_size, products=products)
+                                        max_inventory=max_inventory, products=products)
  
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
-            logs.log(debug_msg="actor "+str(a_id)+"Added to supply chain")
+            logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain")
 
 
-        logs.log(debug_msg="All Actors created")
     
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):
-        name                 = configs_dict[actor]["Name"]
-        id                   = configs_dict[actor]["Id"]
-        avg                  = configs_dict[actor]["Time_Average"]
-        var                  = configs_dict[actor]["Time_variance"]
-        max_inventory        = configs_dict[actor]["Max_inventory"]
-        products          = configs_dict[actor]["Products"]
-        reorder_history_size = configs_dict[actor]["Reorder_history_size"]
+        name                 = configs_dict[actor]["name"]
+        id                   = configs_dict[actor]["id"]
+        avg                  = configs_dict[actor]["time_average"]
+        var                  = configs_dict[actor]["time_variance"]
+        max_inventory        = configs_dict[actor]["max_inventory"]
+        products          = configs_dict[actor]["products"]
 
 
-        return name, id, avg, var, max_inventory, products, reorder_history_size
+        return name, id, avg, var, max_inventory, products
 
     def change_simulation_status(self, status):
         if status == 1:
@@ -105,3 +121,9 @@ class ClassSimulation:
 
 
 
+    def reset_all_actors_status(self):
+        for actor in self.actors_collection:
+            actor.actor_state = 0
+
+    def speed(self):
+        time.sleep(self.sleep_time)

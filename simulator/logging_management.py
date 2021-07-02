@@ -27,7 +27,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
     log_level = logging.root.level
 
     if debug_msg == None and info_msg != None:
-        debug_msg=info_msg
+        debug_msg , info_msg = info_msg, debug_msg 
         
     if debug_msg == None and info_msg == None and warning_msg != None:
         debug_msg=warning_msg
@@ -146,7 +146,7 @@ def pretty(d, indent=0):
 
 delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save )
 delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
-# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
+delete_old_logs( file = sim_cfg.inventory_file          )
 
 
 

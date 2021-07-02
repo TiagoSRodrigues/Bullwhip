@@ -29,17 +29,29 @@ server = app.server
 #sim_cfg_orders_record_path
 transactions_dataset={}
 
-def get_actos_inventaries():
-    inventaries_datasets={}
-    dir_files=os.listdir(sim_cfg.orders_record_path)
+def get_inventory_dataset():
+    
+    inventory_file = sim_cfg.inventory_file
+    try:
+        with open(inventory_file, 'r') as file:
+            data=file.read()   #aqui entra como str
 
-    for file in dir_files:
-        if file[0:6] == "orders":
-            inventaries_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path + file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
+            data=json.loads(data)         #rebenta aqui com :    00
+            df1 = pd.DataFrame([]) 
+            for actor in data:
+                for prod in data[actor].keys():
+                    df2 = pd.DataFrame( [ [ actor, prod, data[actor][prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
+                df1=df1.append(df2) 
 
-            # elif file[0:12] == "transactions":
-            #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
-    return inventaries_datasets
+            return df1
+    except:
+        time.sleep(0.5)
+        get_inventory_dataset()
+
+inventory_dataset= get_inventory_dataset()
+
+inventory_dataset_columns = inventory_dataset.columns
+
 
 def get_transactions_dataset():
     
@@ -50,13 +62,13 @@ def get_transactions_dataset():
             data=data.replace("'", '"')
             data=data.replace("False", str('"'+"False"+'"'))
             
-            print(len(data),"\n\n\n\n\n\n\n")
+            # print(len(data),"\n\n\n\n\n\n\n")
 
         return pd.read_json(data)
     except:
         time.sleep(0.5)
         get_transactions_dataset()
-()
+
 
 transactions_dataset =  get_transactions_dataset()
 
@@ -183,8 +195,43 @@ header = dbc.Navbar(
 #     value="label",
 # )
 
-def create_actor_table():
 
+
+
+
+inventory_dataset_columns
+
+
+
+
+ ## TRANSACTIONS
+
+Inventory_card = dbc.Card(
+    [
+        dbc.CardHeader(html.H2("Inventory")),
+        dbc.CardBody(
+            dbc.Row(
+                dbc.Col(
+                    
+                        dash_table.DataTable(
+                            id="inventory-table",
+                            columns=[
+                                    {"name": i, "id": i} for i in sorted(inventory_dataset_columns)
+                                ],
+                            data=get_inventory_dataset().to_dict('records')
+,
+                        ),
+                    
+                )
+            )
+        ),
+    ]
+)
+
+
+
+
+def create_actor_table():
     open_orders_dataset=update_open_orders_dataset()
 
     # Define Cards
@@ -255,7 +302,11 @@ app.layout = html.Div(
         dbc.Container(
             [dbc.Row(
                 [dbc.Col(  html.Div(left_card, id="actors_data_table", className="actors_row") ,  md=6), 
-            dbc.Col(transactions_card, md=6)
+            dbc.Col(
+                     html.Div( [ Inventory_card,
+                                transactions_card])
+              , md=6)
+
             ])
     ],
             fluid=True,
@@ -302,6 +353,15 @@ def update_actors_tables(n):
 def update_transactions_table(n):
     transactions_dataset = get_transactions_dataset() 
     return transactions_dataset.to_dict('records')
+
+
+
+@app.callback(
+    Output("inventory-table", "data"),
+     Input('interval-component', 'n_intervals'))
+def update_transactions_table(n):
+    inventory_dataset=get_inventory_dataset
+    return inventory_dataset().to_dict('records')
 
 
 if __name__ == "__main__":

@@ -1,72 +1,64 @@
-Actors:
-- Id: 1
-  Max_inventory: 60
-  Name: Retailer
-  Products:
-  - Composition:
-      '1002': 2
+actors:
+- id: 1
+  max_inventory: 1000
+  name: Retailer
+  products:
+  - composition:
       '2001': 1
-    Name: ProductA
     id: 1001
-    initial_stock: 10
+    initial_stock: 15
+    name: ProductA
+    reorder_history_size: 7
     safety_stock: 2
-  - Composition:
-      '1001': 100
-      '2001': 12
-    Name: ProductAB
-    id: 1002
-    initial_stock: 100
-    safety_stock: 2
-  Reorder_history_size: 7
-  Time_Average: 1
-  Time_variance: 1
-- Id: 2
-  Max_inventory: 60
-  Name: Distributor
-  Products:
-  - Composition:
+  time_average: 1
+  time_variance: 1
+- id: 2
+  max_inventory: 100
+  name: Distributor
+  products:
+  - composition:
       '3001': 1
-    Name: ProductB
     id: 2001
     initial_stock: 10
+    name: ProductB
+    reorder_history_size: 7
     safety_stock: 4
-  Reorder_history_size: 7
-  Time_Average: 1
-  Time_variance: 1
-- Id: 3
-  Max_inventory: 60
-  Name: Factory
-  Products:
-  - Composition:
+  time_average: 1
+  time_variance: 1
+- id: 3
+  max_inventory: 60
+  name: Factory
+  products:
+  - composition:
       '4001': 1
-    Name: ProductC
     id: 3001
     initial_stock: 15
+    name: ProductC
+    reorder_history_size: 7
     safety_stock: 5
-  Reorder_history_size: 7
-  Time_Average: 1
-  Time_variance: 1
-- Id: 4
-  Max_inventory: 60
-  Name: Raw Material Supplier
-  Products:
-  - Composition:
+  time_average: 1
+  time_variance: 1
+- id: 4
+  max_inventory: 60
+  name: Raw Material Supplier
+  products:
+  - composition:
       '5001': 1
-    Name: ProductD
     id: 4001
     initial_stock: 5
+    name: ProductD
+    reorder_history_size: 7
     safety_stock: 2
-  Reorder_history_size: 7
-  Time_Average: 1
-  Time_variance: 1
-- Id: 5
-  Max_inventory: 60
-  Name: Base Raw Material supplier
-  Products:
-  - Name: ProductE
-    id: 5001
-    initial_stock: 9999999999
+  time_average: 1
+  time_variance: 1
+- id: 5
+  max_inventory: 99999999999
+  name: Base Raw Material supplier
+  products:
+  - id: 5001
+    initial_stock: 99999999999
+    name: ProductE
+    reorder_history_size: 7
     safety_stock: 1
-  Reorder_history_size: 7
-  Time_Average: 1
-  Time_variance: 1
+  time_average: 1
+  time_variance: 1

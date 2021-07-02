@@ -11,11 +11,11 @@ Configuration_backups= directory_path + '//data//Configuration backups//'
 #paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
 Logging_level="DEBUG"
 
-orders_record_file = directory_path + '//Data//records//orders_record.csv'
-orders_record_path = directory_path + '//Data//records//'
-transactions_record_file = directory_path + '//Data//records//transactions_record_file.json'
+orders_record_file = directory_path + '//data//records//orders_record.csv'
+orders_record_path = directory_path + '//data//records//'
+transactions_record_file = directory_path + '//data//records//transactions_record_file.json'
 
-inventory_file = directory_path + '//Data//records//inventory_file.json'
+inventory_file = directory_path + '//data//records//inventory_file.json'
 
 
 
@@ -27,6 +27,6 @@ print_log_in_terminal=True
 Terminal_printting_level="INFO"
 
 #Run tests before simulations
-Run_tests=True
+Run_tests=False
 
 

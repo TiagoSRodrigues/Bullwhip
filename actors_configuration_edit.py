@@ -1,108 +1,109 @@
 actors= {
-   "Actors":[
-      {
-         "Id":1,
-         "Name":"Retailer",
-         "Time_Average":1,
-         "Time_variance":1,
-         "Max_inventory":60,
-         "Reorder_history_size":7,
-         "Products":[
-            {
-               "Name":"ProductA",
-               "id":1001,
-               "initial_stock":10,
-               "safety_stock":2,
-               "Composition":{
-                  "2001":1,
-                  "1002":2
-               }
-            }, {
-               "Name":"ProductAB",
-               "id":1002,
-               "initial_stock":100,
-               "safety_stock":2,
-               "Composition":{
-                  "2001":12,
-                  "1001":100
-               }
-            }
-         ]
-      },
-      {
-         "Id":2,
-         "Name":"Distributor",
-         "Time_Average":1,
-         "Time_variance":1,
-         "Max_inventory":100,
-         "Reorder_history_size":7,
-         "Products":[
-            {
-               "Name":"ProductB",
-               "id":2001,
-               "initial_stock":10,
-               "safety_stock":4,
-               "Composition":{
-                  "3001":1
-               }
-            }
-         ]
-      },
-      {
-         "Id":3,
-         "Name":"Factory",
-         "Time_Average":1,
-         "Time_variance":1,
-         "Max_inventory":60,
-         "Reorder_history_size":7,
-         "Products":[
-            {
-               "Name":"ProductC",
-               "id":3001,
-               "initial_stock":15,
-               "safety_stock":5,
-               "Composition":{
-                  "4001":1
-               }
-            }
-         ]
-      },
-      {
-         "Id":4,
-         "Name":"Raw Material Supplier",
-         "Time_Average":1,
-         "Time_variance":1,
-         "Max_inventory":60,
-         "Reorder_history_size":7,
-         "Products":[
-            {
-               "Name":"ProductD",
-               "id":4001,
-               "initial_stock":5,
-               "safety_stock":2,
-               "Composition":{
-                  "5001":1
-               }
-            }
-         ]
-      },
-      {
-         "Id":5,
-         "Name":"Base Raw Material supplier",
-         "Time_Average":1,
-         "Time_variance":1,
-         "Max_inventory":60,
-         "Reorder_history_size":7,
-         "Products":[
-            {
-               "Name":"ProductE",
-               "id":5001,
-               "initial_stock":9999999999,
-               "safety_stock":1
-            }
-         ]
-      }
-   ]
+    "actors":
+    [
+        {
+            "id": 1,
+            "name": "Retailer",
+            "time_average": 1,
+            "time_variance": 1,
+            "max_inventory": 1000,
+            "products":
+            [
+                {
+                    "name": "ProductA",
+                    "id": 1001,
+                    "initial_stock": 50,
+                    "safety_stock": 2,
+                    "reorder_history_size": 7,
+                    "composition":
+                    {
+                        "2001": 1,
+                    }
+                },
+              
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Distributor",
+            "time_average": 1,
+            "time_variance": 1,
+            "max_inventory": 100,
+            "products":
+            [
+                {
+                    "name": "ProductB",
+                    "id": 2001,
+                    "initial_stock": 30,
+                    "safety_stock": 4,
+                    "reorder_history_size": 7,
+                    "composition":
+                    {
+                        "3001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Factory",
+            "time_average": 1,
+            "time_variance": 1,
+            "max_inventory": 60,
+            "products":
+            [
+                {
+                    "name": "ProductC",
+                    "id": 3001,
+                    "initial_stock": 15,
+                    "safety_stock": 5,
+                    "reorder_history_size": 7,
+                    "composition":
+                    {
+                        "4001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Raw Material Supplier",
+            "time_average": 1,
+            "time_variance": 1,
+            "max_inventory": 60,
+            "products":
+            [
+                {
+                    "name": "ProductD",
+                    "id": 4001,
+                    "initial_stock": 5,
+                    "safety_stock": 2,
+                    "reorder_history_size": 7,
+                    "composition":
+                    {
+                        "5001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Base Raw Material supplier",
+            "time_average": 1,
+            "time_variance": 1,
+            "max_inventory": 99999999999,
+            "products":
+            [
+                {
+                    "name": "ProductE",
+                    "id": 5001,
+                    "initial_stock": 99999999999,
+                    "safety_stock": 1,
+                    "reorder_history_size": 7
+                }
+            ]
+        }
+    ]
 }
 
 
