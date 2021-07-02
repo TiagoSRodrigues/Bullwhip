@@ -14,7 +14,7 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
-        self.sleep_time=0.01
+        self.sleep_time=0
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))

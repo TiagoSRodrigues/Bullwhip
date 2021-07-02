@@ -18,7 +18,7 @@ class ClassInventory:
         self.max_capacity    = max_capacity
         self.products        = products
         
-        self.main_inventory=dict()
+        self.main_inventory={}
     
         for product in products:
 

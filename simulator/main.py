@@ -8,7 +8,7 @@ def main(input_data, simulation):
     first_element = get_first_active_actor(simulation)
     simulation.speed()  ## SPEED
 
-    print("cookbook",simulation.cookbook)
+    # print("cookbook",simulation.cookbook)
     for quantity in input_data:
         print("day ",simulation.time, "quantity ",quantity)
 
@@ -22,11 +22,12 @@ def main(input_data, simulation):
         first_element.receive_order(supplier=first_element.id, quantity = quantity, product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
-            time.sleep(.05) ## SPEED
+            simulation.speed() ## SPEED
 
             if not actor.is_customer:
 
                 # print(actor.actor_inventory.show_present_composition())
+                actor.manage_orders()
                 actor.manage_stock()
 
 
@@ -46,7 +47,7 @@ def get_first_active_actor(simulation):
     for actor in simulation.actors_collection:
         print(actor.name, actor.id)
         if actor.id == first_sc_element_id:
-            print("44 actor name",actor.actor_inventory.show_present_composition())
+            # print("44 actor name",actor.actor_inventory.show_present_composition())
             return actor
    
 

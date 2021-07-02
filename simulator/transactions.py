@@ -12,29 +12,7 @@ class transactionsClass:
         self.delivered_transactions =[]     
         self.transaction_id = 0 
         self.simulation = simulation
-        '''        estrutura
-            [
-                {
-                    "transaction_id":"id",
-                    "deliver_day":"ddd",
-                    "sending_day":"ddd",
-                    "receiver":"actor_id",
-                    "sender":"actor_id",
-                    "product":"product_id",
-                    "quantity": "int",
-                    "delivered": False
-                    }
-            ]
-
-            ''' 
-        # for i in range(1,10,1):
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-
-        # print(self.open_transactions)
-
+        
         #Start transaction log
         with open(sim_cfg.transactions_record_file, 'a') as file:
             file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
@@ -117,6 +95,7 @@ class transactionsClass:
 
 
     def deliver_to_final_client(self):
+        #TODO
         pass
 ###############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor            #
@@ -124,4 +103,28 @@ class transactionsClass:
 # from main import simulation_id
 # from actors import ClassOrdersRecord
 
+
+
+'''        estrutura
+            [
+                {
+                    "transaction_id":"id",
+                    "deliver_day":"ddd",
+                    "sending_day":"ddd",
+                    "receiver":"actor_id",
+                    "sender":"actor_id",
+                    "product":"product_id",
+                    "quantity": "int",
+                    "delivered": False
+                    }
+            ]
+
+            ''' 
+        # for i in range(1,10,1):
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
+
+        # print(self.open_transactions)
 

@@ -16,6 +16,7 @@ orders_record_path = directory_path + '//data//records//'
 transactions_record_file = directory_path + '//data//records//transactions_record_file.json'
 
 inventory_file = directory_path + '//data//records//inventory_file.json'
+speed_control_file = directory_path + '//data//records//speed_control.txt'
 
 
 

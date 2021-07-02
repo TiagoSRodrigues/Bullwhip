@@ -50,6 +50,7 @@ def get_inventory_dataset():
 
 inventory_dataset= get_inventory_dataset()
 
+
 inventory_dataset_columns = inventory_dataset.columns
 
 
@@ -318,7 +319,20 @@ app.layout = html.Div(
         ) ]
 )
 
-
+def get_speed_slider():
+    with open(sim_cfg.speed_control_file) as file:
+       data=file.read()
+        
+    slider=  html.Div([
+        dcc.Slider(
+            id='my-slider',
+            min=0,
+            max=20,
+            step=0.5,
+            value=10,
+        ),
+        html.Div(id='slider-output-container')
+    ])
 
 
 def toggle_modal(n1, n2, is_open):
