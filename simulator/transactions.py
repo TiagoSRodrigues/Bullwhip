@@ -19,6 +19,8 @@ class transactionsClass:
 
 
     def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
+        # logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender "+str(sender)+" receiver "+str(receiver)+ " quantity "+str(quantity)+ "product"+str(product)+"deliver_date"+str(deliver_date)+ "sending_date" + str(sending_date) )
+        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
         values_to_add =  {
                 "transaction_id":self.transaction_id,
@@ -36,10 +38,12 @@ class transactionsClass:
 
 
     def record_delivered(self,transaction_id ):
+        logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id)) 
+        
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
                 record['delivered']=True
-                record['recording_time']=self.time
+                record['recording_time']=self.simulation.time
                 self.delivered_transactions.append(record)
                 self.open_transactions.remove(record)
                
@@ -47,7 +51,7 @@ class transactionsClass:
                 return True
 
         print("Trasaction {} not found!!".format(transaction_id))
-        logs.log(info_msg="[FUNCTION deliver_transaction]  Trasaction {} not found!!".format(transaction_id))
+        logs.log(info_msg="| TRANSACTION DLVRD| Transactions  | transaction_id   Trasaction {} not found!!".format(transaction_id))
         
         
 
@@ -90,16 +94,31 @@ class transactionsClass:
         # self.open_transactions.remove(record)
         
     def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+
         with open(sim_cfg.transactions_record_file, 'a') as file:
             file.write(",\n" +str(record)  )
 
 
     def deliver_to_final_client(self):
-        #TODO
-        pass
-###############################################################################################
-#      funções relacionadas com operações realizadas pelo actor da cadeia de valor            #
-###############################################################################################
+        for actor in self.simulation.actors_collection:
+            if int(actor.id) == 0: 
+                customer=actor 
+                break
+        try: 
+            logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client: {}".format(self.get_todays_transactions(customer))) 
+
+            for trans in self.get_todays_transactions(customer):
+                self.record_delivered(trans )
+
+        except: raise Exception("Customer not found")
+
+
+        # print("\ntoday to customer:",self.get_todays_transactions(customer),
+        #  " opend",self.open_transactions )#, "\ndelivered",self.delivered_transactions  )
+
+##############################################################################################
+#      funções relacionadas com operações realizadas pelo actor da cadeia de valor           #
+##############################################################################################
 # from main import simulation_id
 # from actors import ClassOrdersRecord
 

@@ -146,6 +146,11 @@ def pretty(d, indent=0):
 
 delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save )
 delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_3.csv"           )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_4.csv"           )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_5.csv"           )
+delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_6.csv"           )
 delete_old_logs( file = sim_cfg.inventory_file          )
 
 

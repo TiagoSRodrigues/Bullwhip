@@ -1,3 +1,7 @@
 {
-    "python.pythonPath": "C:\\Users\\Tiago\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "C:\\Users\\Tiago\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true,
+    "python.linting.banditEnabled": false,
+    "python.linting.pylintEnabled": true
 }

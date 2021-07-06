@@ -12,12 +12,12 @@ actors= {
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 50,
+                    "initial_stock": 3,
                     "safety_stock": 2,
                     "reorder_history_size": 7,
                     "composition":
                     {
-                        "2001": 1,
+                        2001: 1,
                     }
                 },
               
@@ -28,18 +28,18 @@ actors= {
             "name": "Distributor",
             "time_average": 1,
             "time_variance": 1,
-            "max_inventory": 100,
+            "max_inventory": 1000,
             "products":
             [
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 30,
-                    "safety_stock": 4,
+                    "initial_stock": 5,
+                    "safety_stock": 2,
                     "reorder_history_size": 7,
                     "composition":
                     {
-                        "3001": 1
+                        3001: 1
                     }
                 }
             ]
@@ -49,18 +49,18 @@ actors= {
             "name": "Factory",
             "time_average": 1,
             "time_variance": 1,
-            "max_inventory": 60,
+            "max_inventory": 600,
             "products":
             [
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 15,
-                    "safety_stock": 5,
+                    "initial_stock": 5,
+                    "safety_stock": 2,
                     "reorder_history_size": 7,
                     "composition":
                     {
-                        "4001": 1
+                        4001: 1
                     }
                 }
             ]
@@ -70,7 +70,7 @@ actors= {
             "name": "Raw Material Supplier",
             "time_average": 1,
             "time_variance": 1,
-            "max_inventory": 60,
+            "max_inventory": 600,
             "products":
             [
                 {
@@ -81,7 +81,7 @@ actors= {
                     "reorder_history_size": 7,
                     "composition":
                     {
-                        "5001": 1
+                        5001: 1
                     }
                 }
             ]
@@ -91,13 +91,13 @@ actors= {
             "name": "Base Raw Material supplier",
             "time_average": 1,
             "time_variance": 1,
-            "max_inventory": 99999999999,
+            "max_inventory": 9999999999,
             "products":
             [
                 {
                     "name": "ProductE",
                     "id": 5001,
-                    "initial_stock": 99999999999,
+                    "initial_stock": 99999,
                     "safety_stock": 1,
                     "reorder_history_size": 7
                 }

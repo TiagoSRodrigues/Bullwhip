@@ -3,12 +3,14 @@ override the settings in the dash bootstrap stylesheet */
 .row {
     margin: 0 1px 0 1px;
     line-height: 5px;
+    height: 20px
     
 }
 
 .card {
     margin-top: 1em;
     font-size: small;
+    /*height: 7px*/;
 }
 
 #howto-md img {
@@ -16,15 +18,16 @@ override the settings in the dash bootstrap stylesheet */
 }
 .actors_table{
     font-size: small;    
-    
+    /*height: 7px*/;
     
 }
 .dash-table-container{    font-size: small;
     line-height: 5px;
-    
+    /*height: 7px*/;
     /* background-color: brown; */
 }
 .open_orders_record_1{
     /* background-color: navy; */
     max-height: 10%;
+    /*height: 7px*/
 }

@@ -8,26 +8,35 @@ def main(input_data, simulation):
     first_element = get_first_active_actor(simulation)
     simulation.speed()  ## SPEED
 
-    # print("cookbook",simulation.cookbook)
     for quantity in input_data:
+        if quantity == 0: 
+            simulation.time += 1
+            continue
+
+        simulation.ObejctTransationsRecords.deliver_to_final_client()
         print("day ",simulation.time, "quantity ",quantity)
 
+        logs.log(debug_msg=        logs.log(debug_msg="| global inventory | simulation    | global inventory {}".format( simulation.global_inventory)))
         
 
 
         simulation.reset_all_actors_status()
         logs.log(info_msg="day "+str(simulation.time) +"\n")
 
-        # print(            first_element.actor_inventory.show_present_composition() )
-        first_element.receive_order(supplier=first_element.id, quantity = quantity, product=1001, client = 0  )
+        first_element.receive_order(supplier=int(first_element.id), quantity = int(quantity), product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
+            logs.log(debug_msg=        logs.log(debug_msg="| Started actor    | - - - - - - - | actor: {}".format( actor.id)))
+
             simulation.speed() ## SPEED
-
             if not actor.is_customer:
-
                 # print(actor.actor_inventory.show_present_composition())
+
+                
+                logs.log(debug_msg=        logs.log(debug_msg="| before mng orders| main          |  actor: {}".format(actor.id)))
                 actor.manage_orders()
+
+                logs.log(debug_msg=        logs.log(debug_msg="| before mng stock | main          |  actor: {}".format(actor.id)))
                 actor.manage_stock()
 
 

@@ -14,13 +14,12 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
-        self.sleep_time=0
+        self.sleep_time=sim_cfg.delay_time
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
 
         self.ObejctTransationsRecords = tns.transactionsClass(self)
-        
         #Lista que guarda todos os objectos atores
         self.actors_collection=[] 
 
@@ -34,22 +33,7 @@ class ClassSimulation:
         logs.log(debug_msg="| status           | Simulation created")
 
         
-    def update_global_inventory(self, actor_id, product_id, quantity):
-        inventory = self.global_inventory 
 
-        actor_id, product_id, quantity  = int(actor_id), int(product_id), int(quantity)
-        try:
-            ator = inventory[actor_id]
-            ator[product_id] = ator[product_id]+quantity 
-        except:
-            inventory[actor_id]= {product_id : quantity}
-
-        with open(sim_cfg.inventory_file, 'w') as file:
-            json.dump(inventory, file)
-        
-
-    def get_sim_id(self):
-        return ClassSimulation.simulation_id
 
     #Import Configurations
     def get_actors_configurations(self,actors_configuration):
@@ -127,3 +111,20 @@ class ClassSimulation:
 
     def speed(self):
         time.sleep(self.sleep_time)
+
+    #---------------------------------------------------------------------------------------------------------------------Dashboard
+    def update_global_inventory(self, actor_id, product_id, quantity):
+
+        inventory = self.global_inventory 
+
+        actor_id, product_id, quantity  = int(actor_id), int(product_id), int(quantity)
+        try:
+            ator = inventory[actor_id]
+            ator[product_id] = ator[product_id]+quantity 
+        except:
+            inventory[actor_id]= {product_id : quantity}
+
+        with open(sim_cfg.inventory_file, 'w') as file:
+            json.dump(inventory, file)
+
+        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))

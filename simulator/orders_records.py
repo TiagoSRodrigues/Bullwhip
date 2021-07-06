@@ -22,37 +22,51 @@ class ClassOrdersRecord:
         
         
 #---------------------------------------------------------------------     
-    def filter_by_product(self,complete_history,product):
-            filter_arr = []
+    # def filter_by_product(self,complete_history,product):
+    #         filter_arr = []
             
-            for element in complete_history:
-                if element[1] == product:
-                    filter_arr.append(True)
-                else:
-                    filter_arr.append(False)
+    #         for element in complete_history:
+    #             if element[1] == product:
+    #                 filter_arr.append(True)
+    #             else:
+    #                 filter_arr.append(False)
 
-            filtered = complete_history[filter_arr]
-            return filtered
+    #         filtered = complete_history[filter_arr]
+    #         # return filtered
 
-    def get_record_size(self,product=None):
-        complete_order_record=self.record
-         #Filter by product
-        if product != None:
-            order_record=self.filter_by_product(complete_order_record,product)
-        else:
-            inventory=complete_order_record
-        print("\n inventory size: \n",inventory.shape[0])
-        return inventory.shape[0]
+    # def get_record_size(self,product=None):
+    #     complete_order_record=self.record
+    #      #Filter by product
+    #     if product != None:
+    #         order_record=self.filter_by_product(complete_order_record,product)
+        # else:
+    #         inventory=complete_order_record
+    #     print("\n inventory size: \n",inventory.shape[0])
+    #     return inventory.shape[0]
 
-    def get_orders_record(self):
-        print("\n get inventory: \n",self.Open_Orders_Record)
-        return self.record
+    def get_order_by_id(self, order_id):
+        order_record = False
+        records_found = 0
+        for order in self.Open_Orders_Record:
+            if order[-2]==order_id:
+                order_record = order
+                records_found+=1
+
+        for order in self.closed_orders_record:
+            if order[-2]==order_id:
+                order_record = order
+                records_found+=1
+
+        if records_found >1:
+            logs.log(debug_msg="| FUNCTION         | Orders_records| get_order_by_id  ERROR order found in two places at same time! order_id:{}  actor:".format(order_id, self.actor.id))
+
+        return order_record
 
 
 # \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ 
     def add_to_open_orders(self,  product, qty, client):
-        logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + " Client: "+ str(client))
-        actor_id = self.actor
+        logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + "from " + str(self.actor) + " Client: "+ str(client))
+        # actor_id = self.actor
         
         self.last_order_id = self.last_order_id + 1
         #initial status = 0
@@ -60,7 +74,7 @@ class ClassOrdersRecord:
 
         self.Open_Orders_Record.append(to_add) 
 
-        logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Products ordered from: "+str(self.actor.id)+" Parameters "+str(to_add))
+        logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor, qty, product, client))
         
         self.add_to_orders_log( product, qty, client, self.last_order_id ,  status = 0)
     
@@ -76,33 +90,43 @@ class ClassOrdersRecord:
     #             record[-1] = status
     #     self.remove_from_open_orders(order_id)
 
+    #["Time", "Product", "Qty","Client","Order_id","Status"]  
+
+
+
+        
+
     def remove_from_open_orders(self,  order_id):
         time = self.actor.simulation.time 
 
         for record in self.Open_Orders_Record:
-            if record[-2] == order_id and record[-1] == 1:
-                record[1] = time
+            if record[-2] == order_id:
+                record[0] = time
                 self.Open_Orders_Record.remove(record) 
                 self.closed_orders_record.append(record)
-        logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor))
+                order= self.get_order_by_id(order_id=order_id )
 
 
-    def get_history(self,time_interval=None,product=None):
-        print("\n inputs: \n",self,time_interval,product)      
-        complete_history=self.record
+                self.add_to_orders_log( product=order[1], qty=order[2], client= order[3], order_id=order[-2], status =1)
+        logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor.id)+str(self.Open_Orders_Record))
 
-        #Filter history by product
-        if product != None:
-            history=self.filter_by_product(complete_history,product)
 
-        elif time_interval == None:
-            history=complete_history[:,:]
+    # def get_history(self,time_interval=None,product=None):
+    #     print("\n inputs: \n",self,time_interval,product)      
+    #     complete_history=self.record
+
+    #     #Filter history by product
+    #     if product != None:
+    #         history=self.filter_by_product(complete_history,product)
+
+    #     elif time_interval == None:
+    #         history=complete_history[:,:]
        
-        #filter by date
-        elif time_interval != None:
-            history=complete_history[-time_interval:,:]
-            # print("\n history shape:" ,history.shape)
-        return history
+    #     #filter by date
+    #     elif time_interval != None:
+    #         history=complete_history[-time_interval:,:]
+    #         # print("\n history shape:" ,history.shape)
+    #     return history
 
     def get_ordered_products(self,time_interval=None,product=None):
         history=self.get_history(time_interval,product=None)

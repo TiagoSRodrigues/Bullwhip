@@ -1,21 +1,24 @@
-import  time
+import time
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import os, sys, json
-from dash_html_components.Title import Title 
+import os
+import sys
+import json
 import pandas as pd
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_table
-from pandas.core.frame import DataFrame
-try: import simulation_configuration as sim_cfg 
-except: 
+
+try:
+    import simulation_configuration as sim_cfg
+except:
     sys.path.append('N:/TESE/Bullwhip')
-    import simulation_configuration as sim_cfg 
+    import simulation_configuration as sim_cfg
+
 
 class datasets():
-    def __init__(self,object,  object_name):
+    def __init__(self, object,  object_name):
         self.object = object
         self.name   = object_name
 
@@ -27,26 +30,40 @@ server = app.server
 
 
 #sim_cfg_orders_record_path
-transactions_dataset={}
+# transactions_dataset ={}
+
+def check_file_existance(File_path):
+    try:
+         with open(File_path, 'r') :
+            return True   
+    except:
+        return False
+
+
 
 def get_inventory_dataset():
-    
     inventory_file = sim_cfg.inventory_file
-    try:
-        with open(inventory_file, 'r') as file:
-            data=file.read()   #aqui entra como str
+    
+    while not check_file_existance(inventory_file):
+        print("  Waiting for inventory_file", end='\r', flush=True)
+        time.sleep(0.3)
 
-            data=json.loads(data)         #rebenta aqui com :    00
-            df1 = pd.DataFrame([]) 
-            for actor in data:
-                for prod in data[actor].keys():
-                    df2 = pd.DataFrame( [ [ actor, prod, data[actor][prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
-                df1=df1.append(df2) 
+    with open(inventory_file, 'r') as file:
+        data=file.read()   #aqui entra como str
 
-            return df1
-    except:
-        time.sleep(0.5)
-        get_inventory_dataset()
+        data=json.loads(data)         #rebenta aqui com :    00
+        df1 = pd.DataFrame([]) 
+        for actor in data:
+            for prod in data[actor].keys():
+                df2 = pd.DataFrame( [ [ actor, prod, data[actor][prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
+            df1=df1.append(df2) 
+        file.close
+    
+        # with open("inventario.txt", 'a') as f:
+        #     f.write(df1.to_string())   #aqui entra como str
+
+        return df1
+
 
 inventory_dataset= get_inventory_dataset()
 
@@ -57,21 +74,22 @@ inventory_dataset_columns = inventory_dataset.columns
 def get_transactions_dataset():
     
     transactions_file = sim_cfg.transactions_record_file
-    try:
-        with open(transactions_file, 'r') as file:
-            data=file.read()+"]"
-            data=data.replace("'", '"')
-            data=data.replace("False", str('"'+"False"+'"'))
-            
-            # print(len(data),"\n\n\n\n\n\n\n")
+    
+    while not check_file_existance(transactions_file):
+        print("Waiting for transactions_file", end='\r', flush = True)
+        time.sleep(0.1)
+    with open(transactions_file, 'r') as file:
+        data=file.read()+"]"
+        data=data.replace("'", '"')
+        data=data.replace("False", str('"'+"False"+'"'))
+        data=data.replace(" True", str(' "'+"True"+'"'))
 
         return pd.read_json(data)
-    except:
-        time.sleep(0.5)
-        get_transactions_dataset()
+
 
 
 transactions_dataset =  get_transactions_dataset()
+
 
 def get_actors_oders():
     orders_datasets={}
@@ -103,9 +121,6 @@ def update_open_orders_dataset():
 
     return open_orders_dataset
 
-
-# Format the Table columns
-transactions_columns = transactions_dataset.columns
 
 # Define Modal - Botão top ritgh 
 with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
@@ -219,7 +234,7 @@ Inventory_card = dbc.Card(
                             columns=[
                                     {"name": i, "id": i} for i in sorted(inventory_dataset_columns)
                                 ],
-                            data=get_inventory_dataset().to_dict('records')
+                            data=inventory_dataset.to_dict('records')
 ,
                         ),
                     
@@ -314,25 +329,10 @@ app.layout = html.Div(
         ),
    dcc.Interval(
             id='interval-component',
-            interval=1*1000, # in milliseconds
+            interval=.5*1000, # in milliseconds
             n_intervals=0
         ) ]
 )
-
-def get_speed_slider():
-    with open(sim_cfg.speed_control_file) as file:
-       data=file.read()
-        
-    slider=  html.Div([
-        dcc.Slider(
-            id='my-slider',
-            min=0,
-            max=20,
-            step=0.5,
-            value=10,
-        ),
-        html.Div(id='slider-output-container')
-    ])
 
 
 def toggle_modal(n1, n2, is_open):
@@ -353,10 +353,7 @@ def toggle_navbar_collapse(n, is_open):
         Output(  "actors_data_table" , component_property='children'),
         Input('interval-component', 'n_intervals'))
 def update_actors_tables(n):
-
     actor_table = create_actor_table().object
-
-
     return actor_table
 
 
@@ -373,9 +370,9 @@ def update_transactions_table(n):
 @app.callback(
     Output("inventory-table", "data"),
      Input('interval-component', 'n_intervals'))
-def update_transactions_table(n):
-    inventory_dataset=get_inventory_dataset
-    return inventory_dataset().to_dict('records')
+def update_inventory_table(n):
+    inventory_dataset=get_inventory_dataset()
+    return inventory_dataset.to_dict('records')
 
 
 if __name__ == "__main__":
