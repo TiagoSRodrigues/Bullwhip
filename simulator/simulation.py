@@ -7,6 +7,7 @@ import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, 
  
 logs.log(debug_msg="Started simulation.py")
 
+
 ## check if testes are configurated to run
 
 class ClassSimulation:
@@ -14,7 +15,6 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
-        self.sleep_time=sim_cfg.delay_time
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
@@ -32,31 +32,30 @@ class ClassSimulation:
 
         logs.log(debug_msg="| status           | Simulation created")
 
+        try:
+            self.sleep_time = float( input( " Insert delay time:") )
+        except: 
+            self.sleep_time = 0
+
         
-
-
     #Import Configurations
     def get_actors_configurations(self,actors_configuration):
 
         with open(actors_configuration) as file:
-            actors_config_yaml = yaml.load(file, Loader=yaml.FullLoader)
+            actors_config_json = json.load(file)
 
-
-
-        #create the dict
+        #create the dict and populate
         actors_config=dict()
-        for actor in actors_config_yaml["actors"]:
+        for actor in actors_config_json["actors"]:
             actors_config[actor["id"]]=actor
-
         return actors_config
 
     def create_actors(self,actors_configuration_file):
         configs_dict=self.get_actors_configurations(actors_configuration_file)
 
-        ###############################
         #ADD  the final customer ###
         
-        configs_dict["0"]= {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [], "time_average":0,"time_variance":0}
+        configs_dict["0"]= {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [ ] ,  "time_average":0,"time_variance":0}                   
         actors_list=(configs_dict.keys())
 
 
@@ -103,7 +102,11 @@ class ClassSimulation:
     def record_simulation_status(self,simulation_status):
         logs.log(debug_msg="The simulation status changed to "+str(simulation_status))
 
-
+    def get_actor_by_id(self, id):
+        for actor in self.actors_collection:
+            if int(actor.id) == id: 
+                return actor 
+        return False    
 
     def reset_all_actors_status(self):
         for actor in self.actors_collection:

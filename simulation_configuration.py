@@ -3,7 +3,7 @@ import  os
 directory_path = __file__[:-28].replace('\\','//')
 
 #Files Directories
-actors_configuration_file=directory_path + "//simulator//actors_configuration.yaml"
+actors_configuration_file=directory_path + "//simulator//actors_configuration.json"
 logs_file_location = directory_path + '//data//logs//'
 source_data =  directory_path + '//data//input//input_data.csv'
 Configuration_backups= directory_path + '//data//Configuration backups//'

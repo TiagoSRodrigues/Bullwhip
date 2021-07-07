@@ -62,14 +62,13 @@ def get_inventory_dataset():
         # with open("inventario.txt", 'a') as f:
         #     f.write(df1.to_string())   #aqui entra como str
 
-        return df1
+        return df1.sort_values(by='Ator')
 
 
 inventory_dataset= get_inventory_dataset()
 
 
 inventory_dataset_columns = inventory_dataset.columns
-
 
 def get_transactions_dataset():
     
@@ -89,6 +88,7 @@ def get_transactions_dataset():
 
 
 transactions_dataset =  get_transactions_dataset()
+
 
 
 def get_actors_oders():
@@ -273,7 +273,7 @@ def create_actor_table():
                                         ],
                                     data=dataset.to_dict('records')
         ,
-                               style_table={'height': '300px', 'overflowY': 'auto'} ),      
+                               style_table={'height': '200px', 'overflowY': 'auto'} ),      
                         )
                     )
               ),

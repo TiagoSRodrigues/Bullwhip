@@ -87,6 +87,10 @@ class actor:
         logs.log(debug_msg="| FUNCTION         | actors        | get_orders_pending     from actor {}, pending: {}".format(self.id, pending))
         return pending
 
+    def get_actor_present_capacity(self):
+        return self.actor_inventory.present_capacity
+
+
     def get_product_inventory(self,product):
         logs.log(debug_msg="| FUNCTION         | actors        | get_product_inventory product {}, stock: {}".format(product, self.actor_inventory.get_product_inventory(product)))
         return self.actor_inventory.get_product_inventory(product)
@@ -311,7 +315,8 @@ class actor:
         self.set_actor_state(state= 24, log_msg="recording transaction reception")
         
         #adiciona ao inventário
-        self.actor_inventory.add_to_inventory( product, ordered_quantity)
+        if not self.actor_inventory.add_to_inventory( product, ordered_quantity):
+            raise Exception("Error, could not add to inventory")
         
         # regista que recebeu
         self.simulation.ObejctTransationsRecords.record_delivered(transaction_id)
@@ -404,7 +409,11 @@ class actor:
             for i  in raw_material:
                 self.actor_inventory.remove_from_inventory(product=i[0] , quantity = i[1])
             # add new to inventory
-            self.actor_inventory.add_to_inventory( product=product, quantity=quantity)
+
+                    #adiciona ao inventário
+            if not self.actor_inventory.add_to_inventory( product=product, quantity = quantity):
+                raise Exception("Error, could not add to inventory in production")
+            
             self.set_actor_state( state= 46, log_msg=" Production Finished")
             return True
         else:

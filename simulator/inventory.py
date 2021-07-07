@@ -42,7 +42,7 @@ class ClassInventory:
 
 
     def add_to_inventory(self, product, quantity):
-        logs.log(debug_msg="| FUNCTION         | inventory.add_to_inventory" + str( self)+str(product)+str(quantity))
+        logs.log(debug_msg="| FUNCTION         | inventory.add_to_inventory of actor {} product {} qty {}".format(self.actor.id, product, quantity))
 
         #check if product inventory exists, if not creats it
 
@@ -56,21 +56,24 @@ class ClassInventory:
         elif  self.get_product_inventory(product) == False :
 
             self.main_inventory[product] = { 'id': product, 'in_stock': quantity}
+
             self.actor.simulation.update_global_inventory( self.actor.id ,product,quantity )                        #update the global inventory used in the dashboard
-            logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  Sucess!! ")
+            logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  now product added Sucess!! ")
             return True
         
         
         else:
-            # print("XXX" , product ,  self.main_inventory ,"YY")
             try:
-                self.main_inventory[product['in_stock']] = self.main_inventory[product['in_stock']] + quantity
-                self.actor.simulation.update_global_inventory( self.actor.id ,product,quantity )
-                logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  Sucess!! ")
+                if self.set_product_inventory( product, self.get_product_inventory(product) +quantity) == True:
+                    self.actor.simulation.update_global_inventory( self.actor.id ,product,quantity )
+                    logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  Sucess!! ")
+                    return True
+
+
             except:
-                
-                logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  ERROR product does not exist !! get inventory: {} product: {} | inventory:{} ".format( self.get_product_inventory(product), product ,  self.main_inventory ))
-            return True
+                logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  ERROR product does not exist !! get inventory actor: {} product: {} | inventory:{} main inventory:{}".format( self.actor.id, product ,self.main_inventory[product['in_stock']] ,   self.main_inventory ))
+                return False
+
 
 
     def remove_from_inventory(self, product, quantity):
@@ -80,14 +83,14 @@ class ClassInventory:
         if self.get_product_inventory(product) == None:
             product_stock = 0
 
-        elif product_stock - quantity <=0 :
+        elif (product_stock - quantity) <= 0 :
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory not enough stock of product {} for odered qty of {}".format(product, quantity)) 
             return False
         
         else:
             # print("else:" ,product_stock - quantity)
             self.main_inventory[product]["in_stock"] = (product_stock - quantity)
-            self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = quantity*-1 )
+            self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = (product_stock - quantity) )
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity)) 
             return True 
         
@@ -107,12 +110,26 @@ class ClassInventory:
 
 #############################################
     def get_product_inventory(self, product_id):
-        logs.log(debug_msg="| FUNCTION         | inventory     | product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
+        logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
         try: 
             return self.main_inventory[int(product_id)]["in_stock"]
         except:
             logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO"+str( self.actor.id)+' product '+str(product_id)+"")
             return False
+
+    def set_product_inventory(self, product_id, qty):
+        logs.log(debug_msg="| FUNCTION         | inventory     |set_product_inventory "+str( self.actor.id)+' product '+str(product_id) )
+        
+        try: 
+            self.main_inventory[int(product_id)]["in_stock"] = qty
+            return True
+        except:
+            logs.log(debug_msg="| FUNCTION         | inventory     | set_product_inventory ERROR ")
+            return False
+
+
+
+
 
     def get_product_safety_inventory(self, product_id):
         logs.log(debug_msg="| FUNCTION         | inventory     | get_product_safety_inventory " + str( self.actor.id)+' product '+str(product_id))
@@ -137,15 +154,19 @@ class ClassInventory:
     def refresh_inventory_capacity(self):
         logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory "+str( self.actor.id))
 
-        self.present_capacity=0
+        present_capacity=0
+
         for product in self.main_inventory:
-            self.present_capacity = self.present_capacity + self.main_inventory[product]['in_stock']
+            present_capacity = present_capacity + self.main_inventory[product]['in_stock']
 
+        if present_capacity > self.max_capacity:
+            logs.log(warning_msg="OVERCAPACITY in actor: "+str(self.actor.id)+"  | Stock is " + str(present_capacity) + " of a max of "+ str(self.max_capacity)) 
 
-        if self.present_capacity > self.max_capacity:
-            logs.log(warning_msg="OVERCAPACITY in actor: "+str(self.actor.id)+"  | Stock is " + str(self.present_capacity) + " of a max of "+ str(self.max_capacity)) 
+        if present_capacity < 0: 
+                raise Exception( logs.log(warning_msg="Inventário negativo!!! no ator: {}".format(self.actor.id)))
 
-        return self.present_capacity
+        self.present_capacity = present_capacity
+        return present_capacity
 
 ######################################################################
     def show_present_composition(self):

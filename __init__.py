@@ -7,14 +7,9 @@ from simulator import main as main, easter_eggs as ee, simulation, transactions,
 import simulation_configuration as sim_cfg
 
 
-try:
-    delay_time = float( input( " Insert delay time:") )
-except: 
-     delay_time = 0
- #0.05
 
 
-## VERSION 5
+## VERSION 6
 
 ## CONFIGS
 sim_cfg.Run_tests=False
@@ -34,8 +29,8 @@ logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.si
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-# input = data_input.get_input(days=30,min=1,max=8)
-input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+input = data_input.get_input(days=365,min=1,max=8)
+# input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 
 

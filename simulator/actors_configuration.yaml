@@ -1,64 +1,201 @@
-actors:
-- id: 1
-  max_inventory: 1000
-  name: Retailer
-  products:
-  - composition:
-      2001: 1
+Actors:
+- Id: 1
+  Max_inventory: 60
+  Name: Retalhista
+  Products:
+  - Name: Cerveja Branca
     id: 1001
-    initial_stock: 3
-    name: ProductA
-    reorder_history_size: 7
-    safety_stock: 2
-  time_average: 1
-  time_variance: 1
-- id: 2
-  max_inventory: 1000
-  name: Distributor
-  products:
-  - composition:
-      3001: 1
+    initial_stock: 1000
+    precedence:
+    - 2
+    safety_stock: 200
+  - Name: Cerveja Preta
+    id: 1002
+    initial_stock: 1000
+    precedence:
+    - 2
+    safety_stock: 200
+  - Name: Cidra
+    id: 1003
+    initial_stock: 1000
+    precedence:
+    - 2
+    safety_stock: 200
+  - Name: Garrafa de vinho
+    id: 1004
+    initial_stock: 200
+    precedence:
+    - 12
+    safety_stock: 50
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 2
+  Max_inventory: 60
+  Name: Distribuidor
+  Products:
+  - Name: Palete de Cerveja Branca
     id: 2001
-    initial_stock: 5
-    name: ProductB
-    reorder_history_size: 7
-    safety_stock: 2
-  time_average: 1
-  time_variance: 1
-- id: 3
-  max_inventory: 600
-  name: Factory
-  products:
-  - composition:
-      4001: 1
+    initial_stock: 10
+    precedence:
+    - 3
+    safety_stock: 4
+  - Name: Palete de Cerveja Preta
+    id: 2002
+    initial_stock: 10
+    precedence:
+    - 3
+    safety_stock: 4
+  - Name: Palete de Cidra
+    id: 2003
+    initial_stock: 10
+    precedence:
+    - 9
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 3
+  Max_inventory: 60
+  Name: "F\xE1brica de Cerveja"
+  Products:
+  - Name: Palete de Cerveja Branca
     id: 3001
-    initial_stock: 5
-    name: ProductC
-    reorder_history_size: 7
-    safety_stock: 2
-  time_average: 1
-  time_variance: 1
-- id: 4
-  max_inventory: 600
-  name: Raw Material Supplier
-  products:
-  - composition:
-      5001: 1
+    initial_stock: 15
+    precedence:
+    - 4
+    - 5
+    - 6
+    - 8
+    safety_stock: 5
+  - Name: Palete de Cerveja Preta
+    id: 3002
+    initial_stock: 15
+    precedence:
+    - 4
+    - 5
+    - 6
+    - 8
+    safety_stock: 5
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 4
+  Max_inventory: 60
+  Name: "F\xE1brica de Malte"
+  Products:
+  - Name: Tonelada de Malte
     id: 4001
     initial_stock: 5
-    name: ProductD
-    reorder_history_size: 7
+    precedence:
+    - 7
     safety_stock: 2
-  time_average: 1
-  time_variance: 1
-- id: 5
-  max_inventory: 9999999999
-  name: Base Raw Material supplier
-  products:
-  - id: 5001
-    initial_stock: 99999
-    name: ProductE
-    reorder_history_size: 7
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 5
+  Max_inventory: 60
+  Name: Fornecedor de Lupulo
+  Products:
+  - Name: Saco de Lupulo
+    id: 5001
+    initial_stock: 5
     safety_stock: 1
-  time_average: 1
-  time_variance: 1
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 6
+  Max_inventory: 60
+  Name: Fornecedor de levedura
+  Products:
+  - Name: Saco de levedura
+    id: 6001
+    initial_stock: 15
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 7
+  Max_inventory: 60
+  Name: Fornecedor de Cevada
+  Products:
+  - Name: Tonelada de Cevada
+    id: 1001
+    initial_stock: 15
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 8
+  Max_inventory: 60
+  Name: Fornecedor de Garrafas
+  Products:
+  - Name: Palete de Garrafas
+    id: 8001
+    initial_stock: 15
+    precedence:
+    - 2
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 9
+  Max_inventory: 60
+  Name: "F\xE1brica de Cidra"
+  Products:
+  - Name: Cidra
+    id: 9003
+    initial_stock: 15
+    precedence:
+    - 10
+    - 11
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 10
+  Max_inventory: 60
+  Name: "Fornecedor de Ma\xE7as"
+  Products:
+  - Name: "Tonelada de ma\xE7as"
+    id: 1001
+    initial_stock: 15
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 11
+  Max_inventory: 60
+  Name: "Fornecedor de A\xE7ucar"
+  Products:
+  - Name: "Tonelada de a\xE7ucar"
+    id: 1101
+    initial_stock: 15
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 12
+  Max_inventory: 60
+  Name: Garrafeira
+  Products:
+  - Id: 1201
+    Name: Caixa de Garrafas de Vinho Tinto
+    initial_stock: 15
+    precedence:
+    - 13
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3
+- Id: 13
+  Max_inventory: 60
+  Name: Adega
+  Products:
+  - Name: Palete de Garrafas de Vinho Tint
+    id: 1301
+    initial_stock: 15
+    safety_stock: 4
+  Reorder_history_days: 7
+  Time_Average: 2
+  Time_variance: 3

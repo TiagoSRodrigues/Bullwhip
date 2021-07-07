@@ -75,23 +75,21 @@ class transactionsClass:
             print(string)
             
     def get_transaction_by_id(self,id):
-         for record in self.open_transactions:
-            if record['transaction_id']== id:
+        for record in self.open_transactions:
+            if record['transaction_id']== id:                
                 return record
+        return False
 
     def get_todays_transactions(self, actor):
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name )) 
+
         pending_transactions=[]
-        day= self.simulation.time
-        # print("getting transactions for actor ",actor.name)
 
         for record in self.open_transactions:
-            if record['deliver_day']== day  and  record['receiver'] == actor.id:
-                # print(record)
+            if record['deliver_day']== self.simulation.time  and  record['receiver'] == actor.id:
                 pending_transactions.append(record['transaction_id'])
         return pending_transactions
-        
-        # self.delivered_transactions.append(record)
-        # self.open_transactions.remove(record)
+
         
     def add_to_orders_log(self, record = dict): #  record_time são recording_time  
 
@@ -100,20 +98,23 @@ class transactionsClass:
 
 
     def deliver_to_final_client(self):
-        for actor in self.simulation.actors_collection:
-            if int(actor.id) == 0: 
-                customer=actor 
-                break
+        logs.log(debug_msg="| FUNCTION         | Transactions  | deliver_to_final_client : ")
+
+        customer = self.simulation.get_actor_by_id(0)
+              
         try: 
-            logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client: {}".format(self.get_todays_transactions(customer))) 
-
             for trans in self.get_todays_transactions(customer):
-                self.record_delivered(trans )
+                transaction_info = self.get_transaction_by_id(trans)
 
-        except: raise Exception("Customer not found")
+                if not customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"]):
+                      raise Exception("Customer Deliver error actor {} transaction {}".format( customer.name, self.get_transaction_by_id(trans) ))
+
+                self.record_delivered(trans)
+                logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
+
+        except: raise Exception("Customer Deliver error actor {} transaction {}".format( customer.name, self.get_transaction_by_id(trans) ))
 
 
-        # print("\ntoday to customer:",self.get_todays_transactions(customer),
         #  " opend",self.open_transactions )#, "\ndelivered",self.delivered_transactions  )
 
 ##############################################################################################

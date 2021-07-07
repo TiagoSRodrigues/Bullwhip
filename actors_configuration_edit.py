@@ -108,11 +108,11 @@ actors= {
 
 
 def Save_Configurations(actors):
-    import json, sys, yaml,  time
+    import json, json,  time
     import simulation_configuration  as sim_cfg
 
     with open(sim_cfg.actors_configuration_file,"w") as file:
-        file.write(yaml.dump(actors))
+        file.write(json.dumps(actors))
 
     with open(sim_cfg.Configuration_backups+time.strftime("actors_configuration_file "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w") as fp:
         fp.write(json.dumps(actors,indent=4, sort_keys=True))
