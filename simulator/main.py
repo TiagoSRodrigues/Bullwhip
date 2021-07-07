@@ -9,12 +9,12 @@ def main(input_data, simulation):
     simulation.speed()  ## SPEED
 
     for quantity in input_data:
-        if quantity == 0: 
-            simulation.time += 1
-            continue
+
+
+        print(simulation.global_inventory)
 
         simulation.ObejctTransationsRecords.deliver_to_final_client()
-        print("day {}  ".format(simulation.time), end="\r")
+        print("day {}  ".format(simulation.time))#, end="\r")
 
         logs.log(debug_msg=        logs.log(debug_msg="| global inventory | simulation    | global inventory {}".format( simulation.global_inventory)))
         

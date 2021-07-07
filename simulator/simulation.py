@@ -116,18 +116,43 @@ class ClassSimulation:
         time.sleep(self.sleep_time)
 
     #---------------------------------------------------------------------------------------------------------------------Dashboard
-    def update_global_inventory(self, actor_id, product_id, quantity):
+    def update_global_inventory(self, actor, product, qty):
+        pass
+        # logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor{} product {} qty{} inventory:{}".format( actor, product, qty,self.global_inventory))
 
-        inventory = self.global_inventory 
+        # print( "input", actor, product, qty)
+        # inventory = self.global_inventory 
 
-        actor_id, product_id, quantity  = int(actor_id), int(product_id), int(quantity)
-        try:
-            ator = inventory[actor_id]
-            ator[product_id] = ator[product_id]+quantity 
-        except:
-            inventory[actor_id]= {product_id : quantity}
+        # actor_id, product_id, quantity  = int(actor), int(product), int(qty)
+        # print("STEP  1",actor_id, product_id, "|",inventory)
+        # #N existe ator nem produto
+        # if actor_id not in inventory:
+        #     print("STEP  2")
+        #     prd= [{product_id:quantity}]
+        #     inventory[actor_id] = prd
+        # #Existe ator mas n produto
+        # elif (actor_id in inventory) and (product_id not in inventory[actor_id]):
+        #     print("STEP  3")
+            
+        #     print("produtct {} not in enventoty {}".format(product_id,  inventory[actor_id] ))
+        #     inventory[actor_id].append( {product_id:quantity} )
+            
+        #     print(inventory)
+        # #Existe ator e produto
+        # elif (actor_id in inventory ) and (product_id in inventory[actor_id]):
+        #     print("STEP  4")
+        #     print("STEP  4")
+        #     for prod in inventory[actor_id]:
+            
+        #         if prod == product_id:
+        #             print("\n\n\n CONA\n  ",inventory[actor_id][prod],"->",quantity)
+        #             inventory[actor_id][prod] = quantity
 
-        with open(sim_cfg.inventory_file, 'w') as file:
-            json.dump(inventory, file)
 
-        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+
+        # with open(sim_cfg.inventory_file, 'w') as file:
+        #     json.dump(inventory, file)
+
+        # print("inventory",inventory)
+        # self.global_inventory = inventory
+        # logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))

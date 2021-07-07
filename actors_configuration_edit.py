@@ -19,6 +19,16 @@ actors= {
                     {
                         2001: 1,
                     }
+                },  {
+                    "name": "ProductA",
+                    "id": 2001,
+                    "initial_stock": 3,
+                    "safety_stock": 2,
+                    "reorder_history_size": 7,
+                    "composition":
+                    {
+                        3001: 1,
+                    }
                 },
               
             ]

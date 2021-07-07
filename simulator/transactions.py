@@ -15,7 +15,8 @@ class transactionsClass:
         
         #Start transaction log
         with open(sim_cfg.transactions_record_file, 'a') as file:
-            file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
+            # file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
+            file.write("[")
 
 
     def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
@@ -92,9 +93,13 @@ class transactionsClass:
 
         
     def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+        
+        recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
+
 
         with open(sim_cfg.transactions_record_file, 'a') as file:
-            file.write(",\n" +str(record)  )
+
+            file.write("\n" +str(recordstr)+"," )
 
 
     def deliver_to_final_client(self):

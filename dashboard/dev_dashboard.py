@@ -54,9 +54,10 @@ def get_inventory_dataset():
         data=json.loads(data)         #rebenta aqui com :    00
         df1 = pd.DataFrame([]) 
         for actor in data:
-            for prod in data[actor].keys():
-                df2 = pd.DataFrame( [ [ actor, prod, data[actor][prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
-            df1=df1.append(df2) 
+            for prod_list in data[actor]:
+                for prod in prod_list:
+                    df2 = pd.DataFrame( [ [ actor, prod, prod_list[prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
+                df1=df1.append(df2) 
         file.close
     
         # with open("inventario.txt", 'a') as f:
@@ -77,11 +78,9 @@ def get_transactions_dataset():
     while not check_file_existance(transactions_file):
         print("Waiting for transactions_file", end='\r', flush = True)
         time.sleep(0.1)
+
     with open(transactions_file, 'r') as file:
-        data=file.read()+"]"
-        data=data.replace("'", '"')
-        data=data.replace("False", str('"'+"False"+'"'))
-        data=data.replace(" True", str(' "'+"True"+'"'))
+        data=file.read()+"{}]"  #fecha o array 
 
         return pd.read_json(data)
 

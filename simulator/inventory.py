@@ -30,7 +30,7 @@ class ClassInventory:
             try: self.actor.simulation.cookbook[product['id']] = product['composition']
             except:   logs.log(debug_msg="| CREATED OBJECT   | inventory     producto sem composição:"+str(product))
 
-
+            
         self.present_capacity = self.refresh_inventory_capacity()
         self.update_inicial_inventory()
 
@@ -38,7 +38,7 @@ class ClassInventory:
 #-----------------------------------------------------------------
     def  update_inicial_inventory(self):
         for product in self.products:
-            self.actor.simulation.update_global_inventory( self.actor.id ,product['id'],product['in_stock'] )
+            self.actor.simulation.update_global_inventory( self.actor.id ,product['id'], product['in_stock'] )
 
 
     def add_to_inventory(self, product, quantity):
@@ -88,7 +88,7 @@ class ClassInventory:
             return False
         
         else:
-            # print("else:" ,product_stock - quantity)
+            print("else:" ,product_stock - quantity)
             self.main_inventory[product]["in_stock"] = (product_stock - quantity)
             self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = (product_stock - quantity) )
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity)) 

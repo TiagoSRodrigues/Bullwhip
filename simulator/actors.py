@@ -266,8 +266,10 @@ class actor:
         
                 self.set_actor_state(state= 34, log_msg="Removing from inventary")
                 
-                # remove o enviado do inventário  
-                self.actor_inventory.remove_from_inventory(product, ordered_quantity)
+                # remove o enviado do inventário 
+                if not self.actor_inventory.remove_from_inventory(product, ordered_quantity):
+                    logs.log(debug_msg="| FUNCTION         | actors        | send_transaction erro ao remover o enviado do inventário  order id:"+str(order_id))
+
 
                 self.set_actor_state(state= 38, log_msg="adding to transasctions")
 
@@ -343,7 +345,7 @@ class actor:
     def manufacture_product(self, product):
             self.set_actor_state( state= 41 ,  log_msg=" trying to manufacture")
             logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product actor:"+str( self.name) + " product " +str(product) )
-            
+            print("\n\n\n\n\n cook", self.simulation.cookbook)
             recepe = self.simulation.cookbook[int( product )]
 
             def get_max_production(product, recepe):      
