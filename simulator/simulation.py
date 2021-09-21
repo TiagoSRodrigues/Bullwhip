@@ -20,7 +20,8 @@ class ClassSimulation:
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
 
         self.ObejctTransationsRecords = tns.transactionsClass(self)
-        #Lista que guarda todos os objectos atores
+        
+        # Lista que guarda todos os objectos atores 
         self.actors_collection=[] 
 
 
@@ -39,6 +40,16 @@ class ClassSimulation:
 
         
     #Import Configurations
+    # Esta função vai buscar a lista dos atores ao ficheiro de configuração
+    # trata-se apenas de uma lista dos atores presentes na configuração, sem ordem definida
+    #  
+    def add_to_actors_collection(self, actor):
+        self.actors_collection.append(actor)
+
+    def get_actors_collection(self):
+        return self.actors_collection
+
+
     def get_actors_configurations(self,actors_configuration):
 
         with open(actors_configuration) as file:
@@ -71,10 +82,9 @@ class ClassSimulation:
  
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
-            logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain")
+            logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
 
 
-    
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):

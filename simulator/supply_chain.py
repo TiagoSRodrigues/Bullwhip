@@ -1,6 +1,17 @@
+from types import MemberDescriptorType
 from . import logging_management as logs
 import datetime
 
+
+
+'''
+O supply chain tem o objectivo de guardar a estrutura da cadeia, ou seja, 
+a ordem das relações entre atores, não informação sobre os elementos
+
+é importante identificar quais os elementos dos estemos das cadeiras para evitar loops infinitos
+
+idealmente isto seria um grafo orientado
+'''
 class ClassSupplyChain:
     def __init__(self, simulation):
         self.simulation = simulation
@@ -21,7 +32,11 @@ class ClassSupplyChain:
         return self.supply_chain_structure
 
     def get_end_of_chain_actors(self):
-        #TODO isto devia ser mais rubusto
-        return self.end_of_chain_actors
+        return [max(self.end_of_chain_actors)]
+
+        #isto não está rubusto apenas funciona para SC lineares 
+        #a função devia devolver uma lista dos elementos de fim de cadeia (que devem ter um inventário infinto)
+
+
     #todo criar uma função para construir o SC a aprtir da leitura da configuração
     # ciar um grafo a partir da analise da config 

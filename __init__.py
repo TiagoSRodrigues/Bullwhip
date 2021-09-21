@@ -9,7 +9,7 @@ import simulation_configuration as sim_cfg
 
 
 
-## VERSION 6
+## VERSION 7
 
 ## CONFIGS
 sim_cfg.Run_tests=False
@@ -30,11 +30,12 @@ ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_
 
 #prepara input
 input = data_input.get_input(days=365,min=1,max=8)
-# input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+#input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 
 
 ### RUN SIMULATION
+
 main.main(input_data=input, simulation=Object_Simulation)
 
 

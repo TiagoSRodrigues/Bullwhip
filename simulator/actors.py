@@ -6,8 +6,11 @@ logs.log(debug_msg="Started actors.py")
 ############################################################################################
 #       Classe das funções de gestão interna do actor da cadeia de valor                   #
 ############################################################################################
+
+
 class actor:
-    def __init__(self , simulation_object , id:int , name:str , avg:int , var:int, max_inventory:int, 
+
+    def __init__(self, simulation_object , id:int , name:str , avg:int , var:int, max_inventory:int, 
         products:dict):
         
         ### Constants Properties  ###
@@ -45,7 +48,7 @@ class actor:
 
 
         #LAST THING: Adiciona o ator à lista de objectos (atores) da simulação
-        simulation_object.actors_collection.append(self)
+        simulation_object.add_to_actors_collection(self)
 
         #logs
         try:
@@ -153,11 +156,13 @@ class actor:
         inventory       =   self.actor_inventory.main_inventory
         
         
-        # verifica se tem encomendas para RECEBER
+        # verifica se tem encomendas para RECEBER       ######################################################################################################################
 
         to_receive = self.get_todays_transactions()
+        
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        Encomendas para receber: "+str(to_receive))
-        if self.actor_state == 20 and len(to_receive)>0 :
+        
+        if self.actor_state <= 20 and len(to_receive)>0 :
             self.set_actor_state( state=21, log_msg=str(len(to_receive))+" Receiving orders " )
 
             for transaction_id in to_receive:
@@ -165,38 +170,45 @@ class actor:
 
         self.set_actor_state( state = 30, log_msg="Checking transctions to send" )
         
-        # verifica se tem encomendas para ENVIAR
+        # verifica se tem encomendas para ENVIAR    ######################################################################################################################
+        
         to_send = self.get_orders_pending()
         
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " tem para enviar as encomendas: "+str(to_send))
 
-        if self.actor_state == 30 and len(to_send) >0 :
+        if self.actor_state <= 30 and len(to_send) >0 :
             self.set_actor_state( state = 31, log_msg=str(len(to_send))+" Sending orders from stock")
         
             logs.log(debug_msg="| FUNCTION         | actors        | manage_orders actor "+str(self.id)+" IF has "+ str(len(to_send))+" orders to send: " +str(to_send) )
             
             for order in to_send:
+
                 if self.send_transaction(order) :     # verifica se tem stock para enviar ["Time", "Product", "Qty","Client","Order_id","Status"]
                     to_send = self.get_orders_pending()  #Refresh to_send list
-                else:
-                    if self.manufacture_product(order[1]): 
-                        self.send_transaction(order)    #tanta produzir, se conseguir envia logo
-                        to_send = self.get_orders_pending()  #actualiza to_send
+                # else:
+                #     if self.manufacture_product(order[1]): 
+                #         self.send_transaction(order)    #tanta produzir, se conseguir envia logo
+                #         to_send = self.get_orders_pending()  #actualiza to_send
 
             
-            self.set_actor_state( state = 40, log_msg=str(len(to_send))+" trying to produce")
+            #self.set_actor_state( state = 40, log_msg=str(len(to_send))+" trying to produce")
 
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " não tem stock para enviar nem produzir para enviar "+str(order))
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " não tem stock para enviar "+str(order))
       
-        self.set_actor_state( state = 40, log_msg=str(len(to_send))+" Orders trated with stock ")
+        self.set_actor_state( state = 39, log_msg=str(len(to_send))+" Orders sent from stock ")
 
 
     def manage_stock(self):
+        self.set_actor_state( state = 40, log_msg=str( "| STATE          | actors        | manage_stock      Actor {} Started stock management".format(self.id)))
         #TODO na verificação de stock para repor verificar se já foi encomendado para n repetir encomendas.
-        #todo NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP 
+        #ATTENTION NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP 
 
         # Verifica se tem stock para repor
-        if self.actor_state < 50:
+        if self.id in self.simulation.Object_supply_chain.get_end_of_chain_actors():
+            self.set_actor_state( state = 80, log_msg=str( "o actor{} está no fim da cadeia, o estado vai alterar para terminado 80".format(self.id)))
+            #todo talvez se possa implementar um set stock to max quando a função é chamada 
+
+        if self.actor_state <= 40:
             for product in self.products_list:
                 logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} in product list {}".format(self.id, product, self.products_list))
             
@@ -205,7 +217,7 @@ class actor:
                 #verifica se precisa repor stock de algum produto
                 
                 if int( self.get_product_inventory(product ) ) <= int(self.get_product_safety_inventory(product ) ):
-                    logs.log(debug_msg="| FUNCTION         | actors        | product_inventory 6969"+str(self.get_product_inventory(product ))+" <= i  get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
+                    logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= i  get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
 
                     #verifica se pode produzir, se poder produz:
                     if not self.manufacture_product(product):
@@ -235,7 +247,7 @@ class actor:
 
                             logs.log(debug_msg="| FUNCTION         | actors        | manage_stock - order from {} to {} the quantity {} of the product {}".format(self.id, actor_to_order,quantity_to_order, product_id_to_order))
 
-            self.set_actor_state(state=60, log_msg="Manage stock finished")
+            self.set_actor_state(state=49, log_msg="Manage stock finished")
             
         
     def send_transaction(self, order):
@@ -323,7 +335,7 @@ class actor:
         # regista que recebeu
         self.simulation.ObejctTransationsRecords.record_delivered(transaction_id)
               
-        self.set_actor_state(state= 39, log_msg=" Finished transcaction reception")
+        self.set_actor_state(state= 29, log_msg=" Finished transcaction reception")
 
         logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF stock_quantity > ordered_quantity")
 
@@ -343,55 +355,62 @@ class actor:
 
 
     def manufacture_product(self, product):
-            self.set_actor_state( state= 41 ,  log_msg=" trying to manufacture")
-            logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product actor:"+str( self.name) + " product " +str(product) )
-            print("\n\n\n\n\n cook", self.simulation.cookbook)
-            recepe = self.simulation.cookbook[int( product )]
+        if self.actor_state < 40 or self.actor_state > 60:
+            raise Exception("Illigal entrace in manufacture_product")  
 
-            def get_max_production(product, recepe):      
-                self.set_actor_state( state= 42, log_msg=" Calculating max possible production")
-         
-                logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product - get_max_production actor:"+str( self.name) + " product " +str(product) + "composition: "+str(recepe) )
-
-                production_matrix=[]
-                min_qty=0
-                for raw_material_id in recepe:
-                   
-                    in_stock = int( self.get_product_inventory( raw_material_id ) )
-                    
-                    production_matrix.append(
-                        # product id,                   #ratio
-                        [raw_material_id ,  in_stock  // int(recepe[raw_material_id])    ])
-                        # logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product production_matrix "+str( production_matrix))
-
-                    
-                    RL_id, min  = production_matrix[0]
-                    logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product - get_max_production min "+str(min) +" RL "+ str(RL_id) )
-
-                    #reagente limitante  
-                    for el in production_matrix:
-                        if el[-1] < min:  min_qty, RL_id =el[-1], el[0]
-
-                    if not isinstance(min_qty,int): raise "Manuracture_error on min_qty data type"
-                return min_qty , RL_id
-
-
-            max_prod , Limiting_reagent = get_max_production(product= product, recepe=recepe)
-
-            if max_prod == 0: 
-                self.set_actor_state( state= 43, log_msg=" Witout raw material")
-                return False  #todo daqui o estado 43 deve ser apaganho para fazer encomendas
-
-            elif self.production(product, quantity=max_prod, recepe = recepe):  
-                self.set_actor_state( state= 49, log_msg=" Manutacture finished with sucess")
-                return True
-            
+        if str(product)[0] == self.simulation.Object_supply_chain.get_end_of_chain_actors():
             return False
+                #raise Exception("tring to manufacture in the end of supply chain ")
+            
+        self.set_actor_state( state= 42 ,  log_msg=" trying to manufacture product {}".format(str(product)))
+        logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product actor:"+str( self.name) + " product " +str(product) )
+        
+        recepe = self.simulation.cookbook[int(product)]  
 
-            # print("temos de produzir",max_prod," o reagente limitante é ",get_max_production(production_matrix)[0])
+        def get_max_production(product, recepe):      
+            self.set_actor_state( state= 43, log_msg=" Calculating max possible production")
+        
+            logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product - get_max_production actor:"+str( self.name) + " product " +str(product) + "composition: "+str(recepe) )
+
+            production_matrix=[]
+            min_qty=0
+            for raw_material_id in recepe:
+                
+                in_stock = int( self.get_product_inventory( raw_material_id ) )
+                
+                production_matrix.append(
+                    # product id,                   #ratio
+                    [raw_material_id ,  in_stock  // int(recepe[raw_material_id])    ])
+                    # logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product production_matrix "+str( production_matrix))
+
+                
+                RL_id, min  = production_matrix[0]
+                logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product - get_max_production min "+str(min) +" RL "+ str(RL_id) )
+
+                #reagente limitante  
+                for el in production_matrix:
+                    if el[-1] < min:  min_qty, RL_id =el[-1], el[0]
+
+                if not isinstance(min_qty,int): raise "Manuracture_error on min_qty data type"
+            return min_qty , RL_id
+
+
+        max_prod , Limiting_reagent = get_max_production(product= product, recepe=recepe)
+
+        if max_prod == 0: 
+            self.set_actor_state( state= 44, log_msg=" Witout raw material")
+            return False 
+
+        elif self.production(product, quantity=max_prod, recepe = recepe):  
+            self.set_actor_state( state= 49, log_msg=" Manutacture finished with sucess")
+            return True
+        
+        return False
+
+        # print("temos de produzir",max_prod," o reagente limitante é ",get_max_production(production_matrix)[0])
             
     def production(self, product, quantity, recepe):
-        self.set_actor_state( state= 44, log_msg=" Calculating max possible production")
+        self.set_actor_state( state= 45, log_msg=" production order placed for {} units of {}".format(str(quantity), str(product) ) )
         logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product - in production - actor "+str(self.id) +" Pd "+ str(product)+" qty "+ str(quantity)+" recepe "+ str(recepe) )
 
         raw_material = []
@@ -405,7 +424,7 @@ class actor:
 
         print("vai produzir {}  raw_mat {}  recepe {} ".format(product, len(raw_material), len(recepe)))
         if len(raw_material) == len(recepe) and len(raw_material>0): #verifica que foi buscar todos os ingredientes!
-            self.set_actor_state( state= 45, log_msg=" A converter ingredientes")
+            self.set_actor_state( state= 46, log_msg=" A converter ingredientes")
 
             # remove raw material from inventory
             for i  in raw_material:
@@ -416,7 +435,7 @@ class actor:
             if not self.actor_inventory.add_to_inventory( product=product, quantity = quantity):
                 raise Exception("Error, could not add to inventory in production")
             
-            self.set_actor_state( state= 46, log_msg=" Production Finished")
+            self.set_actor_state( state= 48, log_msg=" Production Finished")
             return True
         else:
             raise Exception("ERRO NA PRODUÇÃO, SE EXISTE UM ERRO AQUI A QUANTIDADE MÁXIMA ESTÁ A SER MAL CALCULADA")    

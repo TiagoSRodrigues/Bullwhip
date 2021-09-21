@@ -88,7 +88,7 @@ class ClassInventory:
             return False
         
         else:
-            print("else:" ,product_stock - quantity)
+            #print("else:" ,product_stock - quantity)
             self.main_inventory[product]["in_stock"] = (product_stock - quantity)
             self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = (product_stock - quantity) )
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity)) 
