@@ -15,7 +15,7 @@ def main(input_data, simulation):
 
 
         simulation.ObejctTransationsRecords.deliver_to_final_client()
-        print("day {}  ".format(simulation.time))#, end="\r")
+        print("day {}  ".format(simulation.time), end="\r")
 
         logs.log(debug_msg=        logs.log(debug_msg="| global inventory | simulation    | global inventory {}".format( simulation.global_inventory)))
         
@@ -29,9 +29,6 @@ def main(input_data, simulation):
         for actor in simulation.actors_collection:
             logs.log(debug_msg=        logs.log(debug_msg="| Started actor    | - - - - - - - | actor: {}".format( actor.id)))
             
-  
-
-
             simulation.speed() ## SPEED
             if not actor.is_customer:
                 

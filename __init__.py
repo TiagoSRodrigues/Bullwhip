@@ -47,5 +47,6 @@ Object_Simulation.change_simulation_status(status=99)
 #registos de tempos e final 
 logs.log(info_msg="Simulation time = "+str(time.perf_counter()-start_time))
 ee.print_sucess()
+print("Run in "+str(time.perf_counter()-start_time))
 logs.log(info_msg="--->   Simulation Ended   <----")
 

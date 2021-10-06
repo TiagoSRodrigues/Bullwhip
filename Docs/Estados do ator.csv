@@ -1,0 +1,20 @@
+﻿20,Checking transctions to receive
+22,Receiving transactions
+23,Checking space for new transactions
+24,Adding to inventory (receive transaction)
+29,Reception finished
+,
+30,Checking transctions to send
+31,Sending orders from stock
+39,Sending finished
+,
+40,started managing stock
+41,
+42, trying to manufacture
+43,"Calculating max possible production"""
+44,Witout raw material for production
+,
+45,production order placed for
+46,Concerting ingredients
+48,Production Finished
+49,Manage stock finished

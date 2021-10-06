@@ -93,7 +93,6 @@ class actor:
     def get_actor_present_capacity(self):
         return self.actor_inventory.present_capacity
 
-
     def get_product_inventory(self,product):
         logs.log(debug_msg="| FUNCTION         | actors        | get_product_inventory product {}, stock: {}".format(product, self.actor_inventory.get_product_inventory(product)))
         return self.actor_inventory.get_product_inventory(product)
