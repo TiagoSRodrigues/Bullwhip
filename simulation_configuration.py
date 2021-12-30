@@ -30,4 +30,3 @@ Terminal_printting_level="INFO"
 #Run tests before simulations
 Run_tests=False
 
-

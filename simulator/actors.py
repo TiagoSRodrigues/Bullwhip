@@ -47,8 +47,8 @@ class actor:
         logs.log(info_msg="| CREATED OBJECT   | Actor         id="+str(self.id)+" "+self.name)
 
 
-        #LAST THING: Adiciona o ator à lista de objectos (atores) da simulação
-        simulation_object.add_to_actors_collection(self)
+        # #LAST THING: Adiciona o ator à lista de objectos (atores) da simulação #*foi apagado porque n fazia sensido estar aqui, passei para a simulations, durante a criação
+        # self.simulation.add_to_actors_collection(self)
 
         #logs
         try:
@@ -107,6 +107,21 @@ class actor:
 
     def get_todays_transactions(self):
         return self.simulation.ObejctTransationsRecords.get_todays_transactions(self)
+    
+    def get_actor_info(self):
+        actor_data= {"id", self.id,                    
+        "name", self.name,                  
+        "avg", self.average_time,          
+        "var", self.variation_time,        
+        "max_inventory", self.max_inventory,         
+        "products", self.products,              
+        "simulation_object", self.simulation,            
+        "stock_record", self.actor_stock_record,
+        "actor_inventory",self.actor_inventory}    
+    
+        return actor_data
+        
+
 
 ################################                                                 #############################
 #                                           SETERS 
@@ -320,7 +335,7 @@ class actor:
 
         #verifica capacidade
         if int(inventory_capacity) + int(ordered_quantity) >= int(self.max_inventory): 
-            print("Invendory overcapacity of actor ",self.name)
+            print("Invendory overcapacity of actor ",self.id)
             self.set_actor_state(state= 23, log_msg="sem espaço para receber encomendas")
 
             return False

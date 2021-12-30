@@ -1,3 +1,4 @@
+import collections
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
 logs.log(debug_msg="Started transactions.py")
@@ -23,21 +24,41 @@ class transactionsClass:
         # logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender "+str(sender)+" receiver "+str(receiver)+ " quantity "+str(quantity)+ "product"+str(product)+"deliver_date"+str(deliver_date)+ "sending_date" + str(sending_date) )
         logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
-        values_to_add =  {
-                "transaction_id":self.transaction_id,
-                "deliver_day":deliver_date,
+                
+        transaction_info={"deliver_day":deliver_date,
                 "sending_day":sending_date,
                 "receiver":receiver,
                 "sender":sender,
                 "product":product,
                 "quantity": quantity,
                 "delivered": False,
-                "recording_time": self.simulation.time
+                "last_update": self.simulation.time
                 }
+        
+        
+        values_to_add =  transaction_info
+        values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
+        
+
         self.open_transactions.append(values_to_add)
         self.add_to_orders_log( record=values_to_add)
-
-
+    
+        self.update_database( self.transaction_id, transaction_info, delivered=False,)
+    
+    def update_database(self, transaction_id, transaction_info=None, delivered=None):
+        """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
+        """
+        
+        if not delivered:
+             if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
+                print("erro a adicionar transação à DB")
+                raise Exception
+        if delivered:
+            if not self.simulation.mongo_db.update_transaction_on_db(self.transaction_id):
+                print("erro a adicionar transação à DB")
+                raise Exception
+        if not 
+        
     def record_delivered(self,transaction_id ):
         logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id)) 
         
@@ -45,14 +66,17 @@ class transactionsClass:
             if record['transaction_id']==transaction_id:
                 record['delivered']=True
                 record['recording_time']=self.simulation.time
+                
                 self.delivered_transactions.append(record)
                 self.open_transactions.remove(record)
                
-                self.add_to_orders_log(record = record)               
+                #self.add_to_orders_log(record = record) #!obsulento com a db
+                self.update_database(transaction_id,  delivered=True)               
                 return True
 
         print("Trasaction {} not found!!".format(transaction_id))
         logs.log(info_msg="| TRANSACTION DLVRD| Transactions  | transaction_id   Trasaction {} not found!!".format(transaction_id))
+        
         
         
 
@@ -75,7 +99,7 @@ class transactionsClass:
             
             print(string)
             
-    def get_transaction_by_id(self,id):
+    def get_transaction_by_id(self, id):
         for record in self.open_transactions:
             if record['transaction_id']== id:                
                 return record
@@ -91,12 +115,15 @@ class transactionsClass:
                 pending_transactions.append(record['transaction_id'])
         return pending_transactions
 
+
+######################foda-se
         
     def add_to_orders_log(self, record = dict): #  record_time são recording_time  
         
         recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
 
-
+        # print(type(record))
+        #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
         with open(sim_cfg.transactions_record_file, 'a') as file:
 
             file.write("\n" +str(recordstr)+"," )
@@ -106,8 +133,9 @@ class transactionsClass:
         logs.log(debug_msg="| FUNCTION         | Transactions  | deliver_to_final_client : ")
 
         customer = self.simulation.get_actor_by_id(0)
-              
-        try: 
+    
+        
+        try:
             for trans in self.get_todays_transactions(customer):
                 transaction_info = self.get_transaction_by_id(trans)
 
@@ -117,7 +145,8 @@ class transactionsClass:
                 self.record_delivered(trans)
                 logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
 
-        except: raise Exception("Customer Deliver error actor {} transaction {}".format( customer.name, self.get_transaction_by_id(trans) ))
+        except: 
+            raise Exception("Customer Deliver error actor {} transaction {}".format( customer.id, self.get_transaction_by_id(trans) ))
 
 
         #  " opend",self.open_transactions )#, "\ndelivered",self.delivered_transactions  )

@@ -8,7 +8,6 @@ PARA JÁ O INVENTÁRIO TERÁ APENAS UM PRODUTO, FICA A IDEIA DE DEPOIS ADICIONAR
 a classe inventário passará a ter uma classe filha de produtos
 """
 
-
 class ClassInventory:
     def __init__(self,
                 actor,
@@ -54,6 +53,7 @@ class ClassInventory:
 
         #if productc does not exists in stock and if will not pass the max inventory, is  created
         elif  self.get_product_inventory(product) == False :
+            print(self.get_product_inventory(product))
 
             self.main_inventory[product] = { 'id': product, 'in_stock': quantity}
 
@@ -111,6 +111,8 @@ class ClassInventory:
 #############################################
     def get_product_inventory(self, product_id):
         logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
+        
+       
         try: 
             return self.main_inventory[int(product_id)]["in_stock"]
         except:
