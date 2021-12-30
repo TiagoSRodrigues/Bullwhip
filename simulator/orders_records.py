@@ -50,7 +50,12 @@ class ClassOrdersRecord:
         self.last_order_id = self.last_order_id + 1   #! Está aqui um possivel eero, last order_id = last_order+1, tmb pode estar certo
         #initial status = 0
         to_add = [self.actor.simulation.time  ,product, qty,  client, self.last_order_id, 0]
-        self.Open_Orders_Record.append(to_add) 
+        
+        if self.get_order_by_id( self.last_order_id) is not False:
+            print("add_to_open_orders",self.get_order_by_id( self.last_order_id))
+            raise Exception("ordem duplicada")
+        self.Open_Orders_Record.append(to_add)
+        self.actor.simulation.update_simulation_stat("orders_opened")
 
         logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor, qty, product, client))
         
@@ -89,7 +94,10 @@ class ClassOrdersRecord:
                 order= self.get_order_by_id(order_id=order_id )
 
 
-                self.add_to_orders_log( product=order[1], qty=order[2], client= order[3], order_id=order[-2], status =1)
+                self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-2], status =1)
+                self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-2])
+                self.actor.simulation.update_simulation_stat("orders_closed")
+
         logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor.id)+str(self.Open_Orders_Record))
 
 

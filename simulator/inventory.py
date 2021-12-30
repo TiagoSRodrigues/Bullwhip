@@ -53,7 +53,7 @@ class ClassInventory:
 
         #if productc does not exists in stock and if will not pass the max inventory, is  created
         elif  self.get_product_inventory(product) == False :
-            print(self.get_product_inventory(product))
+            print("add_to_inventory error", self.get_product_inventory(product))
 
             self.main_inventory[product] = { 'id': product, 'in_stock': quantity}
 
@@ -80,19 +80,23 @@ class ClassInventory:
         logs.log(debug_msg  = "| FUNCTION         | inventory     | trying to remove_from_inventory actor:{} product:{} qty:{}".format(self.actor, product, quantity))
         product_stock       = int(self.get_product_inventory(product))
         
-        if self.get_product_inventory(product) == None:
+        #se não existir o producto, o stock é zero
+        if self.get_product_inventory(product) is None:
             product_stock = 0
 
-        elif (product_stock - quantity) <= 0 :
-            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory not enough stock of product {} for odered qty of {}".format(product, quantity)) 
+        #se não tiver quantidade em stock para enviar devolve falso
+        elif (product_stock - quantity) < 0 :
+            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory not enough stock of product {} for odered qty of {} in actor {}. actual stock:{}".format(product, quantity, self.actor.id,product_stock)) 
             return False
         
+        #se o stock não é zero, e a quantidade é maior que o stock, envia
         else:
-            #print("else:" ,product_stock - quantity)
+            #remove do stock do ator
             self.main_inventory[product]["in_stock"] = (product_stock - quantity)
+            #atualiza do stock global
             self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = (product_stock - quantity) )
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity)) 
-            return True 
+            return True
         
     # def check_inventory_composition(self):
     #     header = "Inventory of: "+ str( self.actor.id )+  "\nPresent capacity: " + str(self.present_capacity) +" of  a max  of  " +str( self.max_capacity )
@@ -139,7 +143,7 @@ class ClassInventory:
         try:     
             return self.main_inventory[product_id]["safety_stock"]
         except:
-            print(self.main_inventory)
+            print("get_product_safety_inventory error:", self.main_inventory)
             logs.log(warning_msg="Error on get_product_safety_inventory, check product id "+str(product_id))
             print("Error on get_product_safety_inventory")
 

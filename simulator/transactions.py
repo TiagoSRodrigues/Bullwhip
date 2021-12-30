@@ -21,7 +21,6 @@ class transactionsClass:
 
 
     def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
-        # logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender "+str(sender)+" receiver "+str(receiver)+ " quantity "+str(quantity)+ "product"+str(product)+"deliver_date"+str(deliver_date)+ "sending_date" + str(sending_date) )
         logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
                 
@@ -31,7 +30,7 @@ class transactionsClass:
                 "sender":sender,
                 "product":product,
                 "quantity": quantity,
-                "delivered": False,
+                "delivered": 0,
                 "last_update": self.simulation.time
                 }
         
@@ -41,23 +40,27 @@ class transactionsClass:
         
 
         self.open_transactions.append(values_to_add)
+        self.simulation.update_simulation_stats("transactions_opened")
         self.add_to_orders_log( record=values_to_add)
     
-        self.update_database( self.transaction_id, transaction_info, delivered=False,)
-    
+        self.update_database( self.transaction_id, transaction_info, delivered=False)
+
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
         """
         
         if not delivered:
-             if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
+            if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
                 print("erro a adicionar transação à DB")
                 raise Exception
-        if delivered:
-            if not self.simulation.mongo_db.update_transaction_on_db(self.transaction_id):
-                print("erro a adicionar transação à DB")
-                raise Exception
-        if not 
+        if delivered==1:
+            try:
+                self.simulation.mongo_db.update_transaction_on_db(self.transaction_id)
+            except:
+                raise Exception("Error, updating database")
+            
+        if (transaction_info is None) and (delivered == None):
+            raise Exception("Erro no update, só pode ter um None | transaction_id: {}, transaction_info:{}, delivered:{}".format(transaction_id, transaction_info, delivered))
         
     def record_delivered(self,transaction_id ):
         logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id)) 
@@ -71,14 +74,17 @@ class transactionsClass:
                 self.open_transactions.remove(record)
                
                 #self.add_to_orders_log(record = record) #!obsulento com a db
-                self.update_database(transaction_id,  delivered=True)               
+                self.update_database(transaction_id,  delivered=1)
+                self.simulation.update_simulation_stat("transactions_closed")
+
                 return True
 
-        print("Trasaction {} not found!!".format(transaction_id))
+        print("Trasaction {} not found!! in \n{}".format(transaction_id,self.open_transactions))
         logs.log(info_msg="| TRANSACTION DLVRD| Transactions  | transaction_id   Trasaction {} not found!!".format(transaction_id))
         
         
-        
+    def show_all_transactions(self):
+        print("\n\nall open transactions\n",self.open_transactions, "\n\n all delivered transactions\n",self.delivered_transactions,"\n\n")    
 
     def show_transactions_record(self, record_object, title=None):
         print("\n",title,"\n")
@@ -100,10 +106,12 @@ class transactionsClass:
             print(string)
             
     def get_transaction_by_id(self, id):
-        for record in self.open_transactions:
-            if record['transaction_id']== id:                
-                return record
-        return False
+        try:
+            for record in self.open_transactions:
+                if record['transaction_id'] == id:
+                    return record
+        except:
+            raise Exception("Transaction requested is not in open transactions")
 
     def get_todays_transactions(self, actor):
         logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name )) 
@@ -132,24 +140,23 @@ class transactionsClass:
     def deliver_to_final_client(self):
         logs.log(debug_msg="| FUNCTION         | Transactions  | deliver_to_final_client : ")
 
-        customer = self.simulation.get_actor_by_id(0)
-    
+        customer = self.simulation.get_actor_by_id(0) #retorna o objecto actor zero (ou customer)
+
+        transactions_to_deliver=self.get_todays_transactions(customer)
         
         try:
-            for trans in self.get_todays_transactions(customer):
-                transaction_info = self.get_transaction_by_id(trans)
+                for trans in transactions_to_deliver:
+                    transaction_info = self.get_transaction_by_id(trans)
 
-                if not customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"]):
-                      raise Exception("Customer Deliver error actor {} transaction {}".format( customer.name, self.get_transaction_by_id(trans) ))
+                    customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"])
 
-                self.record_delivered(trans)
-                logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
-
-        except: 
-            raise Exception("Customer Deliver error actor {} transaction {}".format( customer.id, self.get_transaction_by_id(trans) ))
-
-
-        #  " opend",self.open_transactions )#, "\ndelivered",self.delivered_transactions  )
+                    self.record_delivered(trans)
+                    logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
+     
+        except:
+            self.record_delivered(trans) 
+            raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
+            
 
 ##############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor           #

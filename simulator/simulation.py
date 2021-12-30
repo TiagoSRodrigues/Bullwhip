@@ -17,6 +17,11 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
+        self.simulation_stats={"orders_opened":0,
+                    "orders_closed":0,
+                    "transactions_opened":0,
+                    "transactions_delivered":0,
+                    "days_passed":0}
 
         #create mongodb
         self.mongo_db = database.MongoDB(self)
@@ -170,3 +175,7 @@ class ClassSimulation:
         # print("inventory",inventory)
         self.global_inventory = inventory
         logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+        
+    def update_simulation_stat(self, stat):
+        self.simulation_stats[stat]=self.simulation_stats[stat]+1
+        print(self.simulation_stats)

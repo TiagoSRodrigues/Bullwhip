@@ -1,3 +1,1 @@
 [
-{"deliver_day": 4, "sending_day": 3, "receiver": 1, "sender": 2, "product": 2001, "quantity": 1, "delivered": "False", "last_update": 3, "transaction_id": 1},
-{"deliver_day": 4, "sending_day": 3, "receiver": 1, "sender": 2, "product": 2001, "quantity": 1, "delivered": "False", "last_update": 3, "transaction_id": 2},

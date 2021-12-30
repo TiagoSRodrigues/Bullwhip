@@ -6,10 +6,10 @@ from pymongo import collection
 import redis
 import pymongo
 #from pymongo import collection
-#from . import logging_management as logs
+from . import logging_management as logs
 
 class MongoDB:
-    def __init__(self, simulation):
+    def __init__(self, simulation, drop_history=True):
         self.simulation=simulation
         """Cria a ligação, 
         Apaga as DB anteriores
@@ -17,7 +17,9 @@ class MongoDB:
         """
         self.mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
         self.simulation_db = self.mongo_client["simulation"]
-        self.drop_database()
+        
+        if drop_history:
+            self.drop_database()
 
         """
         self.actors_collection = self.simulation_db["actors"]
@@ -41,15 +43,17 @@ class MongoDB:
             print( "error on add_transaction_to_db - data:" ,transaction_id, transaction_data)
             return False
 
-    def update_transaction_on_db(self, transaction_id,  delivered):
-        query={"_id":transaction_id}
-        new_value={"$set":{"delivered":delivered, "recording_time":self.simulation.time}}
-        self.simulation_db["transactions"].update_one(query,new_value)
-        
-        #db.transactions.update({_id:"2"},{$set:{"delivered":"maybe","recording_time":69}})
+    def update_transaction_on_db(self, transaction_id):
+        try:
+            #removi o delivered como variável pq o método n faz mais nada, só mete delivered
+            self.simulation_db["transactions"].update_one({"_id":transaction_id},{"$set":{"delivered":1, "recording_time":self.simulation.time}})
+        except:
+            self.simulation_db["transactions"].update_one({"_id":transaction_id},{"$set":{"delivered":1, "recording_time":self.simulation.time}})    
         
 
     def add_order_to_db(self,actor_id, time,  product, quantity, client, order_id, status):
+        logs.log(debug_msg="| Database         | add order     | Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
+
         """        adiciona a order à coleção orders da db simunation no mongodb
         """
         data = {"_id": order_id,
@@ -63,7 +67,15 @@ class MongoDB:
         collection_name="orders_"+str(actor_id)
         self.simulation_db[collection_name].insert_one(data)
 
-        
+    def close_order_on_db(self, actor_id, order_id):
+        order_colection="orders_"+str(actor_id)
+        try:
+            #removi o delivered como variável pq o método n faz mais nada, só mete delivered
+            self.simulation_db[order_colection].update_one({"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}})
+        except:
+            self.simulation_db[order_colection].update_one({"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}})
+            raise Exception("Error closing order on db")
+            
         
 
     # def add_to_simulation_db(self, collection_name, value):
@@ -115,21 +127,24 @@ def db_tests():
     db = MongoDB("teste")
     db.check_connection()
 
-    for i in range(100):
-        data= {
-            "deliver_day":i+3,
-            "sending_day":i,
-            "receiver":0,
-            "sender":1,
-            "product":1000+i,
-            "quantity": 10+i,
-            "delivered": False,
-            "recording_time": i
-        }
-        db.add_transaction(i,data)
+
+    db.update_transaction_on_db(1)
+    # for i in range(100):
+    #     data= {
+    #         "deliver_day":i+3,
+    #         "sending_day":i,
+    #         "receiver":0,
+    #         "sender":1,
+    #         "product":1000+i,
+    #         "quantity": 10+i,
+    #         "delivered": 0,
+    #         "recording_time": i
+    #     }
+    #     db.add_transaction(i,data)
         # def set_actor_order(self, actor, order):
         #     value= dd_to_simulation_db(self,collection, value)
-            
+    
+#db_tests()        
 # # mg = MongoDB()
 # # mg.check_connection()
 
@@ -137,3 +152,4 @@ def db_tests():
 
 # # print(mg.mongo_client.list_database_names())
 # # mg.get_all_collection_data("actors")
+
