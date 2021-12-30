@@ -1,6 +1,8 @@
 from typing import Dict
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
+from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
+
 # from dashboard import dashboard_data as ds
 
 # from simulation_configuration import *
@@ -15,12 +17,21 @@ class ClassSimulation:
         self.simulation_status = "0-Created"
         self.simulation_id=id(self)
         self.time=1
+        self.simulation_stats={"orders_opened":0,
+                    "orders_closed":0,
+                    "transactions_opened":0,
+                    "transactions_delivered":0,
+                    "days_passed":0}
+
+        #create mongodb
+        self.mongo_db = database.MongoDB(self)
+
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
 
         self.ObejctTransationsRecords = tns.transactionsClass(self)
-        
+
         # Lista que guarda todos os objectos atores 
         self.actors_collection=[] 
 
@@ -77,14 +88,14 @@ class ClassSimulation:
             name, a_id, avg, var, max_inventory, products = self.get_actor_parameters(configs_dict, actor_id)
             
             #Cria o ator
-            actor_id = actors.actor(self, name=name, id=a_id, avg=avg, var=var, 
+            actor_object = actors.actor(self, name=name, id=a_id, avg=avg, var=var, 
                                         max_inventory=max_inventory, products=products)
  
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
             logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
 
-
+            self.add_to_actors_collection(actor_object)
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):
@@ -112,11 +123,11 @@ class ClassSimulation:
     def record_simulation_status(self,simulation_status):
         logs.log(debug_msg="The simulation status changed to "+str(simulation_status))
 
-    def get_actor_by_id(self, id):
+    def get_actor_by_id(self, actor_id):
         for actor in self.actors_collection:
-            if int(actor.id) == id: 
-                return actor 
-        return False    
+            if actor.id == actor_id:
+                return actor
+        return False
 
     def reset_all_actors_status(self):
         for actor in self.actors_collection:
@@ -130,7 +141,7 @@ class ClassSimulation:
         
         logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor{} product {} qty{} inventory:{}".format( actor, product, qty,self.global_inventory))
 
-        inventory = self.global_inventory 
+        inventory = self.global_inventory
 
         actor_id, product_id, quantity  = int(actor), int(product), int(qty)
         
@@ -164,3 +175,7 @@ class ClassSimulation:
         # print("inventory",inventory)
         self.global_inventory = inventory
         logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+        
+    def update_simulation_stat(self, stat):
+        self.simulation_stats[stat]=self.simulation_stats[stat]+1
+        print(self.simulation_stats)

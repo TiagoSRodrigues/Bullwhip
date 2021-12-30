@@ -1,4 +1,6 @@
-x=[1, 2, 3, 4, 5, 0]
-y=max(x)
+x=True
 
-print(x,y)
+if not x:
+    print("not")
+else:
+    print("else")

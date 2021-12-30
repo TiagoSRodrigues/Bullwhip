@@ -86,13 +86,16 @@ def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
 #         pass
 
 def show_object_attributes(object):
+    
     from pprint import pprint
+
     print( 3*"\n","Attributes of",object,"\n" )
     pprint( vars(object) )
     print( 3*"\n" )
 
 def open_object(object):
     print(10*"======","\n\n DIR:")
+    print( type(object), "\n" )
     for el in dir(object):
         print(el)
     print(10*"======","\n\n VARS")

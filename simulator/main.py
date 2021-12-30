@@ -42,6 +42,7 @@ def main(input_data, simulation):
 
 
         simulation.time += 1
+        simulation.update_simulation_stat("days_passed")
         
 
     ########### Start orders

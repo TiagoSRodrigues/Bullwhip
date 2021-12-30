@@ -5,11 +5,11 @@ gc.collect()
 start_time = time.perf_counter()
 from simulator import main as main, easter_eggs as ee, simulation, transactions, orders_records, actors, data_input, logging_management as logs
 import simulation_configuration as sim_cfg
+from simulator import database
 
 
 
-
-## VERSION 7
+## VERSION 9
 
 ## CONFIGS
 sim_cfg.Run_tests=False
@@ -24,12 +24,14 @@ ee.print_start(sim_cfg.Logging_level)
 Object_Simulation=simulation.ClassSimulation()
 logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.simulation_id))
 
+#create ligação à base de dados
+# DataBase= database.DataBase()
 
 #Cria atores
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-input = data_input.get_input(days=365,min=1,max=8)
+input = data_input.get_input(days=100,min=1,max=8)
 #input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 
