@@ -1,4 +1,3 @@
-import collections
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
 logs.log(debug_msg="Started transactions.py")
@@ -8,6 +7,8 @@ logs.log(debug_msg="Started transactions.py")
 #############################################################################################################
 
 class transactionsClass:
+    """
+    this class handle any transactions action"""
     def __init__(self, simulation):
         self.open_transactions =  []
         self.delivered_transactions =[]     
@@ -42,13 +43,13 @@ class transactionsClass:
         self.open_transactions.append(values_to_add)
         self.simulation.update_simulation_stats("transactions_opened")
         self.add_to_orders_log( record=values_to_add)
-    
+
         self.update_database( self.transaction_id, transaction_info, delivered=False)
 
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
         """
-        
+
         if not delivered:
             if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
                 print("erro a adicionar transação à DB")

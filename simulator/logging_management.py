@@ -1,26 +1,21 @@
 ## LOGGING MANAGEMENT FILE
+from pprint import pprint
 import logging, time, os, gc
-from tqdm import tqdm
 import simulation_configuration  as sim_cfg
 
 ##Logging level    log detail : 50 CRITICAL  >  40 ERROR  >  30 WARNING  >   20 INFO  >   10 DEBUG  >  0 NOTSET
 
-''' Vou utilizar um sistema de 3 níveis de detalhe: baixo, médio e alto
-    Baixo: level == WARNING == 50   Regista mínimo necessário de forma a retabilizar recursos
-    médio: level == INFO    == 20   Regita os eventos principais para acompanhar os detalhes da simulação
-    alto:  level == DEBUG   == 10   Regista todos os eventos da simulação 
-'''
+# Vou utilizar um sistema de 3 níveis de detalhe: baixo, médio e alto
+# Baixo: level == WARNING == 50 Regista mínimo necessário de forma a retabilizar recursos
+# médio: level == INFO    == 20 Regita os eventos principais para acompanhar detalhes da simulação
+# alto:  level == DEBUG   == 10 Regista todos os eventos da simulação
 
 #create the log file
 logging.basicConfig(filename=sim_cfg.logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+'.log', 
         level=sim_cfg.Logging_level,
          format='%(asctime)s %(levelname)s %(message)s')
 
-getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")
-
-def log(critical_msg = None, error_msg = None):
-    pass
-
+#getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")  #!APAGAR se n der problemas
 
 def log(debug_msg = None, info_msg = None, warning_msg = None):
     #Receive the logging level from envirement
@@ -28,7 +23,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
     if debug_msg == None and info_msg != None:
         debug_msg , info_msg = info_msg, debug_msg 
-        
+
     if debug_msg == None and info_msg == None and warning_msg != None:
         debug_msg=warning_msg
         print(warning_msg) 
@@ -41,25 +36,25 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
             print(info_msg)        
         elif sim_cfg.Terminal_printting_level == "DEBUG":
             print(debug_msg)
-    
+
     #records log        
     if  log_level == 30 and warning_msg != None:
         logging.warning(str(warning_msg))
-    
-    
+
+
     elif log_level == 20 and info_msg != None:
         logging.info(str(info_msg))
         if warning_msg != None:
             logging.warning(str(warning_msg))
-    
-    
+
+
     elif log_level == 10 and debug_msg != None :
         logging.debug(str(debug_msg))
         if warning_msg != None:
             logging.warning(str(warning_msg))
         if info_msg != None:
             logging.info(str(info_msg))
-        
+
 
 
 #this funcion delete old logs, to avoid excessive trash        
@@ -67,17 +62,18 @@ def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
     try:
         if folder != None:
             arr = os.listdir(sim_cfg.logs_file_location)
-                
+
             if nr_of_log_to_save == all:
                 os.remove(sim_cfg.logs_file_location)
-        
+
             for el in range(0,len(arr)-nr_of_log_to_save):
                 os.remove(sim_cfg.logs_file_location+arr[el])
-        
+
         elif file != None:
             os.remove(file)
-    except:
-        print("No files to delete!")
+    except FileNotFoundError:
+        print("No files to delete")
+
 
 ##Ainda n está implemnetado, a idea é fazer uma barra deprogresso
 # def simulation_time(x):
@@ -86,8 +82,7 @@ def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
 #         pass
 
 def show_object_attributes(object):
-    
-    from pprint import pprint
+
 
     print( 3*"\n","Attributes of",object,"\n" )
     pprint( vars(object) )
@@ -147,7 +142,7 @@ def pretty(d, indent=0):
 
     #https://www.webfx.com/tools/emoji-cheat-sheet/
 
-delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save )
+delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save)
 delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
 delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
 delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_3.csv"           )
@@ -158,10 +153,4 @@ delete_old_logs( file = sim_cfg.inventory_file          )
 
 
 
-delete_old_logs( file = sim_cfg.transactions_record_file        )
-
-
-    #chamar uma função de forma dinâmica
-    # #getattr(logging, sim_cfg.Logging_level.lower() )(debug_msg)
-    # getattr(logging, sim_cfg.Terminal_printting_level.lower() )(debug_msg)
-    
+delete_old_logs( file = sim_cfg.transactions_record_file)
