@@ -12,7 +12,7 @@ actors= {
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 3,
+                    "initial_stock": 5,
                     "safety_stock": 2,
                     "reorder_history_size": 7,
                     "composition":
@@ -20,9 +20,9 @@ actors= {
                         2001: 1,
                     }
                 },  {
-                    "name": "ProductA",
+                    "name": "ProductAB",
                     "id": 2001,
-                    "initial_stock": 3,
+                    "initial_stock": 5,
                     "safety_stock": 2,
                     "reorder_history_size": 7,
                     "composition":

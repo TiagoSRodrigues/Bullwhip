@@ -1,3 +1,4 @@
+from logging import exception
 from typing import Dict
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 from . import database
@@ -46,7 +47,7 @@ class ClassSimulation:
 
         try:
             self.sleep_time = float( input( " Insert delay time:") )
-        except: 
+        except:
             self.sleep_time = 0
 
         
@@ -77,12 +78,10 @@ class ClassSimulation:
 
         #ADD  the final customer ###
         
-        configs_dict["0"]= {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [ ] ,  "time_average":0,"time_variance":0}                   
+        configs_dict["0"] = {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [] ,  "time_average":0, "time_variance":0}                   
         actors_list=(configs_dict.keys())
 
 
-
- 
         for actor_id in actors_list:
             logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
             name, a_id, avg, var, max_inventory, products = self.get_actor_parameters(configs_dict, actor_id)
@@ -104,8 +103,7 @@ class ClassSimulation:
         avg                  = configs_dict[actor]["time_average"]
         var                  = configs_dict[actor]["time_variance"]
         max_inventory        = configs_dict[actor]["max_inventory"]
-        products          = configs_dict[actor]["products"]
-
+        products             = configs_dict[actor]["products"]
 
         return name, id, avg, var, max_inventory, products
 
@@ -137,45 +135,58 @@ class ClassSimulation:
         time.sleep(self.sleep_time)
 
     #---------------------------------------------------------------------------------------------------------------------Dashboard
-    def update_global_inventory(self, actor, product, qty):
-        
-        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor{} product {} qty{} inventory:{}".format( actor, product, qty,self.global_inventory))
-
-        inventory = self.global_inventory
-
-        actor_id, product_id, quantity  = int(actor), int(product), int(qty)
-        
-        # print("STEP  1",actor_id, product_id, "|",inventory)
-        # N existe ator nem produto
-        if actor_id not in inventory:
-            # print("STEP  2")
-            prd= [{product_id:quantity}]
-            inventory[actor_id] = prd
-        #Existe ator mas n produto
-        elif (actor_id in inventory) and (product_id not in inventory[actor_id]):
-            # print("STEP  3")
+    def update_global_inventory(self, actor_id, product, qty):
+        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor {} product {} qty{} inventory:{}".format( actor_id, product, qty,self.global_inventory))
+        try:
+            inventory_dict = self.global_inventory
+            actor_id, product_id, quantity  = int(actor_id), int(product), int(qty)
+            try:
+                self.mongo_db.update_inventory_db(actor_id, product_id, quantity)
+            except:
+                raise Exception("Erro a atualizar inventário no mongodb")
             
-            # print("produtct {} not in enventoty {}".format(product_id,  inventory[actor_id] ))
-            inventory[actor_id].append( {product_id:quantity} )
+            try:
+                # print("STEP  1",actor_id, product_id, "|",inventory)
+                # N existe ator nem produto
+                if actor_id not in inventory_dict:
+                    # print("STEP  2")
+                    prd= [{product_id:quantity}]
+                    inventory_dict[actor_id] = prd
+                
+                    
+                #Existe ator mas n produto
+                elif (actor_id in inventory_dict) and (product_id not in inventory_dict[actor_id]):
+                    # print("STEP  3")
+                    
+                    # print("produtct {} not in enventoty {}".format(product_id,  inventory[actor_id] ))
+                    inventory_dict[actor_id].append( {product_id:quantity} )
+                    
+                    
+                #Existe ator e produto
+                elif (actor_id in inventory_dict ) and (product_id in inventory_dict[actor_id]):
+                    # print("STEP  4")
+                    for prod in inventory_dict[actor_id]:
+                    
+                        if prod == product_id:
+                            # print("\n\n\n CONA\n  ",inventory[actor_id][prod],"->",quantity)
+                            inventory_dict[actor_id][prod] = quantity
+            except:
+                print("erro no update global inventory")        
+
+
+            with open(sim_cfg.inventory_file, 'w') as file:
+                json.dump(inventory_dict, file)
+
+            # print("inventory",inventory)
+            self.global_inventory = inventory_dict
             
-        #Existe ator e produto
-        elif (actor_id in inventory ) and (product_id in inventory[actor_id]):
-            # print("STEP  4")
-            for prod in inventory[actor_id]:
-            
-                if prod == product_id:
-                    # print("\n\n\n CONA\n  ",inventory[actor_id][prod],"->",quantity)
-                    inventory[actor_id][prod] = quantity
-
-
-
-        with open(sim_cfg.inventory_file, 'w') as file:
-            json.dump(inventory, file)
-
-        # print("inventory",inventory)
-        self.global_inventory = inventory
-        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+            logs.log(debug_msg="| Refreshed Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+            return True
+        except:
+            raise Exception("Erro no update global inventory")
         
-    def update_simulation_stat(self, stat):
-        self.simulation_stats[stat]=self.simulation_stats[stat]+1
-        print(self.simulation_stats)
+    def update_simulation_stats(self, stat):
+        self.simulation_stats[stat]=int(self.simulation_stats[stat])+1
+        with open(sim_cfg.simulation_status_file, 'a') as file:
+            file.write("\n" +str(self.simulation_stats)+"," )
+       

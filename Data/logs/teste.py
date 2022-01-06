@@ -1,1 +1,6 @@
-teste.py
+'simulator\\'orders_records.py', line 85, code remove_from_open_orders>
+'simulator\\'orders_records.py', lineno=85, function='remove_from_open_orders', code_context=['                print(inspect.stack())\n'], index=0), FrameInfo(frame=<frame at 0x000002C002EC7060, file 'N:\\TESE\\Bullwhip\\simulator\\actors.py', line 363, code send_transaction>
+'simulator\\'actors.py', lineno=363, function='send_transaction', code_context=['            self.actor_stock_record.remove_from_open_orders(order_id )\n'], index=0), FrameInfo(frame=<frame at 0x000002C0032F2A40, file 'N:\\TESE\\Bullwhip\\simulator\\actors.py', line 229, code manage_orders>
+'simulator\\'actors.py', lineno=229, function='manage_orders', code_context=['                if self.send_transaction(order) :     # verifica se tem stock para enviar ["Time", "Product", "Qty","Client","Order_id","Status"]\n'], index=0), FrameInfo(frame=<frame at 0x000002C0032F2240, file 'N:\\TESE\\Bullwhip\\simulator\\main.py', line 39, code main>
+'simulator\\'main.py', lineno=39, function='main', code_context=['                actor.manage_orders()\n'], index=0), FrameInfo(frame=<frame at 0x000002BFF8CC9700, file 'N:\\TESE\\Bullwhip\\__init__.py', line 41, code <module>>
+'__init__.py', lineno=41, function='<module>', code_context=['main.main(input_data=input, simulation=Object_Simulation)\n'], index=0)]

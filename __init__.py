@@ -31,7 +31,7 @@ logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.si
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
 #prepara input
-input = data_input.get_input(days=100,min=1,max=8)
+input = data_input.get_input(days=400,min=1,max=10)
 #input = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 

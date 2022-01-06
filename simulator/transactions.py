@@ -21,11 +21,12 @@ class transactionsClass:
             file.write("[")
 
 
-    def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
+    def add_transaction(self, order_id, sender, receiver, quantity, product, deliver_date, sending_date):
         logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
                 
         transaction_info={"deliver_day":deliver_date,
+                "order_id": order_id,
                 "sending_day":sending_date,
                 "receiver":receiver,
                 "sender":sender,
@@ -39,13 +40,13 @@ class transactionsClass:
         values_to_add =  transaction_info
         values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
         
-
         self.open_transactions.append(values_to_add)
         self.simulation.update_simulation_stats("transactions_opened")
         self.add_to_orders_log( record=values_to_add)
 
         self.update_database( self.transaction_id, transaction_info, delivered=False)
-
+        #logs.new_log("Transactions", "add_transaction" , [ sender, receiver, quantity, product, deliver_date, sending_date])
+        
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
         """
@@ -68,7 +69,7 @@ class transactionsClass:
         
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
-                record['delivered']=True
+                record['delivered']=1
                 record['recording_time']=self.simulation.time
                 
                 self.delivered_transactions.append(record)
@@ -76,7 +77,7 @@ class transactionsClass:
                
                 #self.add_to_orders_log(record = record) #!obsulento com a db
                 self.update_database(transaction_id,  delivered=1)
-                self.simulation.update_simulation_stat("transactions_closed")
+                self.simulation.update_simulation_stats("transactions_delivered")
 
                 return True
 
@@ -115,13 +116,14 @@ class transactionsClass:
             raise Exception("Transaction requested is not in open transactions")
 
     def get_todays_transactions(self, actor):
-        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name )) 
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
 
         pending_transactions=[]
 
         for record in self.open_transactions:
             if record['deliver_day']== self.simulation.time  and  record['receiver'] == actor.id:
                 pending_transactions.append(record['transaction_id'])
+        #print(self.open_transactions)
         return pending_transactions
 
 
@@ -131,7 +133,6 @@ class transactionsClass:
         
         recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
 
-        # print(type(record))
         #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
         with open(sim_cfg.transactions_record_file, 'a') as file:
 
@@ -142,20 +143,25 @@ class transactionsClass:
         logs.log(debug_msg="| FUNCTION         | Transactions  | deliver_to_final_client : ")
 
         customer = self.simulation.get_actor_by_id(0) #retorna o objecto actor zero (ou customer)
-
-        transactions_to_deliver=self.get_todays_transactions(customer)
+        # print("temp deliver to final cc",customer.actor_inventory.main_inventory)
         
+        #print("temp "customer.actor_inventory.main_inventory)
+        
+        transactions_to_deliver=self.get_todays_transactions(customer)
+        #print(transactions_to_deliver)
         try:
-                for trans in transactions_to_deliver:
-                    transaction_info = self.get_transaction_by_id(trans)
+            for trans in transactions_to_deliver:
+                transaction_info = self.get_transaction_by_id(trans)
+                # print( "sssss", transaction_info["product"], transaction_info["quantity"])
+                #print(transaction_info)
+                customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"])
 
-                    customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"])
-
-                    self.record_delivered(trans)
-                    logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
+                self.record_delivered(trans)
+                logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
      
         except:
-            self.record_delivered(trans) 
+            print(">>>>>>>>",transactions_to_deliver)
+            print(self.open_transactions)
             raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
             
 
