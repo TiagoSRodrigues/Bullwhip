@@ -9,7 +9,7 @@ from simulator import database
 
 
 
-## VERSION 9
+## VERSION 10
 
 ## CONFIGS
 sim_cfg.Run_tests=False
