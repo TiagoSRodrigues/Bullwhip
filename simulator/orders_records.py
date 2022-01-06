@@ -1,6 +1,8 @@
+from typing import Sequence
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
 import numpy as np
+import inspect
 logs.log(debug_msg="Started Order_records.py")
 
 ############################################################################################
@@ -13,7 +15,7 @@ class ClassOrdersRecord:
 
         #Status order 0-Received 1-sended
         #Acho que o nome n vai servir para nada,
-        # columns = ["Time", "Product", "Qty","Client","Order_id","Status"]  
+        # columns = ["Time", "Product", "Qty","Client","Order_id","Status"]
         columns = [-1, -2, -3, -4, -5, -6 ]
         self.Open_Orders_Record = [columns]
         self.closed_orders_record = [columns]  #Já existe um outro registo do histórico, isto deve perder a função
@@ -47,76 +49,78 @@ class ClassOrdersRecord:
         logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + "from " + str(self.actor) + " Client: "+ str(client))
         # actor_id = self.actor
                 
-        self.last_order_id = self.last_order_id + 1   #! Está aqui um possivel eero, last order_id = last_order+1, tmb pode estar certo
+        self.last_order_id = self.last_order_id + 1   #! Está aqui um possivel erro, last order_id = last_order+1, mas tmb pode estar certo
         #initial status = 0
+        #print("temp adding order", self.last_order_id)
         to_add = [self.actor.simulation.time  ,product, qty,  client, self.last_order_id, 0]
         
         if self.get_order_by_id( self.last_order_id) is not False:
             print("add_to_open_orders",self.get_order_by_id( self.last_order_id))
             raise Exception("ordem duplicada")
+        
         self.Open_Orders_Record.append(to_add)
-        self.actor.simulation.update_simulation_stat("orders_opened")
+        self.actor.simulation.update_simulation_stats("orders_opened")
 
         logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor, qty, product, client))
         
 
-        self.add_to_orders_log( product, qty, client, self.last_order_id ,  status = 0)
+        self.actor.simulation.mongo_db.add_order_to_db(self.actor.id, self.actor.simulation.time ,  product, qty, client, self.last_order_id, 0)
     
-    def add_to_orders_log(self, product, quantity, client, order_id, status):
-        
-        self.actor.simulation.mongo_db.add_order_to_db(self.actor.id, self.actor.simulation.time ,  product, quantity, client, order_id, status)
- 
-        """with open( str( sim_cfg.orders_record_path ) + "orders_record_" + str( self.actor.id ) + ".csv", 'a') as file:
-            file.write( str(self.actor.simulation.time)  +","+ str(product) + "," + str(quantity) + "," + str(client)+ "," + str(order_id) + ","+ str(status)+ "\n")
-        """ #!obsuleto em prol da DB
+        self.check_orders_integrity()
 
-    # #check the order id and changes the status
-    # def set_order_status(self, order_id, status):
-    #     for record in self.Open_Orders_Record:
-    #         if record[-2] == order_id:
-    #             record[-1] = status
-    #     self.remove_from_open_orders(order_id)
+    def get_orders_sequence(self):
+        def get_id(l):
+                return l[-2]
+            
+        open_orders = self.Open_Orders_Record
+        open_orders.sort(key=get_id)
+            
+        sequence=[]
+        for order in open_orders:
+            if order[-2] == -5:
+                continue
+            sequence.append(order[-2])
+        sequence.sort()
+        return sequence
 
-    #["Time", "Product", "Qty","Client","Order_id","Status"]  
-
-
-
-        
+    def get_fist_open_order(self):
+        return self.get_orders_sequence()[0]
 
     def remove_from_open_orders(self,  order_id):
         time = self.actor.simulation.time 
 
+        def check_open_orders_sequence():
+            def get_id(l):
+                return l[-2]
+            open_orders = self.Open_Orders_Record
+            open_orders.sort(key=get_id)
+            
+            
+            # return open_orders
+            # order_sequence=check_open_orders_sequence()
+            
+            for i in open_orders:
+                if i[-2] == -5:
+                    continue
+                if i[-2] < order_id:
+                    print(inspect.stack())
+                    raise Exception("ERRO",i[-2] ,"<", order_id)
+            check_open_orders_sequence()
+
         for record in self.Open_Orders_Record:
             if record[-2] == order_id:
                 record[0] = time
-                self.Open_Orders_Record.remove(record) 
+                self.Open_Orders_Record.remove(record)
                 self.closed_orders_record.append(record)
                 order= self.get_order_by_id(order_id=order_id )
 
 
-                self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-2], status =1)
+                #self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-2], status =1)
                 self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-2])
-                self.actor.simulation.update_simulation_stat("orders_closed")
+                self.actor.simulation.update_simulation_stats("orders_closed")
 
         logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor.id)+str(self.Open_Orders_Record))
 
-
-    # def get_history(self,time_interval=None,product=None):
-    #     print("\n inputs: \n",self,time_interval,product)      
-    #     complete_history=self.record
-
-    #     #Filter history by product
-    #     if product != None:
-    #         history=self.filter_by_product(complete_history,product)
-
-    #     elif time_interval == None:
-    #         history=complete_history[:,:]
-       
-    #     #filter by date
-    #     elif time_interval != None:
-    #         history=complete_history[-time_interval:,:]
-    #         # print("\n history shape:" ,history.shape)
-    #     return history
 
     def get_ordered_products(self,time_interval=None,product=None):
         history=self.get_history(time_interval,product=None)
@@ -124,8 +128,31 @@ class ClassOrdersRecord:
         return history.shape[0]-1
 
 
+    def check_orders_integrity(self):
+        open_orders = self.Open_Orders_Record
+        cloed_orders= self.closed_orders_record
 
-
-
-
-
+        def get_id(l):
+            return l[-2]
+            
+        open_orders.sort(key=get_id)
+        cloed_orders.sort(key=get_id)
+        
+        def check_sequence(order_list):
+            
+            if len(order_list)>1:
+                for i in range(0,len(order_list)-2,1):
+                    if order_list[i][-2] == -5:
+                        continue
+                    if order_list[i][-2]+1 != order_list[i+1][-2]:
+                        print("check:",order_list[i][-2] +1 , order_list[i+1][-2])
+                        for el in open_orders:
+                            print(el)
+                        for el in cloed_orders:
+                            print(el)
+                        raise Exception("inconsistencia in "+str(order_list))
+                
+        #print("open orders")
+        check_sequence(open_orders)
+        #print("closed orders")
+        check_sequence(cloed_orders)

@@ -27,6 +27,8 @@ def main(input_data, simulation):
         first_element.receive_order(supplier=int(first_element.id), quantity = int(quantity), product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
+            
+            #print("Ator ativo:", actor.id)
             logs.log(debug_msg=        logs.log(debug_msg="| Started actor    | - - - - - - - | actor: {}".format( actor.id)))
             
             simulation.speed() ## SPEED
@@ -39,11 +41,16 @@ def main(input_data, simulation):
                 logs.log(debug_msg=        logs.log(debug_msg= "| before mng stock | main          |  actor: {}".format(actor.id)))
                 actor.manage_stock()
 
-
-
+            #print( actor.id, actor.actor_inventory.main_inventory, "yap")
         simulation.time += 1
-        simulation.update_simulation_stat("days_passed")
-        
+        simulation.update_simulation_stats("days_passed")
+    print("<<< inventories >>>")
+    for actor in simulation.actors_collection:
+        print( actor.id, actor.actor_inventory.main_inventory)
+    
+    print("<<< open Orders >>>")
+    for actor in simulation.actors_collection:
+        print( actor.id, actor.actor_stock_record.Open_Orders_Record)
 
     ########### Start orders
     simulation.record_simulation_status(simulation_status=3)

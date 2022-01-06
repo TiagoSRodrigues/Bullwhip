@@ -23,115 +23,134 @@ class ClassInventory:
 
             #change the key initial to in_stock
             product["in_stock"] = product["initial_stock"]
-            del product["initial_stock"]
+            #del product["initial_stock"]                               #isto vai ser informação denecessária mas vamos manter para já
             self.main_inventory[product['id']]=product
+            
+            self.actor.simulation.mongo_db.update_inventory_db(actor_id=self.actor.id, product=product['id'], quantity=product['in_stock'])
             
             try: self.actor.simulation.cookbook[product['id']] = product['composition']
             except:   logs.log(debug_msg="| CREATED OBJECT   | inventory     producto sem composição:"+str(product))
 
-            
+        if self.actor.id == 0:
+            null_product={'name': 'Product_Null', 'id': 0000, 'initial_stock': 0, 'safety_stock': 0, 'reorder_history_size': 0, 'composition': {'0000': 0}, 'in_stock': 0}
+            self.main_inventory[0000]=null_product
+            self.actor.simulation.mongo_db.update_inventory_db(actor_id=0, product=0, quantity=0)
+        
         self.present_capacity = self.refresh_inventory_capacity()
-        self.update_inicial_inventory()
+        # self.update_inicial_inventory()
 
         logs.log(info_msg="| CREATED OBJECT   | inventory     actor:"+str(actor))
 #-----------------------------------------------------------------
-    def  update_inicial_inventory(self):
-        for product in self.products:
-            self.actor.simulation.update_global_inventory( self.actor.id ,product['id'], product['in_stock'] )
+    # def  update_inicial_inventory(self):
+    #     for product in self.products:
+    #         #self.actor.simulation.update_global_inventory( self.actor.id ,product['id'], product['in_stock'] )
+    #         self.actor.simulation.mongo_db.update_inventory_db(actor_id=self.actor.id, product=product['id'], quantity=product['in_stock'])
+    #     self.actor.simulation.mongo_db.update_inventory_db(actor_id=0, product=0, quantity=0)
 
 
     def add_to_inventory(self, product, quantity):
         logs.log(debug_msg="| FUNCTION         | inventory.add_to_inventory of actor {} product {} qty {}".format(self.actor.id, product, quantity))
+        new_product=False
 
-        #check if product inventory exists, if not creats it
+        present_stock = self.get_product_inventory(product)
+        if present_stock is False:
+            present_stock = 0
+            new_product = True
 
+        updated_stock = present_stock + quantity
+        #quantidade inválida
         if quantity < 0:
-            return False 
+            raise Exception("trying to add negative quantity")
 
-        elif self.present_capacity  + quantity > self.max_capacity:
+        #excede a capacidade de armazenamento
+        elif (self.present_capacity  + quantity) > self.max_capacity:
+            logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory    Inventory full")
             return False
 
-        #if productc does not exists in stock and if will not pass the max inventory, is  created
-        elif  self.get_product_inventory(product) == False :
-            print("add_to_inventory error", self.get_product_inventory(product))
+        #if will not pass the max inventory
+        else:
+            self.set_product_inventory(product_id=product, new_quantity = updated_stock)
 
-            self.main_inventory[product] = { 'id': product, 'in_stock': quantity}
+            self.actor.simulation.mongo_db.update_inventory_db(self.actor.id, product, updated_stock)
 
-            self.actor.simulation.update_global_inventory( self.actor.id ,product,quantity )                        #update the global inventory used in the dashboard
+            #self.actor.simulation.update_global_inventory( self.actor.id ,product, quantity )                        #update the global inventory used in the dashboard
             logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  now product added Sucess!! ")
             return True
         
+  
+        # else:
+        #     print("actor {}, product {}, inventory {} ".format(type(self.actor), type(product) ,self.main_inventory[product]))
+        #     logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  ERROR product does not exist !! get inventory actor: {} product: {} | inventory:{} main inventory:{}".format( self.actor, product ,self.main_inventory[product['in_stock']] ,   self.main_inventory ))
+        #     return False
+
+
+
+    def remove_from_inventory(self,  product, quantity):
+        logs.log(debug_msg  = "| FUNCTION         | inventory     | trying to remove_from_inventory actor:{} product:{} qty:{}".format(self.actor.id, product, quantity))
         
-        else:
-            try:
-                if self.set_product_inventory( product, self.get_product_inventory(product) +quantity) == True:
-                    self.actor.simulation.update_global_inventory( self.actor.id ,product,quantity )
-                    logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  Sucess!! ")
-                    return True
-
-
-            except:
-                logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  ERROR product does not exist !! get inventory actor: {} product: {} | inventory:{} main inventory:{}".format( self.actor.id, product ,self.main_inventory[product['in_stock']] ,   self.main_inventory ))
-                return False
-
-
-
-    def remove_from_inventory(self, product, quantity):
-        logs.log(debug_msg  = "| FUNCTION         | inventory     | trying to remove_from_inventory actor:{} product:{} qty:{}".format(self.actor, product, quantity))
-        product_stock       = int(self.get_product_inventory(product))
+        
+        present_stock = self.get_product_inventory(product)
         
         #se não existir o producto, o stock é zero
-        if self.get_product_inventory(product) is None:
-            product_stock = 0
+        if present_stock is False:
+            present_stock = 0
+
+        updated_stock= present_stock-quantity
 
         #se não tiver quantidade em stock para enviar devolve falso
-        elif (product_stock - quantity) < 0 :
+        if updated_stock < 0:
             logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory not enough stock of product {} for odered qty of {} in actor {}. actual stock:{}".format(product, quantity, self.actor.id,product_stock)) 
             return False
         
         #se o stock não é zero, e a quantidade é maior que o stock, envia
         else:
-            #remove do stock do ator
-            self.main_inventory[product]["in_stock"] = (product_stock - quantity)
+            self.set_product_inventory(product_id= product, new_quantity=updated_stock)
             #atualiza do stock global
-            self.actor.simulation.update_global_inventory(actor_id= self.actor.id, product_id=product, quantity = (product_stock - quantity) )
-            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity)) 
-            return True
-        
-    # def check_inventory_composition(self):
-    #     header = "Inventory of: "+ str( self.actor.id )+  "\nPresent capacity: " + str(self.present_capacity) +" of  a max  of  " +str( self.max_capacity )
-    #     table , cols =[], [ " id "," Name "," in_stock "," safety_stock "]
-       
-    #     for product in self.products:
-    #         table.append( [ product['id'] , product['name'] ,product['in_stock'] ,product['safety_stock'] ] )
-        
-    #     x=pd.DataFrame(data=table, columns=cols)
-    #     # print("\n",header,"\n",  x.to_string(index=False), "\n")
-        
-
+            
+            #print("temp remove {} from ",self.get_product_inventory(product))
+            #self.actor.simulation.update_global_inventory(actor_id= actor_id, product_id= product, quantity = new_quantity )
+            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity))
 
 
 
 #############################################
     def get_product_inventory(self, product_id):
         logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
-        
-       
-        try: 
-            return self.main_inventory[int(product_id)]["in_stock"]
-        except:
-            logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO"+str( self.actor.id)+' product '+str(product_id)+"")
+    
+        # try:
+            #print("tempget product",self.main_inventory[int(product_id)])
+            #print("tempget product",self.main_inventory[product_id]["in_stock"])
+        #print("has",type(self.main_inventory), product_id in self.main_inventory)
+        product_id=int(product_id)
+        # print("A get porduct",product_id, "actor, ", self.actor.id)
+        # print("B",self.main_inventory)
+        # print("C",self.main_inventory[product_id])
+        # print("D",self.main_inventory[product_id]["in_stock"])
+        if product_id in self.main_inventory:
+            if "in_stock" in self.main_inventory[product_id]:
+                return self.main_inventory[product_id]["in_stock"]
+            if "in_stock" not in self.main_inventory[product_id]:
+                print("deu merda")
+        else:
             return False
+        
+    
+        # except:
+        #     logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO actor "+str( self.actor.id)+' product '+str(product_id)+""+self.main_inventory[product_id]["in_stock"])
+        #     return False
 
-    def set_product_inventory(self, product_id, qty):
+    def set_product_inventory(self, product_id, new_quantity):
         logs.log(debug_msg="| FUNCTION         | inventory     |set_product_inventory "+str( self.actor.id)+' product '+str(product_id) )
+        product_id=int(product_id)
+        if self.get_product_inventory( product_id) is False:
+                                   
+            self.main_inventory[product_id] = {'id': product_id, 'in_stock': new_quantity}
         
-        try: 
-            self.main_inventory[int(product_id)]["in_stock"] = qty
-            return True
-        except:
-            logs.log(debug_msg="| FUNCTION         | inventory     | set_product_inventory ERROR ")
-            return False
+        else:
+            self.main_inventory[product_id]["in_stock"] = new_quantity
+        self.actor.simulation.mongo_db.update_inventory_db(actor_id = self.actor.id, product=product_id, quantity=new_quantity )
+        logs.log(debug_msg="| FUNCTION         | inventory     | set_product_inventory inventory of {} updated to {} ".format(product_id, new_quantity ))
+        return True
 
 
 

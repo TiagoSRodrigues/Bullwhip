@@ -8,7 +8,10 @@ logs_file_location = directory_path + '//data//logs//'
 source_data =  directory_path + '//data//input//input_data.csv'
 Configuration_backups= directory_path + '//data//Configuration backups//'
 
-#paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL 
+
+simulation_status_file = directory_path + '//data//records//simulation_status_file.json'
+
+#paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL
 Logging_level="DEBUG"
 
 orders_record_file = directory_path + '//data//records//orders_record.csv'
