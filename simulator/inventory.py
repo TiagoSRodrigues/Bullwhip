@@ -92,8 +92,9 @@ class ClassInventory:
         present_stock = self.get_product_inventory(product)
         
         #se não existir o producto, o stock é zero
-        if present_stock is False:
-            present_stock = 0
+        if present_stock is False:    #present_stock = 0
+            return False
+            
 
         updated_stock= present_stock-quantity
 
@@ -105,6 +106,7 @@ class ClassInventory:
         #se o stock não é zero, e a quantidade é maior que o stock, envia
         else:
             self.set_product_inventory(product_id= product, new_quantity=updated_stock)
+            return True
             #atualiza do stock global
             
             #print("temp remove {} from ",self.get_product_inventory(product))
@@ -138,6 +140,24 @@ class ClassInventory:
         # except:
         #     logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO actor "+str( self.actor.id)+' product '+str(product_id)+""+self.main_inventory[product_id]["in_stock"])
         #     return False
+
+
+    def get_product_safety_stock(self, product_id):
+        logs.log(debug_msg="| FUNCTION         | inventory     | get product safety stock "+str( self.actor.id)+' product '+str(product_id))
+        # import inspect
+        # print(inspect.stack())
+
+        product_id=int(product_id)
+   
+   
+        if product_id in self.main_inventory:
+            if "in_stock" in self.main_inventory[product_id]:
+                return self.main_inventory[product_id]["safety_stock"]
+            if "in_stock" not in self.main_inventory[product_id]:
+                print("deu merda")
+        else:
+            return False
+        
 
     def set_product_inventory(self, product_id, new_quantity):
         logs.log(debug_msg="| FUNCTION         | inventory     |set_product_inventory "+str( self.actor.id)+' product '+str(product_id) )

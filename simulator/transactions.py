@@ -33,7 +33,7 @@ class transactionsClass:
                 "product":product,
                 "quantity": quantity,
                 "delivered": 0,
-                "last_update": self.simulation.time
+                "create_day": self.simulation.time
                 }
         
         
@@ -45,6 +45,7 @@ class transactionsClass:
         self.add_to_orders_log( record=values_to_add)
 
         self.update_database( self.transaction_id, transaction_info, delivered=False)
+        return True
         #logs.new_log("Transactions", "add_transaction" , [ sender, receiver, quantity, product, deliver_date, sending_date])
         
     def update_database(self, transaction_id, transaction_info=None, delivered=None):

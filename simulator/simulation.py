@@ -34,7 +34,7 @@ class ClassSimulation:
         self.ObejctTransationsRecords = tns.transactionsClass(self)
 
         # Lista que guarda todos os objectos atores 
-        self.actors_collection=[] 
+        self.actors_collection=[]
 
 
         self.global_inventory={}
@@ -78,7 +78,7 @@ class ClassSimulation:
 
         #ADD  the final customer ###
         
-        configs_dict["0"] = {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [] ,  "time_average":0, "time_variance":0}                   
+        configs_dict[0] = {'id': 0, 'max_inventory': 999999999, 'name': 'Customer', 'products': [] ,  "time_average":0, "time_variance":0}                   
         actors_list=(configs_dict.keys())
 
 
@@ -95,6 +95,7 @@ class ClassSimulation:
             logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
 
             self.add_to_actors_collection(actor_object)
+        self.mongo_db.add_to_db_stats("actors",list(actors_list))
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):

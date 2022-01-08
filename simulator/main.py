@@ -44,13 +44,13 @@ def main(input_data, simulation):
             #print( actor.id, actor.actor_inventory.main_inventory, "yap")
         simulation.time += 1
         simulation.update_simulation_stats("days_passed")
-    print("<<< inventories >>>")
-    for actor in simulation.actors_collection:
-        print( actor.id, actor.actor_inventory.main_inventory)
+    # print("<<< inventories >>>")
+    # for actor in simulation.actors_collection:
+    #     print( actor.id, actor.actor_inventory.main_inventory)
     
-    print("<<< open Orders >>>")
-    for actor in simulation.actors_collection:
-        print( actor.id, actor.actor_stock_record.Open_Orders_Record)
+    # print("<<< open Orders >>>")
+    # for actor in simulation.actors_collection:
+    #     print( actor.id, actor.actor_orders_record.Open_Orders_Record)
 
     ########### Start orders
     simulation.record_simulation_status(simulation_status=3)

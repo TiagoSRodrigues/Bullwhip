@@ -84,7 +84,10 @@ class ClassOrdersRecord:
         return sequence
 
     def get_fist_open_order(self):
-        return self.get_orders_sequence()[0]
+        orders_sequence = self.get_orders_sequence()
+        if len(orders_sequence) > 0:
+            return self.get_orders_sequence()[0]
+        return False
 
     def remove_from_open_orders(self,  order_id):
         time = self.actor.simulation.time 

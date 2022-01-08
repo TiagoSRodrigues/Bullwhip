@@ -13,7 +13,10 @@ def get_collections_on_db():
         
 
         
-s=(simulation_db["transactions"].find_one({"_id":1}))
-print(type(s))
+# s=(simulation_db["transactions"].find_one({"_id":1}))
+# print(type(s))
 
 
+def get_actor_orders( actor_id):
+    collection_name="orders_"+str(actor_id)
+    return simulation_db[collection_name].find()

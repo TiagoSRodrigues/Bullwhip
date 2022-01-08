@@ -1,6 +1,33 @@
-'simulator\\'orders_records.py', line 85, code remove_from_open_orders>
-'simulator\\'orders_records.py', lineno=85, function='remove_from_open_orders', code_context=['                print(inspect.stack())\n'], index=0), FrameInfo(frame=<frame at 0x000002C002EC7060, file 'N:\\TESE\\Bullwhip\\simulator\\actors.py', line 363, code send_transaction>
-'simulator\\'actors.py', lineno=363, function='send_transaction', code_context=['            self.actor_stock_record.remove_from_open_orders(order_id )\n'], index=0), FrameInfo(frame=<frame at 0x000002C0032F2A40, file 'N:\\TESE\\Bullwhip\\simulator\\actors.py', line 229, code manage_orders>
-'simulator\\'actors.py', lineno=229, function='manage_orders', code_context=['                if self.send_transaction(order) :     # verifica se tem stock para enviar ["Time", "Product", "Qty","Client","Order_id","Status"]\n'], index=0), FrameInfo(frame=<frame at 0x000002C0032F2240, file 'N:\\TESE\\Bullwhip\\simulator\\main.py', line 39, code main>
-'simulator\\'main.py', lineno=39, function='main', code_context=['                actor.manage_orders()\n'], index=0), FrameInfo(frame=<frame at 0x000002BFF8CC9700, file 'N:\\TESE\\Bullwhip\\__init__.py', line 41, code <module>>
-'__init__.py', lineno=41, function='<module>', code_context=['main.main(input_data=input, simulation=Object_Simulation)\n'], index=0)]
+
+import itertools
+
+# leters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' ]
+
+# alphabets = []
+# for i in leters:
+#     alphabets.append(i)
+#     alphabets.append(i.upper())
+# alphabets.sort()
+
+
+
+# name_list=[]
+
+# for (a,b,c,d,e,f) in combinations_with_replacement(alphabets, 3):
+#     name_list.append(str((a+b+c+d+e+f)))
+# print(name_list)
+# print(len(name_list))
+
+
+
+chars_l =range(ord('a'), ord('z')+1)
+l= [chr(a) + chr(b) +chr(c) +chr(d) +chr(e) +chr(f) for a in chars_l for b in chars_l for c in chars_l for d in chars_l for e in chars_l for f in chars_l]
+
+# chars_u =range(ord('A'), ord('Z')+1)
+# u= [chr(a) + chr(b) +chr(c) +chr(d) +chr(e) +chr(f)  for a in chars_u for b in chars_u for c in chars_u for d in chars_u for e in chars_u for f in chars_u]
+
+# a=l+u
+with open("alphabet.txt","w") as file:
+    file.write(str(l))
+
+print(len(l))

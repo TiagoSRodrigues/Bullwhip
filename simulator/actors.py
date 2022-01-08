@@ -1,4 +1,3 @@
-from logging import exception, raiseExceptions
 from . import  orders_records, inventory, logging_management as logs
 import simulation_configuration  as sim_cfg
 import numpy as np
@@ -28,6 +27,8 @@ class actor:
         if self.id == 0: 
             self.is_customer = True
         else: self.is_customer = False
+        
+        self.orders_above_safety = False
 
         # #VARIAVEL TEMPORARIA PARA PROVA DE CONCEITO:
         # self.reorder_quantity=25
@@ -38,7 +39,7 @@ class actor:
         self.actor_state="0"  #states 0 = idle  1=busy
 
         #Cria o Registo de encomendas
-        self.actor_stock_record = orders_records.ClassOrdersRecord(self)
+        self.actor_orders_record = orders_records.ClassOrdersRecord(self)
 
         #Cria os inventários
         self.actor_inventory = inventory.ClassInventory( actor = self ,
@@ -85,7 +86,7 @@ class actor:
         logs.log(debug_msg="| FUNCTION         | actors        | get_orders_pending       "+str( self.id))
         pending=[]
 
-        for record in self.actor_stock_record.Open_Orders_Record:
+        for record in self.actor_orders_record.Open_Orders_Record:
             if record[-1] == 0:
                 pending.append(record)
         logs.log(debug_msg="| FUNCTION         | actors        | get_orders_pending     from actor {}, pending: {}".format(self.id, pending))
@@ -117,7 +118,7 @@ class actor:
         "max_inventory", self.max_inventory,
         "products", self.products,
         "simulation_object", self.simulation,
-        "stock_record", self.actor_stock_record,
+        "stock_record", self.actor_orders_record,
         "actor_inventory",self.actor_inventory}
 
         return actor_data
@@ -147,8 +148,8 @@ class actor:
 
         for el_actor in self.simulation.actors_collection:
             if int(el_actor.id) == int(supplier):
-                el_actor.actor_stock_record.add_to_open_orders( product , quantity , client )
-
+                el_actor.actor_orders_record.add_to_open_orders( product , quantity , client )
+    
 
     def manage_orders(self):
 
@@ -166,7 +167,7 @@ class actor:
 
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        actor id: "+str(self.id)+" em stock:"+str(self.actor_inventory.main_inventory))
 
-        orders          =   self.actor_stock_record.Open_Orders_Record
+        orders          =   self.actor_orders_record.Open_Orders_Record
         max_capacity    =   self.actor_inventory.max_capacity
         inventory       =   self.actor_inventory.main_inventory
         
@@ -186,22 +187,39 @@ class actor:
 
         # verifica se tem encomendas para ENVIAR    ######################################################################################################################
         
-        def get_orders_to_send():
-            def get_id(l):
-                return l[-2]
-            to_send = self.get_orders_pending()
+        
+        
+        
+        
+        
+        while self.actor_orders_record.get_fist_open_order() is not False:
             
-            to_send.sort(key=get_id)
-            return to_send
+            order_to_send = self.actor_orders_record.get_fist_open_order()
+
+                
+            if self.send_transaction(order_id= order_to_send) is False:
+                break
+            
+        
+            
+            
+            
+        # def get_orders_to_send():
+        #     def get_id(l):
+        #         return l[-2]
+        #     to_send = self.get_orders_pending()
+            
+        #     to_send.sort(key=get_id)
+        #     return to_send
 
               
-        to_send = get_orders_to_send()
-        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " tem para enviar as encomendas: "+str(to_send))
+        # to_send = get_orders_to_send()
+        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " tem para enviar as encomendas: "+str("to_send"))
 
-        if (self.actor_state <= 30) and (len(to_send)>0 ):
-            self.set_actor_state( state = 31, log_msg=str(len(to_send))+" Sending orders from stock")
+        if (self.actor_state <= 30 ):
+            self.set_actor_state( state = 31, log_msg=str()+" Sending orders from stock")
 
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders actor "+str(self.id)+" IF has "+ str(len(to_send))+" orders to send: " +str(to_send) )
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders actor "+str(self.id)+" IF has "+ str("len(to_send)")+" orders to send: " +str("to_send") )
             
             # def sort_pending_orders():
             #     sorted_orders=[]
@@ -223,19 +241,20 @@ class actor:
             
           
 
-            to_send = get_orders_to_send()
+            # to_send = get_orders_to_send()
 
-            for order in to_send:
-                first_order = self.actor_stock_record.get_fist_open_order()
-                if first_order ==  order[-2]:
-                    self.send_transaction(order)      # verifica se tem stock para enviar ["Time", "Product", "Qty","Client","Order_id","Status"]
-                    to_send = get_orders_to_send()   #Refresh to_send list
-                if first_order !=  order[-2]:
-                    print(first_order ,"!=" , order[-2])
-                else:
-                    self.manufacture_product(order[1])
-                        # self.send_transaction(order)    #tanta produzir, se conseguir envia logo
-                        # to_send = get_orders_to_send()
+            # for order in to_send:
+            #     first_order = self.actor_orders_record.get_fist_open_order()
+            #     if first_order ==  order[-2]:
+            #         if self.send_transaction(order) is False:
+            #             raise exception("Erro a enviar transctions - call line 241")# verifica se tem stock para enviar ["Time", "Product", "Qty","Client","Order_id","Status"]
+            #         to_send = get_orders_to_send()   #Refresh to_send list
+            #     if first_order !=  order[-2]:
+            #         print(first_order ,"!=" , order[-2])
+            #     else:
+            #         self.manufacture_product(order[1])
+            #             # self.send_transaction(order)    #tanta produzir, se conseguir envia logo
+            #             # to_send = get_orders_to_send()
 
                 
                 
@@ -257,19 +276,31 @@ class actor:
 
             #logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " não tem stock para enviar "+str(order))
 
-        self.set_actor_state( state = 39, log_msg=str(len(to_send))+" Orders sent from stock ")
+        self.set_actor_state( state = 39, log_msg=str("len(to_send)")+" Orders sent from stock ")
 
 
     def manage_stock(self):
         self.set_actor_state( state = 40, log_msg=str( "| STATE          | actors        | manage_stock      Actor {} Started stock management".format(self.id)))
         #TODO na verificação de stock para repor verificar se já foi encomendado para n repetir encomendas.
-        #ATTENTION NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP
+        #ATENTION NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP
 
         # Verifica se tem stock para repor
         if self.id in self.simulation.Object_supply_chain.get_end_of_chain_actors():
             self.set_actor_state( state = 80, log_msg=str( "o actor{} está no fim da cadeia, o estado vai alterar para terminado 80".format(self.id)))
             #todo talvez se possa implementar um set stock to max quando a função é chamada
 
+        
+        # verifica ordens pendentes acima do safety stock:
+        big_orders=self.check_orders_above_safety()
+        
+        if big_orders:
+            
+        
+            for order in big_orders:
+                if self.manufacture_product( product= order[1]) is False:
+                    self.place_order(product_id=order[1])
+            
+        
         if self.actor_state <= 40:
             for product in self.products_list:
                 logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} in product list {}".format(self.id, product, self.products_list))
@@ -277,7 +308,9 @@ class actor:
 
                 #aqui o foco muda das encomendas para a gestão de stock
                 #verifica se precisa repor stock de algum produto
-
+                
+                #print("temp"self.get_product_inventory(product ), self.get_product_safety_inventory(product ))
+                
                 if int( self.get_product_inventory(product ) ) <= int(self.get_product_safety_inventory(product ) ):
                     logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
 
@@ -287,35 +320,62 @@ class actor:
                         #se tiver de encomendar, prepara encomenda
                         logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF, produto" +str(product)+ "sem stock")
 
-                        #vai buscar a composição
-                        composition =  self.get_product_composition( product )
-
-                            #encomenda o necessário
-                        for key , value in composition.items():
-                            key=str(key)
-                            if key[0] == str(self.id): continue
-
-                            product_id_to_order = int(key)
-                            actor_to_order = key[0]
-
-
-                            #todo HARD CODED PARA PROVA DE CONCEITO
-                            quantity_to_order = 1 * value
-
-                            # quantity_to_order = int(self.actor_inventory.get_product_reorder_history_size(product_id=product )) * value
-
-                            self.place_order(actor_supplier_id = actor_to_order, product=product_id_to_order, quantity=quantity_to_order)
-
-                            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock - order from {} to {} the quantity {} of the product {}".format(self.id, actor_to_order,quantity_to_order, product_id_to_order))
+                        
+                        if not self.place_order( product_id = product):
+                            raise("erro grave, não produz nem encomenda!!!!!")
+                    
+                    
+                    #logs.log(debug_msg="| FUNCTION         | actors        | manage_stock - order from actor {} to actor {} the quantity {} of the product {}".format(self.id, actor_to_order,quantity_to_order, product_id_to_order))
 
             self.set_actor_state(state=49, log_msg="Manage stock finished")
 
+    def order_preparation(self, product_id):
+        #vai buscar a composição
+        composition =  self.get_product_composition( product_id )
 
-    def send_transaction(self, order):
-        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction  order: "+str(order)+" self= "+str(self.name) )
-        self.set_actor_state( state=31, log_msg="sending order "+str(order) )
+        order_data={}
+
+            #encomenda o necessário
+        for key , value in composition.items():
+            key=str(key)
+            if key[0] == str(self.id): continue
+
+            order_data["product_id_to_order"] = int(key)
+            order_data["actor_to_order"] = int(str(key)[0])
+
+            #todo HARD CODED PARA PROVA DE CONCEITO
+            order_data["quantity_to_order"] = 2 * value
+
+            # quantity_to_order = int(self.actor_inventory.get_product_reorder_history_size(product_id=product )) * value
+        return order_data
+    
+    def place_order(self, product_id):
+
+        logs.log(debug_msg="| FUNCTION         | actors        | place_order from actor "+str( self.id)+"  prd "+str(product_id))
+        
+        order_data =self.order_preparation(product_id = product_id)
+        
+        
+        supplier_id =    order_data["actor_to_order"]
+        product  =    order_data["product_id_to_order"]
+        quantity =    order_data["quantity_to_order"]
+
+  
+        for actor in self.simulation.actors_collection:
+
+            if int(actor.id) == int(supplier_id):
+                self.receive_order( supplier= supplier_id, quantity=quantity, product=product, client= self.id )
+
+        return True
+        
+    def send_transaction(self, order_id):
+        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction  order: "+str(order_id)+" self= "+str(self.name) )
+        self.set_actor_state( state=31, log_msg="sending order "+str(order_id) )
         day= self.simulation.time
 
+        order=self.actor_orders_record.get_order_by_id(order_id)
+        
+        #print("tring to send order:",order)
         product              = order[1]
         ordered_quantity     = order[2]
 
@@ -325,7 +385,7 @@ class actor:
         logs.log(debug_msg="| FUNCTION         | actors        | send_transaction ordered:"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
         #print("arctors-send tranasctions",stock_quantity,ordered_quantity, stock_quantity>=ordered_quantity)
         self.set_actor_state(state=32)
-        
+
         if int(stock_quantity) >= int(ordered_quantity):
             self.set_actor_state(state=33, log_msg="Product with stock")
 
@@ -333,24 +393,24 @@ class actor:
 
 
             client       = int( order[3])              #  ["Time", "Product", "Qty","Client","Order_id","Status"]
-            order_id     = int( order[-2])
+            #order_id     = int( order[-2])
             # order_status = order[-1]
 
             self.set_actor_state(state= 34, log_msg="Removing from inventary")
 
             # remove o enviado do inventário
             try:
-                self.actor_inventory.remove_from_inventory(product=product, quantity= ordered_quantity)
+                if self.actor_inventory.remove_from_inventory(product=product, quantity= ordered_quantity) is False:
+                    return False
             except:
                 logs.log(debug_msg="| FUNCTION         | actors        | send_transaction erro ao remover o enviado do inventário  order id:"+str(order_id))
                 raise Exception("Não conseguiu remover do inventário")
 
             self.set_actor_state(state= 38, log_msg="adding to transasctions")
             #envia encomendas
-            try:
-                logs.log(debug_msg="| FUNCTION         | actors        | send_transaction trying to send transaction order id:"+str(order_id))
-                
-                self.simulation.ObejctTransationsRecords.add_transaction(
+            logs.log(debug_msg="| FUNCTION         | actors        | send_transaction trying to send transaction order id:"+str(order_id))
+            
+            transaction = self.simulation.ObejctTransationsRecords.add_transaction(
                                                                         order_id        = order_id,
                                                                         sender          = self.id,
                                                                         receiver        = client,
@@ -359,18 +419,19 @@ class actor:
                                                                         deliver_date    = day + self.average_time,
                                                                         sending_date    = day
                                                                         )
-            except:
-                raise Exception("Erro a enviar encomenda")
+            if transaction is False:
+                return False
 
             self.set_actor_state(state=36, log_msg="removing from orders")
             #remove from open orders
-            self.actor_stock_record.remove_from_open_orders(order_id )
+            self.actor_orders_record.remove_from_open_orders(order_id )
 
             logs.log(debug_msg="| FUNCTION         | actors        | send_transaction SUCECESSFULL SENDED order id:"+str(order_id))
             self.set_actor_state(state=37, log_msg="Orders sending complete")
             return True
         else:
-            logs.log(debug_msg="| FUNCTION         | actors        | send_transaction NÃO ENVIVOU PQ N TINHA STOCK  qty ORDERED"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
+            logs.log(debug_msg="| FUNCTION         | actors        | send_transaction NAO ENVIVOU PQ N TINHA STOCK  qty ORDERED: "+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
+            return False
 
 
     def receive_transaction(self, transaction_id):
@@ -407,14 +468,14 @@ class actor:
 
 
 
-    def place_order(self, actor_supplier_id, product, quantity):
 
-        logs.log(debug_msg="| FUNCTION         | actors        | place_order from actor "+str( self.id)+" suplier "+str(actor_supplier_id)+"  prd "+str(product)+"  qdd " +str(quantity))
 
-        for actor_to_order in self.simulation.actors_collection:
 
-            if int(actor_to_order.id) == int(actor_supplier_id):
-                self.receive_order( supplier= actor_supplier_id, quantity=quantity, product=product, client= self.id )
+
+        # for actor_to_order in self.simulation.actors_collection:
+
+        #     if int(actor_to_order.id) == int(actor_supplier_id):
+        #         self.receive_order( supplier= actor_supplier_id, quantity=quantity, product=product, client= self.id )
 
 
 
@@ -516,5 +577,25 @@ class actor:
             raise Exception("ERRO NA PRODUÇÃO, SE EXISTE UM ERRO AQUI A QUANTIDADE MÁXIMA ESTÁ A SER MAL CALCULADA")
 
 
-
+    def check_orders_above_safety(self):
+        """Se o ator receber uma encomenda para o qual não tenha stock mas esta esteja acima do safety stock
+        não vai enviar pq não tem stock mas não encomenda materia prima porque não atingio o safety stock
+        ["Time", "Product", "Qty","Client","Order_id","Status"]
+        """
+        #history=self.simulation.mongo_db.get_actor_orders( self.id)
+        open_orders = self.actor_orders_record.Open_Orders_Record
+        
+        orders_above_safety=[]
+        for order in open_orders:
+            print(open_orders)
+            order_quantity=order[2]
+            product_id=order[1]
+            safety_stock=self.actor_inventory.get_product_safety_stock(product_id=product_id)
+            
+            if order_quantity > safety_stock:
+                orders_above_safety.append(order)
+        if len(orders_above_safety)>0:
+            return orders_above_safety
+        return False
+        
 

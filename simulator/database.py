@@ -33,6 +33,10 @@ class MongoDB:
         if 'simulation' in database_list:
             self.add_to_db_log(self.mongo_client.drop_database("simulation"))
 
+    """
+    transactions
+    """
+
     def add_transaction_to_db(self, transaction_id=int, transaction_data=dict):
         """        adiciona a transação à coleção transactions da db simunation no mongodb
         """
@@ -50,17 +54,20 @@ class MongoDB:
             #removi o delivered como variável pq o método n faz mais nada, só mete delivered
             self.add_to_db_log(
                 self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1, "recording_time":self.simulation.time}}
+                    {"_id":transaction_id},{"$set":{"delivered":1, "updated_day":self.simulation.time}}
                     )
             )
         except:
             self.add_to_db_log(
                 self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1, "recording_time":self.simulation.time}}
+                    {"_id":transaction_id},{"$set":{"delivered":1, "updated_day":self.simulation.time}}
                     )
             )    
-        
 
+    """
+    orders
+    """
+    
     def add_order_to_db(self,actor_id, time,  product, quantity, client, order_id, status):
         logs.log(debug_msg="| Database         | add order     | Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
 
@@ -87,14 +94,16 @@ class MongoDB:
                 {"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}}
                 )
         )
-        # except:
-        #     self.add_to_db_log(
-        #         self.simulation_db[order_colection].update_one(
-        #             {"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}}
-        #             )
-        #     )
-        #     raise Exception("Error closing order on db")
 
+    def get_actor_orders(self, actor_id):
+        collection_name="orders_"+str(actor_id)
+        self.simulation_db[collection_name].find()
+        
+
+
+    """
+    INVENTORY
+    """
     def update_inventory_db(self,actor_id, product, quantity):
         #logs.log(debug_msg="| Database         |add to inventory| Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
 
@@ -172,6 +181,11 @@ class MongoDB:
               "action":inspect.stack()[1][3],
               "response":str(response)}
         self.simulation_db["db_log"].insert_one(data)
+
+    def add_to_db_stats(self, stat_name, stat_value):
+        data={"_id":stat_name,
+                "value":stat_value}
+        self.simulation_db["simulation_stats"].insert_one(data)
         
     def export_db(self, collection_name="db_log"):
         myquery = self.simulation_db["db_log"].find() # I am getting everything !

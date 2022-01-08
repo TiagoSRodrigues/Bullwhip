@@ -1,0 +1,29 @@
+/* set the margins of row elements to zero to
+override the settings in the dash bootstrap stylesheet */
+.row {
+    margin: 0 1px 0 1px;
+    line-height: 5px;
+    
+}
+
+.card {
+    margin-top: 1em;
+    font-size: small;
+}
+
+#howto-md img {
+    max-width: 100%;
+}
+.actors_table{
+    font-size: small;    
+    
+}
+.dash-table-container{    font-size: small;
+    line-height: 5px;
+    /*height: 7px*/;
+    /* background-color: brown; */
+}
+.open_orders_record_1{
+    /* background-color: navy; */
+    max-height: 10%;
+}

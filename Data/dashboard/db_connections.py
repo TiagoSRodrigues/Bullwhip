@@ -23,3 +23,70 @@ class db_connection():
                 data.append(el)
             main_inventory[col]=[data]
         return main_inventory
+
+    def get_actor_inventory(self, actor_id):
+        main_inventory={}
+        query_filter = {"name": {"$regex": r"^inventory_"+str(actor_id)+".*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=query_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
+
+    def get_transactions(self):
+        main_inventory={}
+        query_filter = {"name": {"$regex": r"^transactions"}}
+        collections_list =self.simulation_db.list_collection_names(filter=query_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
+
+    def get_orders(self):
+        main_inventory={}
+        query_filter = {"name": {"$regex": r"^orders_[0-9].*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=query_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
+
+    def get_actor_orders(self, actor_id):
+        orders={}
+        query_filter = {"name": {"$regex": r"^orders_"+str(actor_id)+".*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=query_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            orders[col]=[data]
+        return orders
+
+    def get_actors_id(self):
+        #query_filter = {"name": {"$regex": r"^simulation_stats"}}
+        actors_list = self.simulation_db["simulation_stats"].find_one({"_id":"actors"})["value"]
+        actors_list.sort()
+        return actors_list
+
+    # def update_datasets(self):
+    #     actors=self.get_actors_id()
+        
+    #     #inventories
+        
+    #     #orders
+        
+    #     #
