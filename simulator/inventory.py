@@ -117,17 +117,11 @@ class ClassInventory:
 
 #############################################
     def get_product_inventory(self, product_id):
-        logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
+        # logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
     
-        # try:
-            #print("tempget product",self.main_inventory[int(product_id)])
-            #print("tempget product",self.main_inventory[product_id]["in_stock"])
-        #print("has",type(self.main_inventory), product_id in self.main_inventory)
+
         product_id=int(product_id)
-        # print("A get porduct",product_id, "actor, ", self.actor.id)
-        # print("B",self.main_inventory)
-        # print("C",self.main_inventory[product_id])
-        # print("D",self.main_inventory[product_id]["in_stock"])
+
         if product_id in self.main_inventory:
             if "in_stock" in self.main_inventory[product_id]:
                 return self.main_inventory[product_id]["in_stock"]
@@ -136,11 +130,6 @@ class ClassInventory:
         else:
             return False
         
-    
-        # except:
-        #     logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory EXCEPT RAISED, PRODUCT STOCK UNKNOW, RETURNED ZERO actor "+str( self.actor.id)+' product '+str(product_id)+""+self.main_inventory[product_id]["in_stock"])
-        #     return False
-
 
     def get_product_safety_stock(self, product_id):
         logs.log(debug_msg="| FUNCTION         | inventory     | get product safety stock "+str( self.actor.id)+' product '+str(product_id))
@@ -160,7 +149,7 @@ class ClassInventory:
         
 
     def set_product_inventory(self, product_id, new_quantity):
-        logs.log(debug_msg="| FUNCTION         | inventory     |set_product_inventory "+str( self.actor.id)+' product '+str(product_id) )
+        # # logs.log(debug_msg="| FUNCTION         | inventory     |set_product_inventory "+str( self.actor.id)+' product '+str(product_id) )
         product_id=int(product_id)
         if self.get_product_inventory( product_id) is False:
                                    

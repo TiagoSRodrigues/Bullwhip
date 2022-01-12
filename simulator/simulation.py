@@ -1,5 +1,4 @@
-from logging import exception
-from typing import Dict
+import inspect
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
@@ -16,14 +15,16 @@ logs.log(debug_msg="Started simulation.py")
 class ClassSimulation:
     def __init__(self):
         self.simulation_status = "0-Created"
-        self.simulation_id=id(self)
+        self.simulation_id=time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         self.time=1
-        self.simulation_stats={"orders_opened":0,
+        self.simulation_stats={
+                    "orders_opened":0,
                     "orders_closed":0,
                     "transactions_opened":0,
                     "transactions_delivered":0,
                     "days_passed":0}
 
+        self.order_priority = "first"  # prioridades: fifo, first
         #create mongodb
         self.mongo_db = database.MongoDB(self)
 
@@ -36,19 +37,22 @@ class ClassSimulation:
         # Lista que guarda todos os objectos atores 
         self.actors_collection=[]
 
-
         self.global_inventory={}
         #DashBoard
         # self.dashboard = ds.dashboard_data(self)
 
         self.cookbook = {}
+        
+        
+        
+        self.mongo_db.create_db_stats_document(self.simulation_id)
 
         logs.log(debug_msg="| status           | Simulation created")
 
-        try:
-            self.sleep_time = float( input( " Insert delay time:") )
-        except:
-            self.sleep_time = 0
+        # try:
+        #     self.sleep_time = float( input( " Insert delay time:") )
+        # except:
+        #     self.sleep_time = 0
 
         
     #Import Configurations
@@ -95,7 +99,7 @@ class ClassSimulation:
             logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
 
             self.add_to_actors_collection(actor_object)
-        self.mongo_db.add_to_db_stats("actors",list(actors_list))
+        self.mongo_db.add_actors_to_db_stats(tuple(actors_list))
         return actors_list
 
     def get_actor_parameters(self,configs_dict,actor):
@@ -187,7 +191,13 @@ class ClassSimulation:
             raise Exception("Erro no update global inventory")
         
     def update_simulation_stats(self, stat):
-        self.simulation_stats[stat]=int(self.simulation_stats[stat])+1
-        with open(sim_cfg.simulation_status_file, 'a') as file:
-            file.write("\n" +str(self.simulation_stats)+"," )
-       
+     
+        self.simulation_stats[stat] = int( self.simulation_stats[stat] ) + 1
+        
+        data=dict(self.simulation_stats)
+        
+        self.mongo_db.add_to_db_stats_log(stat_value= data)
+        
+            # with open(sim_cfg.simulation_status_file, 'a') as file:
+            #     file.write("\n" +str(self.simulation_stats)+"," )
+        

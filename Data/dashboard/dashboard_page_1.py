@@ -2,6 +2,7 @@ from re import X
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 
 import plotly.express as px
 import pandas as pd
@@ -14,7 +15,6 @@ import os
 import sys
 import json
 import pandas as pd
-import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import dash_table
 import data_processing as dp
@@ -22,104 +22,11 @@ import data_processing as dp
 """ Get data """
 mongo = db_con.db_connection()
 
-def update_inventories():
-    return mongo.get_inventories()
-def update_transactions():
-    return mongo.get_transactions
-def update_orders():
-    return mongo.get_orders
-
-
-
-
-class datasets():
-    def __init__(self, object,  object_name):
-        self.object = object
-        self.name   = object_name
-
-
-# Set up the app
-external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/object_properties_style.css"]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
-
 #imports
 actors_list = mongo.get_actors_id()
 active_actors = actors_list[1:]
 
 
-""" 
-HEADER 
-"""
-modal_overlay = dbc.Modal(
-    [
-        dbc.ModalBody(html.Div([dcc.Markdown("howto_md")], id="howto-md")),
-        dbc.ModalFooter(dbc.Button("Close", id="howto-close", className="howto-bn")),
-    ],
-    id="modal",
-    size="lg",
-)
-
-# Buttons
-button_gh = dbc.Button(
-    "Learn more",
-    id="howto-open",
-    outline=True,
-    color="secondary",
-    # Turn off lowercase transformation for class .button in stylesheet
-    style={"textTransform": "none"},
-)
-
-button_howto = dbc.Button(
-    "View Code on github",
-    outline=True,
-    color="primary",
-    href="https://github.com/TiagoSRodrigues/Bullwhip",
-    id="gh-link",
-    style={"text-transform": "none"},
-)
-# Define Header Layout
-header = dbc.Navbar(
-    dbc.Container(
-        [
-            dbc.Row(
-                [
-                    dbc.Col(
-                        html.A(
-                            html.Img(
-                                src=app.get_asset_url("dash-logo-new.png"),
-                                height="30px",
-                            ),
-                            href="https://plotly.com/dash/",
-                        )
-                    ),
-                    dbc.Col(dbc.NavbarBrand("Bullwhip simulator - Development mode")),
-                    modal_overlay,
-                ],
-                align="center",
-            ),
-            dbc.Row(
-                dbc.Col(
-                    [  dbc.NavbarToggler(id="navbar-toggler"),
-                        dbc.Collapse(
-                            dbc.Nav(
-                                [dbc.NavItem(dbc.NavLink("by: Tiago Rodrigues", href="#")),dbc.NavItem(button_howto), dbc.NavItem(button_gh)],
-                                className="ml-auto",
-                                navbar=True,
-                            ),
-                            id="navbar-collapse",
-                            navbar=True,
-                        ),
-                    ]
-                ),
-                align="center",
-            ),
-        ],
-        fluid=True,
-    ),
-    color="dark",
-    dark=True,
-)
 
 
 """
@@ -213,9 +120,10 @@ orders_card = dbc.Card(
 
 
 
-app.layout = html.Div(
+layout_page_1 = html.Div(
     [
-        header,
+        html.Div(id='app-1-display-value'),
+        
         dbc.Container(
             [dbc.Row([
                 dbc.Col(

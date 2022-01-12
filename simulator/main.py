@@ -1,7 +1,7 @@
 from.import logging_management as logs
 # Funções para correr a simulação, o pré simulação fica no init
 import time
-
+from . import final_stats
 def main(input_data, simulation):
     logs.log(info_msg="| FUNCTION         | main.main")
     
@@ -15,7 +15,8 @@ def main(input_data, simulation):
 
 
         simulation.ObejctTransationsRecords.deliver_to_final_client()
-        print("day {}  ".format(simulation.time), end="\r")
+        logs.print_day(simulation, quantity=quantity)
+        
 
         logs.log(debug_msg=        logs.log(debug_msg="| global inventory | simulation    | global inventory {}".format( simulation.global_inventory)))
         
@@ -44,6 +45,12 @@ def main(input_data, simulation):
             #print( actor.id, actor.actor_inventory.main_inventory, "yap")
         simulation.time += 1
         simulation.update_simulation_stats("days_passed")
+    
+        
+        
+        
+        
+        
     # print("<<< inventories >>>")
     # for actor in simulation.actors_collection:
     #     print( actor.id, actor.actor_inventory.main_inventory)
@@ -59,7 +66,7 @@ def main(input_data, simulation):
 def get_first_active_actor(simulation):
     first_sc_element_id=simulation.Object_supply_chain.get_supply_chain()[0]
     
-    # print("suply chain",simulation.Object_supply_chain.get_supply_chain())   
+    # print("suply chain",simulation.Object_supply_chain.get_supply_chain())
     
     for actor in simulation.actors_collection:
         if actor.id == first_sc_element_id:

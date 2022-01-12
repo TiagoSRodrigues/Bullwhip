@@ -116,7 +116,9 @@ def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
         elif file != None:
             os.remove(file)
     except FileNotFoundError:
-        print("No files to delete")
+        log(debug_msg = "No files to delete") 
+        # if sim_cfg.print_log_in_terminal:
+        #     print("No files to delete")
 
 
 ##Ainda n está implemnetado, a idea é fazer uma barra deprogresso
@@ -124,6 +126,12 @@ def delete_old_logs(folder=None, file=None,  nr_of_log_to_save=None):
 #     steps = [1,2,3,4,5,6,7,8,9,10,11]
 #     for i in tqdm(steps):
 #         pass
+
+
+
+def print_day(simulation, quantity):
+    if sim_cfg.print_log_in_terminal:
+        print("day {}  customer order {}".format(simulation.time, quantity), end="\r")
 
 def show_object_attributes(object):
 
@@ -187,14 +195,14 @@ def pretty(d, indent=0):
     #https://www.webfx.com/tools/emoji-cheat-sheet/
 
 delete_old_logs( folder = sim_cfg.logs_file_location, nr_of_log_to_save = sim_cfg.nr_of_log_to_save)
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_3.csv"           )
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_4.csv"           )
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_5.csv"           )
-delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_6.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_1.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_2.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_3.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_4.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_5.csv"           )
+# delete_old_logs( file = sim_cfg.orders_record_path+   "orders_record_6.csv"           )
 delete_old_logs( file = sim_cfg.simulation_status_file  )
-delete_old_logs( file = sim_cfg.inventory_file          )
+# delete_old_logs( file = sim_cfg.inventory_file          )
 
 
 

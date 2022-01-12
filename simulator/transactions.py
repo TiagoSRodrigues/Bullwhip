@@ -21,32 +21,37 @@ class transactionsClass:
             file.write("[")
 
 
-    def add_transaction(self, order_id, sender, receiver, quantity, product, deliver_date, sending_date):
+    def add_transaction(self, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
         logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
                 
         transaction_info={"deliver_day":deliver_date,
                 "order_id": order_id,
+                "order_creation": order_creation,
                 "sending_day":sending_date,
                 "receiver":receiver,
                 "sender":sender,
                 "product":product,
                 "quantity": quantity,
-                "delivered": 0,
-                "create_day": self.simulation.time
+                "create_day": self.simulation.time,
+          #      "delivered": Nan,
+                "transit_time":0
                 }
         
         
         values_to_add =  transaction_info
         values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
         
-        self.open_transactions.append(values_to_add)
-        self.simulation.update_simulation_stats("transactions_opened")
-        self.add_to_orders_log( record=values_to_add)
-
+        #adiciona ao registo interno
+        self.open_transactions.append(values_to_add) 
+        
+        #adiciona à db mongodb        
         self.update_database( self.transaction_id, transaction_info, delivered=False)
+        
+        self.simulation.update_simulation_stats("transactions_opened")
+        #self.add_to_orders_log( record=values_to_add)  #! obsuleto com a database
+
         return True
-        #logs.new_log("Transactions", "add_transaction" , [ sender, receiver, quantity, product, deliver_date, sending_date])
         
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
@@ -108,15 +113,17 @@ class transactionsClass:
             
             print(string)
             
-    def get_transaction_by_id(self, id):
+    def get_transaction_by_id(self, transaction_id):
         try:
             for record in self.open_transactions:
-                if record['transaction_id'] == id:
+                if record['transaction_id'] == transaction_id:
                     return record
         except:
             raise Exception("Transaction requested is not in open transactions")
 
     def get_todays_transactions(self, actor):
+        """ Este método está obsuleto, não deve ser atualizado, pode deixar encomendas atrasadas no limbo
+        """
         logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
 
         pending_transactions=[]
@@ -127,17 +134,35 @@ class transactionsClass:
         #print(self.open_transactions)
         return pending_transactions
 
+    def get_delivering_transactions(self, actor):
+        """Verifica que existe alguma encomenda no registo com dia de entrega igual ou anterior ao presente
+
+        Args:
+            actor (objecto actor): actor
+
+        Returns:
+            list: lsita com id das transações transações
+        """
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
+
+        pending_transactions=[]
+
+        for record in self.open_transactions:
+            if record['deliver_day'] <= self.simulation.time  and  record['receiver'] == actor.id:
+                pending_transactions.append(record['transaction_id'])
+        return pending_transactions
+
 
 ######################foda-se
         
-    def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+    # def add_to_orders_log(self, record = dict): #  record_time são recording_time  
         
-        recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
+    #     recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
 
-        #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
-        with open(sim_cfg.transactions_record_file, 'a') as file:
+    #     #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
+    #     # with open(sim_cfg.transactions_record_file, 'a') as file:
 
-            file.write("\n" +str(recordstr)+"," )
+    #     #     file.write("\n" +str(recordstr)+"," )
 
 
     def deliver_to_final_client(self):

@@ -1,14 +1,13 @@
-"""documentação redis:
-https://redis.io/commands
-"""
 import re
+from typing_extensions import runtime
 from pymongo import collection
 import redis
 import pymongo
 import inspect
-import csv
+import csv, json
 from . import logging_management as logs
-
+import numpy as np
+import pandas as pd
 class MongoDB:
     def __init__(self, simulation, drop_history=True):
         self.simulation=simulation
@@ -20,13 +19,18 @@ class MongoDB:
         self.mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
         self.simulation_db = self.mongo_client["simulation"]
         
+        self.simulation_history = self.mongo_client["simulation_history"]
         if drop_history:
             self.drop_database()
-        
+
         #self.actors_collection = self.simulation_db["actors"]
         """
         self.inventory_collection = self.simulation_db["inventory"]
         """
+    def save_stats(self, simulation_id):
+        for doc in self.simulation_db["simulation_stats"].find({}):
+                self.simulation_history[simulation_id].insert_one(doc)
+        
     def drop_database(self):
         """elimina as dbs resultantes de simulações anteriores"""
         database_list = self.mongo_client.database_names()
@@ -42,32 +46,49 @@ class MongoDB:
         """
         try:
             transaction_data['_id']=transaction_id
-            
-            self.add_to_db_log(self.simulation_db["transactions"].insert_one(transaction_data))
+            self.add_to_db_log(
+                self.simulation_db["transactions"].insert_one(transaction_data)
+                )
             return True
         except:
             print( "error on add_transaction_to_db - data:" ,transaction_id, transaction_data)
             return False
 
     def update_transaction_on_db(self, transaction_id):
+        transaction_doc = self.simulation_db["transactions"].find_one({"transaction_id":transaction_id})
+        creation_day= int(transaction_doc["create_day"])
+        order_criation_date=int(transaction_doc["order_creation"])
+        today=self.simulation.time
+        delay_time= today - creation_day
+        lead_time=today - order_criation_date
+        #print("\ndelay time",delay_time,type(delay_time),"\n")
         try:
             #removi o delivered como variável pq o método n faz mais nada, só mete delivered
             self.add_to_db_log(
                 self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1, "updated_day":self.simulation.time}}
+                    {"_id":transaction_id},{"$set":{"delivered":1,
+                                                    "updated_day":today,
+                                                    "transit_time":delay_time,
+                                                    "lead_time": lead_time
+
+                                                    }}
                     )
             )
         except:
             self.add_to_db_log(
                 self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1, "updated_day":self.simulation.time}}
+                    {"_id":transaction_id},{"$set":{"delivered":1,
+                                                    "updated_day":today,
+                                                    "transit_time":delay_time,
+                                                    "lead_time": lead_time
+                                                    }}
                     )
-            )    
+            )
 
     """
     orders
     """
-    
+
     def add_order_to_db(self,actor_id, time,  product, quantity, client, order_id, status):
         logs.log(debug_msg="| Database         | add order     | Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
 
@@ -98,7 +119,7 @@ class MongoDB:
     def get_actor_orders(self, actor_id):
         collection_name="orders_"+str(actor_id)
         self.simulation_db[collection_name].find()
-        
+
 
 
     """
@@ -110,7 +131,7 @@ class MongoDB:
         """        adiciona a order à coleção orders da db simunation no mongodb
         """
         collection_name="inventory_"+str(actor_id)
-        
+
         #inventory_log
         self.simulation_db["inventory_log"].insert_one(
                     {"actor_id":actor_id, "product": product,"quantity":quantity, "last_update":self.simulation.time}
@@ -118,7 +139,7 @@ class MongoDB:
 
         # print(collection_name)
         doc= self.get_document_by_id(collection_name, product)
-        
+
         if  (doc is None) or (doc is False):
             # print("false?",doc)
             self.add_to_db_log(
@@ -152,19 +173,6 @@ class MongoDB:
         except:
             print("Erro no Mongo DB")
             
-    def get_all_collection_data(self, collection):
-        if collection == "actors":
-            cursor = self.actors_collection.find({})
-        elif collection == "inventory":
-            cursor = self.inventory_collection.find({})
-        elif collection == "transactions":
-            cursor = self.transactions_collection.find({})
-        else:
-            print("ERRO no método get_all_collection_data mongo db")
-        
-        for document in cursor:
-            print(document)
-            
     def get_document_by_id(self, doc_collection, doc_id):
         self.add_to_db_log("get document from {} with id:{}".format(doc_collection, doc_id))
         doc = self.simulation_db[str(doc_collection)].find_one({"_id":doc_id})
@@ -176,48 +184,167 @@ class MongoDB:
             return False
         
     def add_to_db_log(self, response):
+        "esta função grava as ações na db, não mexer"
         self.log_id= self.log_id+1
         data={"_id":self.log_id,
               "action":inspect.stack()[1][3],
               "response":str(response)}
         self.simulation_db["db_log"].insert_one(data)
 
-    def add_to_db_stats(self, stat_name, stat_value):
+    def create_db_stats_document(self, simulation_id):
+        fist_data={"_id":simulation_id,
+                    "simulation_id":simulation_id   }
+        self.simulation_db["simulation_stats"].insert_one(fist_data)
+
+
+    def add_simulation_stats_to_db(self,  stat_value):
+        self.simulation_db["simulation_stats"].insert_one({"_id":"simulation_stats","stats":stat_value})
+
+    def add_actors_to_db_stats(self, data):
+        self.simulation_db["simulation_stats"].insert_one({"_id":"active_actors","active_actors":data})
+      
+
+    def add_to_db_actor_stats(self, stat_name, stat_value):
         data={"_id":stat_name,
-                "value":stat_value}
+              "stats":stat_value.to_dict()}
         self.simulation_db["simulation_stats"].insert_one(data)
+
+
+    def add_runtime_to_stats_db(self,values):
+        data={"_id":"runtime",
+              "stats":values}
+        self.simulation_db["simulation_stats"].insert_one(data)
+
+    def add_open_itens(self,values):
+        self.simulation_db["simulation_stats"].insert_one(values)
         
+        
+        # if isinstance(stat_value, pd.DataFrame):
+        #     print(stat_value)
+        #     self.simulation_db["simulation_stats"].find_one_and_update(
+        #         {"_id":simulation_id},
+        #         {"$inc":{ "stats":{"$set":{ stat_value.to_dict("dict")}}
+        #                  }
+        #          }
+                # )
+
+        # elif isinstance(stat_value, list):
+        #     pass
+        #     stat_value=tuple(stat_value)
+            
+        # elif isinstance(stat_value, dict):
+        #     pass
+        #     print(stat_name,stat_value)
+
+        #     # stat_value=tuple(stat_value)
+        #     self.simulation_db["simulation_stats"].update_one(
+        #         {"_id":simulation_id},{"$set":{ stat_value.to_dict("dict")}}
+        #         )
+            
+        
+        # # elif self.simulation_db["simulation_stats"].find_one({"_id":simulation_id})  is None:
+        # #     fist_data={"_id":simulation_id,
+        # #             stat_name:stat_value}
+        # #     self.simulation_db["simulation_stats"].insert_one(fist_data)
+
+        
+        # else:
+        #     pass
+        #     print("else:",type(stat_value), stat_name, stat_value)
+        #     data={stat_name,stat_value}
+        #     self.simulation_db["simulation_stats"].update_one(
+        #         {"_id":simulation_id},{"$set":{ stat_name:stat_value }}
+        #         )
+            
+    def add_to_db_stats_log(self, stat_value):
+        data=stat_value
+        self.simulation_db["db_stats_log"].insert_one(data)
+
     def export_db(self, collection_name="db_log"):
         myquery = self.simulation_db["db_log"].find() # I am getting everything !
         output = csv.writer(open('some.csv', 'wt')) # writng in this file
-                                                
-def db_tests():
-    db = MongoDB("simulation")
-    db.check_connection()
+                      
+    """ STATS"""
+    def get_collection_data(self, collection_name):
+        data=self.simulation_db[collection_name].find()
+        for el in data:
+            print(el)
 
-    print(db.transactions.stats())
+    def get_inventories(self):
+        main_inventory={}
+        re_filter = {"name": {"$regex": r"^inventory_[0-9].*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
 
-    #db.update_transaction_on_db(1)
-    # for i in range(100):
-    #     data= {
-    #         "deliver_day":i+3,
-    #         "sending_day":i,
-    #         "receiver":0,
-    #         "sender":1,
-    #         "product":1000+i,
-    #         "quantity": 10+i,
-    #         "delivered": 0,
-    #         "recording_time": i
-    #     }
-    #     db.add_transaction(i,data)
-        # def set_actor_order(self, actor, order):
-        #     value= dd_to_simulation_db(self,collection, value)
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
     
-#db_tests()        
+    def get_actor_inventory(self, actor_id):
+        main_inventory={}
+        re_filter = {"name": {"$regex": r"^inventory_"+str(actor_id)+".*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
 
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
+    
+    def get_transactions(self):
+        main_inventory={}
+        re_filter = {"name": {"$regex": r"^transactions"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
 
-# # mg.add_to_simulation_db("actors" ,[{ "name": "Peter", "address": "Lowstreet 27" }] )
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
 
-# # print(mg.mongo_client.list_database_names())
-# # mg.get_all_collection_data("actors")
+    def get_orders(self):
+        main_inventory={}
+        re_filter = {"name": {"$regex": r"^orders_[0-9].*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            main_inventory[col]=[data]
+        return main_inventory
+
+    def get_actor_orders(self, actor_id):
+        orders={}
+        re_filter = {"name": {"$regex": r"^orders_"+str(actor_id)+".*"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for element in cursor:
+                data.append(element)
+            orders[col]=[data]
+        return orders
+
+    def get_simulation_stats(self):
+        stats={}
+        re_filter = {"name": {"$regex": r"^simulation_stats"}}
+        collections_list =self.simulation_db.list_collection_names(filter=re_filter)
+
+        for col in collections_list:
+            cursor= self.simulation_db[col].find()
+            data=[]
+            for el in cursor:
+                data.append(el)
+            stats[col]=[data]
+        return stats
 
