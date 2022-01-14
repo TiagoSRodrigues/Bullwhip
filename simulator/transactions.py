@@ -122,16 +122,17 @@ class transactionsClass:
             raise Exception("Transaction requested is not in open transactions")
 
     def get_todays_transactions(self, actor):
-        """ Este método está obsuleto, não deve ser atualizado, pode deixar encomendas atrasadas no limbo
+        """ Este método está obsuleto, não deve ser utilizado, pode deixar encomendas atrasadas no limbo
         """
         logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
 
         pending_transactions=[]
 
         for record in self.open_transactions:
-            if record['deliver_day']== self.simulation.time  and  record['receiver'] == actor.id:
-                pending_transactions.append(record['transaction_id'])
-        #print(self.open_transactions)
+            if record['receiver'] == actor.id:
+                if record['deliver_day'] == self.simulation.time:
+                    pending_transactions.append(record['transaction_id'])
+        
         return pending_transactions
 
     def get_delivering_transactions(self, actor):
@@ -148,8 +149,12 @@ class transactionsClass:
         pending_transactions=[]
 
         for record in self.open_transactions:
-            if record['deliver_day'] <= self.simulation.time  and  record['receiver'] == actor.id:
+            #print(record['deliver_day'] ,self.simulation.time ,  record['receiver'] ,  actor.id, record['deliver_day'] <= self.simulation.time  and  record['receiver'] == actor.id  )
+            if (record['deliver_day'] <= self.simulation.time ) and  (record['receiver'] == actor.id):
                 pending_transactions.append(record['transaction_id'])
+                # print(record)
+                if record['deliver_day'] >= record['order_creation']:
+                    print(actor.id,"->" ,record)
         return pending_transactions
 
 
@@ -173,15 +178,14 @@ class transactionsClass:
         
         #print("temp "customer.actor_inventory.main_inventory)
         
-        transactions_to_deliver=self.get_todays_transactions(customer)
+        transactions_to_deliver=self.get_delivering_transactions(customer)
         #print(transactions_to_deliver)
         try:
             for trans in transactions_to_deliver:
                 transaction_info = self.get_transaction_by_id(trans)
-                # print( "sssss", transaction_info["product"], transaction_info["quantity"])
-                #print(transaction_info)
-                customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"])
 
+                customer.receive_transaction( transaction_info["transaction_id"])
+                
                 self.record_delivered(trans)
                 logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
      

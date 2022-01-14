@@ -51,4 +51,10 @@ class calculate_simulations_stats():
                    "open_orders":str(open_orders)
                    }
         }
-        self.db_connection.add_open_itens(save_data)    
+        self.db_connection.add_open_itens(save_data)
+
+    def add_delivered_transactions_to_td(self, simulation):
+        for actor in simulation.actors_collection:
+            transactions_list = actor.received_transactions
+            
+            self.db_connection.add_to_actor_delivered_transactions(actor_id= actor.id, transactions = transactions_list)

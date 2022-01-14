@@ -1,16 +1,63 @@
-import math
+def triangular(min, max, days):
+    values = []
+    slope  = 1
+    x = min
+    for i in range(days):
+        if x == max:
+            slope = -1
+        if x == min:
+            slope = 1
+        
+        values.append(x)
+        if slope == 1:
+            x += 1
+        else:
+            x-=1
+    return values
+            
+            
+print( triangular( min=-3, max= 10, days=50))
 
-from pandas.io.formats.format import return_docstring
+
+def triangular_2(min, max, days):
+    values = []
+    slope  = 1
+    x = min
+    while len(values) < days:
+        values.append(x)
+        x = x + 1 * slope
+     
+        if x == max:
+            slope = -1
+        elif x == min:
+            slope = 1
+            
+    return values
+
+print( triangular_2( min=-3, max= 10, days=50))
 
 
-import math
+# dados do problema
+min = -3 # exemplo
+max = 10 # exemplo
+days = 50 # exemplo
 
-def better_round(value):
-    if value%1 *10 < 5:
-        return math.floor(value)
-    return math.ceil(value)
+#proposta de resolução
+daily_stock = list()   # ou list()  ou []
+increasing = True
 
-print("better_round ", better_round(12.5))
-print("better_round ", better_round(12.4))
-print("ceil ",math.ceil(12.5) )
-print("ceil ",math.ceil(12.4) )
+daily_stock.append( min  )                              # NOME[0] = x usa-se em dicionário
+daily_stock.append( min+1  )                              # NOME[0] = x usa-se em dicionário
+
+for i in range(1,days):
+    if increasing == True:
+        if daily_stock[i] == max:                       # igual -> == 
+            increasing = False
+        daily_stock.append(daily_stock[i-1] + 1)
+    else:
+        daily_stock.append(daily_stock[i-1] - 1)          # igual -> == 
+        if daily_stock[i] == min:
+            increasing = True
+            
+
+print(daily_stock)

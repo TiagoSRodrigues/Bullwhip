@@ -124,6 +124,9 @@ class ClassOrdersRecord:
         self.last_order_id = self.last_order_id + 1   #! Está aqui um possivel erro, last order_id = last_order+1, mas tmb pode estar certo
         #initial status = 0
         #print("temp adding order", self.last_order_id)
+        
+           #   0                 1       2       3        4        5        6
+        #[ creation Time,  Product , Qty , Client , Order_id, Status, notes]
         to_add = [self.actor.simulation.time  ,product, qty,  client, self.last_order_id, 0,notes]
         
         if self.get_order_by_id( self.last_order_id) is not False:
@@ -136,7 +139,13 @@ class ClassOrdersRecord:
         logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor, qty, product, client))
         
 
-        self.actor.simulation.mongo_db.add_order_to_db(self.actor.id, self.actor.simulation.time ,  product, qty, client, self.last_order_id, 0)
+        self.actor.simulation.mongo_db.add_order_to_db(actor_id = self.actor.id,
+                                                       time = self.actor.simulation.time ,
+                                                       product = product,
+                                                       quantity = qty,
+                                                       client = client,
+                                                       order_id=self.last_order_id,
+                                                       status= 0 )
     
         self.check_orders_integrity()  #TODO acho que isto n devia estar aqui mas sim no remove 
 

@@ -47,7 +47,8 @@ ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_
 
 #prepara input
 # input = data_input.get_input(days=days_simulated,min=1,max=10)
-input = data_input.get_input(from_file=True,days=days_simulated )
+
+input = data_input.get_input( input_type = "triangular", days=days_simulated, min=0, max=50 )
 
 
 """
@@ -74,6 +75,8 @@ simulation_stats=final_stats.calculate_simulations_stats(simulation=Object_Simul
 # open_transactions=Object_Simulation.ObejctTransationsRecords.open_transactions
 
 simulation_stats.add_open_itens_to_db(Object_Simulation)
+
+simulation_stats.add_delivered_transactions_to_td(Object_Simulation)
 
 simulation_stats.db_connection.add_runtime_to_stats_db( round(time.perf_counter()-start_time, 2) )
 simulation_stats.db_connection.add_simulation_stats_to_db(stat_value= Object_Simulation.simulation_stats)

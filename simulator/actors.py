@@ -32,12 +32,13 @@ class actor:
         
         self.orders_above_safety = False
         
-        
+        self.received_transactions=[]
 
         # #VARIAVEL TEMPORARIA PARA PROVA DE CONCEITO:
         # self.reorder_quantity=25
 
 
+        
         ### Variable Properties  ######
         #para prevenir loop infinito o estado vai avançando
         self.actor_state="0"  #states 0 = idle  1=busy
@@ -67,6 +68,8 @@ class actor:
 ################################                                                 #############################
 #                                           GETTERS
 ################################                                                 #############################
+    def add_to_received_transactions(self, transaction):
+        self.received_transactions.append(transaction)
 
     def get_actor_product_list(self):
         logs.log(debug_msg="| FUNCTION         | actors.get_actors_product_list"+str(self))
@@ -169,6 +172,7 @@ class actor:
         for el_actor in self.simulation.actors_collection:
             if int(el_actor.id) == int(supplier):
                 el_actor.actor_orders_record.add_to_open_orders( product , quantity , client, notes )
+                
     
 
     def manage_orders(self):
@@ -503,7 +507,9 @@ class actor:
 
         # regista que recebeu
         self.simulation.ObejctTransationsRecords.record_delivered(transaction_id)
-
+        
+        self.add_to_received_transactions(transaction=transaction_id)
+        
         self.set_actor_state(state= 29, log_msg=" Finished transcaction reception")
 
         logs.log(debug_msg="| FUNCTION         | actors        | receive_transaction ")
@@ -699,5 +705,5 @@ class actor:
         elif order_id:
             return self.actor_orders_record.get_order_by_id(order_id)[5]
         
-        #   0       1       2       3        4        5        6
-        #[ Time,  Product , Qty , Client , Order_id, Status, notes]
+        #   0                 1       2       3        4        5        6
+        #[ creation Time,  Product , Qty , Client , Order_id, Status, notes]

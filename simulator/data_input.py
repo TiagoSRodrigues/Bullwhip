@@ -1,6 +1,7 @@
 # from simulation_configuration import source_data
 import datetime, pandas as pd, random
 import math
+import numpy as np
 # from.import logging_management as logs
 
 
@@ -17,9 +18,9 @@ cambio_data = "n:/TESE/Bullwhip/data/input/input_data.csv"
 # print(df.describe())
 
 
-def get_input(from_file=None, days=None, min=None, max=None):
+def get_input(input_type,  days=None, min=None, max=None):
     
-    if from_file:
+    if input_type is "file":
         good_values, errors, values = check_input_datafile()
         
         if errors >0:
@@ -28,6 +29,23 @@ def get_input(from_file=None, days=None, min=None, max=None):
             return values
         return values[-days:]
 
+    if input_type is "sequencial":
+        np.linspace(min,max, num=max-min, endpoint=False,  dtype=int, axis=0)
+            
+    if input_type is "triangular":
+        values = []
+        slope  = 1
+        x = min
+        while len(values) < days:
+            values.append(x)
+            x = x + 1 * slope
+        
+            if x == max:
+                slope = -1
+            elif x == min:
+                slope = 1
+        return values
+        
     values = []
     for i in range(days):
         values.append(random.randint(min, max))

@@ -209,6 +209,11 @@ class MongoDB:
               "stats":stat_value.to_dict()}
         self.simulation_db["simulation_stats"].insert_one(data)
 
+    def add_to_actor_delivered_transactions(self, actor_id, transactions):
+        data={"_id":"actor_"+str(actor_id),
+              "stats":transactions}
+        self.simulation_db["delivered_transactions"].insert_one(data)
+
 
     def add_runtime_to_stats_db(self,values):
         data={"_id":"runtime",
