@@ -52,8 +52,8 @@ def main(input_data, simulation):
         
         
         
-        
-        
+    simulation.mongo_db.add_maney_to_db(colection_name="final_open_transactions", data=  simulation.ObejctTransationsRecords.open_transactions)
+    simulation.mongo_db.add_maney_to_db(colection_name="final_closed_transactions", data=  simulation.ObejctTransationsRecords.delivered_transactions)
     # print("<<< inventories >>>")
     # for actor in simulation.actors_collection:
     #     print( actor.id, actor.actor_inventory.main_inventory)

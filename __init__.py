@@ -52,7 +52,7 @@ Object_Simulation.mongo_db.add_to_db(colection_name="simulation_stats", data={"_
 #prepara input
 # input = data_input.get_input(days=days_simulated,min=1,max=10)
 
-input = data_input.get_input( input_type = "triangular", days=days_simulated, min=0, max=50 )
+input = data_input.get_input( input_type = "file", days=days_simulated)
 
 
 """

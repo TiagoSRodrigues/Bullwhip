@@ -29,6 +29,7 @@ class ClassOrdersRecord:
     Getters
     """ 
 
+
     def get_order_criation(self, order=None, order_id=None):
         if order:
             return order[0]
@@ -153,7 +154,7 @@ class ClassOrdersRecord:
 
 
     def remove_from_open_orders(self,  order_id):
-        time = self.actor.simulation.time 
+        time = self.actor.simulation.time
 
         def check_open_orders_sequence():
             def get_id(l):
@@ -184,7 +185,7 @@ class ClassOrdersRecord:
                 #self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-3], status =1)
                 self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-3])
                 self.actor.simulation.update_simulation_stats("orders_closed")
-        
+
         self.refresh_orders_waiting_stock()
         logs.log(debug_msg="| FUNCTION         | Orders_records| remove_from_open_orders order "+str(order_id)+" removed from actor "+str(self.actor.id)+str(self.Open_Orders_Record))
 

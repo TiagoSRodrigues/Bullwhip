@@ -29,6 +29,13 @@ def get_input(input_type,  days=None, min=None, max=None):
             return values
         return values[-days:]
 
+    if input_type == "constant":
+        a = np.empty(days, dtype=np.int64)
+        a.fill(min)
+        return a
+
+    
+    
     if input_type == "sequencial":
         np.linspace(min,max, num=max-min, endpoint=False,  dtype=int, axis=0)
             

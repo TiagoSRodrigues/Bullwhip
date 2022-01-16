@@ -44,43 +44,47 @@ class MongoDB:
         try:
             transaction_data['_id']=transaction_id
             self.add_to_db_log(
-                self.simulation_db["transactions"].insert_one(transaction_data)
+                self.simulation_db["open_transactions"].insert_one(transaction_data)
                 )
             return True
         except:
             print( "error on add_transaction_to_db - data:" ,transaction_id, transaction_data)
             return False
 
-    def update_transaction_on_db(self, transaction_id):
-        transaction_doc = self.simulation_db["transactions"].find_one({"transaction_id":transaction_id})
-        creation_day= int(transaction_doc["create_day"])
-        order_criation_date=int(transaction_doc["order_creation"])
-        today=self.simulation.time
-        delay_time= today - creation_day
-        lead_time=today - order_criation_date
-        #print("\ndelay time",delay_time,type(delay_time),"\n")
-        try:
-            #removi o delivered como variável pq o método n faz mais nada, só mete delivered
-            self.add_to_db_log(
-                self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1,
-                                                    "updated_day":today,
-                                                    "transit_time":delay_time,
-                                                    "lead_time": lead_time
+    def update_transaction_on_db(self, transaction_id, transaction_info):
+        self.simulation_db["closed_transactions"].insert_one(transaction_info)
+        # transaction_doc = self.simulation_db["transactions"].find_one({"transaction_id":transaction_id})
+        # creation_day= int(transaction_doc["sending_day"])
+        # order_criation_date=int(transaction_doc["order_criation_day"])
+        # today=self.simulation.time
+        # transit_time= today - creation_day
+        # lead_time=today - order_criation_date
+        # #print("\ndelay time",delay_time,type(delay_time),"\n")
+        # try:
+        #     #removi o delivered como variável pq o método n faz mais nada, só mete delivered
+        #     self.add_to_db_log(
+        #         self.simulation_db["transactions"].update_one(
+        #             {"_id":transaction_id},{"$set":transaction_info}))
+        #     #             "delivered":1,
+        #     #                                         "updated_day":today,
+        #     #                                         "transit_time":transit_time,
+        #     #                                         "lead_time": lead_time
 
-                                                    }}
-                    )
-            )
-        except:
-            self.add_to_db_log(
-                self.simulation_db["transactions"].update_one(
-                    {"_id":transaction_id},{"$set":{"delivered":1,
-                                                    "updated_day":today,
-                                                    "transit_time":delay_time,
-                                                    "lead_time": lead_time
-                                                    }}
-                    )
-            )
+        #     #                                         }}
+        #     #         )
+        #     # )
+        # except:
+        #     print("eero", transaction_info)
+            
+        #     self.add_to_db_log(
+        #         self.simulation_db["transactions"].update_one(
+        #             {"_id":transaction_id},{"$set":{"delivered":1,
+        #                                             "updated_day":today,
+        #                                             "transit_time":transit_time,
+        #                                             "lead_time": lead_time
+        #                                             }}
+        #             )
+        #     )
 
     """
     orders
@@ -266,6 +270,9 @@ class MongoDB:
 
     def add_to_db(self, colection_name, data):
         self.simulation_db[colection_name].insert_one(data)
+
+    def add_maney_to_db(self, colection_name, data):
+        self.simulation_db[colection_name].insert_many(data)
 
     def export_db(self, collection_name="db_log"):
         myquery = self.simulation_db["db_log"].find() # I am getting everything !

@@ -111,7 +111,9 @@ class actor:
             self.stock_scheduled_to_send[product_id]=self.stock_scheduled_to_send[product_id]-quantity
 
     def add_to_received_transactions(self, transaction):
+    
         self.received_transactions.append(transaction)
+        logs.log(debug_msg="|received_transcs  | actors        | add_to_received_transactions {}".format(transaction))
 
     def get_actor_product_list(self):
         logs.log(debug_msg="| FUNCTION         | actors.get_actors_product_list"+str(self))
@@ -170,7 +172,7 @@ class actor:
 
         for record in self.actor_orders_record.Open_Orders_Record:
             order_state= self.get_order_state(order= record)
-            if order_state == 0:
+            if order_state in [0,9]:
                 pending.append(record)
                 
         logs.log(debug_msg="| FUNCTION         | actors        | get_open_orders     from actor {}, pending: {}".format(self.id, pending))
@@ -185,12 +187,12 @@ class actor:
         return self.actor_inventory.get_product_inventory(product_id =product)
 
     def get_product_safety_inventory(self,product):
-        # logs.log(debug_msg="| FUNCTION         | actors.get_product_safety_inventory "+str( self)+str(product))
+        logs.log(debug_msg="| FUNCTION         | actors get_product_safety_inventory ")
         return self.actor_inventory.get_product_safety_inventory(product)
 
-    def get_product_reorder_history_size(self,product):
-        # logs.log(debug_msg="| FUNCTION         | actors.get_product_safety_inventory "+str( self)+str(product))
-        return self.actor_inventory.get_product_reorder_history_size(product)
+    # def get_product_reorder_history_size(self,product):
+    #     # logs.log(debug_msg="| FUNCTION         | actors get_product_safety_inventory "+str( self)+str(product))
+    #     return self.actor_inventory.get_product_reorder_history_size(product)
 
     def get_delivering_transactions(self):
         return self.simulation.ObejctTransationsRecords.get_delivering_transactions(self)
@@ -240,7 +242,7 @@ class actor:
                 el_actor.add_to_stock_scheduled_to_send(product_id= product, quantity= quantity)
         
     def manage_orders(self):
-        
+        # print(self.id,self.actor_orders_record.orders_waiting_stock)
         """ gere as ordens de encomenda,
         tem um sistema de estados para evidar rotas incorrecta e para facilitar a analise dos logs
 
@@ -261,7 +263,7 @@ class actor:
         #     80 pronto
         """
 
-        order_priority = self.simulation.order_priority #fifo or first
+        order_priority = self.simulation.order_priority #fifo or faster
         
         self.set_actor_state( state = 20, log_msg="Checking transctions to receive" )
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        actor id: "+str(self.id))#+" em stock:"+str(self.actor_inventory.main_inventory))
@@ -276,16 +278,18 @@ class actor:
         to_receive = self.get_delivering_transactions()
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        Encomendas para receber: "+str(to_receive))
 
-        if self.actor_state <= 20 and len(to_receive)>0 :
+        if len(to_receive)>0 :
             self.set_actor_state( state=21, log_msg=str(len(to_receive))+" Receiving orders " )
 
             for transaction_id in to_receive:
                 self.receive_transaction( transaction_id )
 
-        self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
-
+        if  order_priority not in ["fifo","faster" ]:
+            raise Exception("prioridades das encomendas mal configurada")
+        
         # verifica se tem encomendas para ENVIAR    #########################################
         if order_priority == "fifo":
+            self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
             while self.actor_orders_record.get_fist_open_order_id() is not False:
                 
                 order_id_to_send = self.actor_orders_record.get_fist_open_order_id()
@@ -305,6 +309,7 @@ class actor:
                     break
                 
         if order_priority == "faster":
+            self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
             def get_orders_to_send():
                 """ devovler as encomendas pendentes ordenadas por id
                 """
@@ -316,26 +321,30 @@ class actor:
                 return to_send
          
             orders_to_send = get_orders_to_send()
-        
-            for order in orders_to_send:
-                order_id = self.get_order_id(order)
-                ordered_quantity=self.get_ordered_quantity(order)
-                if self.send_transaction( order_id) :                                                       #tenta enviar
-                    continue
-              
-                elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
+            
+            if len(orders_to_send)>0:
+                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} tem para enviar {} ".format(self.id,orders_to_send))
+
+                for order in orders_to_send:
+                    order_id = self.get_order_id(order)
+                    ordered_quantity=self.get_ordered_quantity(order)
+                    logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} a tentar enviar a order {} ".format(self.id,order_id))
+                    if self.send_transaction( order_id) :                                                       #tenta enviar
+                        continue
+                    
+                    elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
+                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))        
                         continue
                         print("temp isto n devia imprimir")
-                else:
-                
-                    ordered_product= self.get_ordered_product(order)               
-                    if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
-                        if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
-                            continue
-                        else:
-                             logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ "Erro na manufatura, está a produzir abaixo do suficiente para enviar"+str(order))
-                    self.actor_orders_record.add_to_orders_waiting_stock(order_id= order_id)
-                        #to_send = self.get_open_orders()     # actualiza to_send
+                    else:
+                        ordered_product= self.get_ordered_product(order)               
+                        if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
+                            if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
+                                continue
+                            else:
+                                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ "Erro na manufatura, está a produzir abaixo do suficiente para enviar"+str(order))
+                        self.actor_orders_record.add_to_orders_waiting_stock(order_id= order_id)
+                            #to_send = self.get_open_orders()     # actualiza to_send
                         
                         
                         
@@ -378,42 +387,56 @@ class actor:
                     )
                 
 
-        if self.actor_state <= 40:
-            for product in self.products_list:
-                logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} in product list {}".format(self.id, product, self.products_list))
+        for product in self.products_list:
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} in product list {}".format(self.id, product, self.products_list))
+            self.set_actor_state( state = 42, log_msg=" cheking inventary stocks")
 
 
-                #aqui o foco muda das encomendas para a gestão de stock
-                #verifica se precisa repor stock de algum produto
-                
-                #print("temp"self.get_product_inventory(product ), self.get_product_safety_inventory(product ))
-                product_stock        = int( self.get_product_inventory(product))
-                product_safety_stock = int(self.get_product_safety_inventory(product))
-                
-                if  product_stock < product_safety_stock:
-                    logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
+            #aqui o foco muda das encomendas para a gestão de stock
+            #verifica se precisa repor stock de algum produto
+            
+            #!nota: ele só pode produzir aquilo que lhe pertece, logo só gere o stock do que pode produzir
+            
+            product_stock        = int( self.get_product_inventory(product))
+            product_safety_stock = int(self.get_product_safety_inventory(product))
+            
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} stock {} stafety stock {}".format(self.id, product, product_stock, product_safety_stock))
+            if  product_stock < product_safety_stock:
+                self.set_actor_state( state = 43, log_msg="stock inferior ao safety ")
 
-                    #verifica se pode produzir, se poder produz:
-                    if not self.manufacture_product(product, reference_quantity= product_safety_stock-product_stock):
-                        # não pode produzir, tem que encomendar
-                        #se tiver de encomendar, prepara encomenda
-                        logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF, produto" +str(product)+ " sem stock")
+                logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
 
-                        print("if",product, self.id)
-                        if str(product)[0] != str(self.id):
-                            if not self.add_to_order_today( product= product, quantity= product_safety_stock - product_stock):
+                #verifica se pode produzir, se poder produz:
+                if not self.manufacture_product(product, reference_quantity= product_safety_stock-product_stock):
+                    # não pode produzir, tem que encomendar
+                    #se tiver de encomendar, prepara encomenda
+                    logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF não consegiu manufacture_product {} sem stock, actor {}".format(str(product), self.id))
+
+                    if str(product)[0] == str(self.id):  #afere se pode produzir, para encomendar MP
+                          #prepare order:
+                        order_data= self.order_preparation(
+                            product_id=product,
+                            product_quantity= product_safety_stock-product_stock
+                            )
+                        
+                        if not self.add_to_order_today(
+                            product=order_data["product_id_to_order"],
+                            quantity=order_data["quantity_to_order"]
+                            ):
+
                             # place_order( product_id = product, quantity= product_safety_stock):
-                                raise("erro grave, não produz nem encomenda!!!!!")
+                            raise("erro grave, não produz nem encomenda!!!!!")
+                
                     
                     
-                    #logs.log(debug_msg="| FUNCTION         | actors        | manage_stock - order from actor {} to actor {} the quantity {} of the product {}".format(self.id, actor_to_order,quantity_to_order, product_id_to_order))
+                    logs.log(debug_msg="| FUNCTION         | actors        | str(product)[0] == str(self.id)  actor:{} the quantity {} of the product {}".format(self.id, product_safety_stock - product_stock, product))
 
-            self.set_actor_state(state=49, log_msg="Manage stock finished")
+        self.set_actor_state(state=49, log_msg="Manage stock finished")
         self.execute_todays_orders() #TODO verificar se isto funciona
 
         
     def execute_todays_orders(self):
-        self.set_actor_state(state=50, log_msg="executing todays orders")
+        self.set_actor_state(state=60, log_msg="executing todays orders")
 
         # try:
         if len(self.order_today)>0:
@@ -431,6 +454,8 @@ class actor:
         #             print("\n",type(key),key,type(value),value)
 
     def order_preparation(self, product_id, product_quantity):
+        """ recebe um produto e uma quantidade objectivo, 
+        devolve as encomendas necessárias para a sua preparação"""
         
         #vai buscar a composição
              
@@ -439,9 +464,9 @@ class actor:
         order_data={}
         #ver a qunatidade minima-
             #encomenda o necessário
-        print(product_id,composition)
+        # print(product_id,composition)
         for key , value in composition.items():
-            print(key,value)
+            # print(key,value)
             key=str(key)
             if key[0] == str(self.id): continue
 
@@ -455,7 +480,7 @@ class actor:
         return order_data
     
     def place_order(self, product_id, quantity):
-        self.set_actor_state(state=55, log_msg="placing orders")
+        self.set_actor_state(state=65, log_msg="placing orders")
 
         logs.log(debug_msg="| FUNCTION         | actors        | place_order from actor "+str( self.id)+"  produto "+str(product_id))
         
@@ -531,7 +556,7 @@ class actor:
         if int(stock_quantity) >= int(ordered_quantity):
             self.set_actor_state(state=33, log_msg="Product with stock")
 
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF stock_quantity > ordered_quantity order"+str(order)+" pruduct "+str(product))
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF stock_quantity > ordered_quantity order "+str(order)+" pruduct "+str(product))
 
             self.set_actor_state(state= 34, log_msg="Removing from inventary")
 
@@ -547,16 +572,28 @@ class actor:
             #envia encomendas
             logs.log(debug_msg="| FUNCTION         | actors        | send_transaction trying to send transaction order id:"+str(order_id))
             
-            transaction = self.simulation.ObejctTransationsRecords.add_transaction(
-                                                                        order_id        = order_id,
-                                                                        order_creation  = self.get_order_criation_date(order_id=order_id),
-                                                                        sender          = self.id,
-                                                                        receiver        = client,
-                                                                        quantity        = ordered_quantity,
-                                                                        product         = product,
-                                                                        deliver_date    = self.simulation.time + math.ceil( self.get_deliver_time() ),
-                                                                        sending_date    = day
-                                                                        )
+            deliver_day = self.simulation.time + math.ceil( self.get_deliver_time())
+            order_criation_day = self.get_order_criation_date(order_id=order_id)   
+                                                       
+            transaction_info={
+                "deliver_day": deliver_day,
+                "order_id": order_id,
+                "order_criation_day":order_criation_day,
+                "sending_day":day,
+                "receiver":client,
+                "sender":self.id,
+                "product":product,
+                "quantity": ordered_quantity,
+                "transit_time":None,
+                "lead_time": None,
+                "theoretical_lead": deliver_day - order_criation_day
+                    }
+
+            transaction = self.simulation.ObejctTransationsRecords.add_transaction(transaction_info)
+            
+            
+            
+            
             if transaction is False:
                 return False
                         
@@ -692,7 +729,7 @@ class actor:
         #teste para verificar que a produção n supera o inventários # para csasos em que 1u de mp origina mais de 1u de produto
         if (max_prod + present_inventory_capacity) > max_max_inventory_capacity:
             max_prod = max_max_inventory_capacity - present_inventory_capacity
-            logs.log(debug_msg="| FUNCTION         | actors        | ERRO manufacture_product produção de {} limitada a {} por limitações de stock".format(str(product), str(max_prod)))
+            logs.log(debug_msg="| FUNCTION         | actors        | ERRO manufacture_product producao de {} limitada a {} por limitacoes de stock".format(str(product), str(max_prod)))
 
         elif max_prod == 0:
             self.set_actor_state( state= 44, log_msg="actor {} Witout raw material {}".format(self.id, Limiting_reagent))
@@ -706,7 +743,8 @@ class actor:
             self.set_actor_state( state= 48, log_msg=" Manutacture finished with sucess")
             return True
 
-        raise Exception("Erro na manufatura, não returnou produção nem falta de stock")
+        #!todo rever isto
+        # raise Exception("Erro na manufatura, não returnou produção nem falta de stock")
 
     def production(self, product, quantity, recepe):
         #print( type(product), type(quantity), type(recepe))

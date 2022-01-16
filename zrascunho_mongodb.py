@@ -21,12 +21,21 @@ def get_actor_orders( actor_id):
     collection_name="orders_"+str(actor_id)
     return simulation_db[collection_name].find()
 
-#simulation_db["testes"].insert_one({"_id":1})
-for el in simulation_db["simulation_stats"].find({}):
-    id=simulation_db["simulation_stats"].find({"simulation_id"})
-    print(id)
-    mongo_client["simulation_history"]
-    
-    
-    
-print(get_collections_on_db())
+
+def drop_old_history():
+    mydb = mongo_client["simulation_history"]
+    collections=[]
+    for i in mydb.list_collections():
+        col_name=i["name"]
+        collections.append( col_name)
+        print(int(col_name)<20220116000000)
+        if int(col_name) < 20220116000000:
+            
+            mongo_client["simulation_history"][col_name].drop()
+        
+    return collections
+
+
+
+print(drop_old_history()    )
+#mongo_client["simulation_history"]["20220112_222404"].drop()

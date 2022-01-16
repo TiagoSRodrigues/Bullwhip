@@ -1,12 +1,10 @@
-d={}
+import numpy as np
+def empty_fill(n):
+    a = np.empty(n, dtype=np.int64)
+    a.fill(1)
+    return a
 
-print(d)
-d[1]=12
+print(empty_fill(10))
 
-print(d)
-d["teste"]=1001
 
-print(d)
-d[1]=d[1]+12
-print(d)
-
+print(np.ones(4))

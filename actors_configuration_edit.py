@@ -4,7 +4,7 @@ actors= {
         {
             "id": 1,
             "name": "Retailer",
-            "time_average": 10,
+            "time_average": 3,
             "time_variance": 1,
             "max_inventory": 100000,
             "products":
@@ -13,7 +13,7 @@ actors= {
                     "name": "ProductA",
                     "id": 1001,
                     "initial_stock": 50,
-                    "safety_stock": 10,
+                    "safety_stock": 0,
                     "reorder_history_size": 7,
                     "composition":
                     {
@@ -26,7 +26,7 @@ actors= {
         {
             "id": 2,
             "name": "Distributor",
-            "time_average": 10,
+            "time_average": 3,
             "time_variance": 1,
             "max_inventory": 100000,
             "products":
@@ -35,7 +35,7 @@ actors= {
                     "name": "ProductB",
                     "id": 2001,
                     "initial_stock": 200,
-                    "safety_stock": 10,
+                    "safety_stock": 0,
                     "reorder_history_size": 7,
                     "composition":
                     {
@@ -47,7 +47,7 @@ actors= {
         {
             "id": 3,
             "name": "Factory",
-            "time_average": 10,
+            "time_average": 3,
             "time_variance": 1,
             "max_inventory": 100000,
             "products":
@@ -56,7 +56,7 @@ actors= {
                     "name": "ProductC",
                     "id": 3001,
                     "initial_stock": 200,
-                    "safety_stock": 10,
+                    "safety_stock": 0,
                     "reorder_history_size": 7,
                     "composition":
                     {
@@ -68,7 +68,7 @@ actors= {
         {
             "id": 4,
             "name": "Raw Material Supplier",
-            "time_average": 10,
+            "time_average": 3,
             "time_variance": 1,
             "max_inventory": 100000,
             "products":
@@ -77,7 +77,7 @@ actors= {
                     "name": "ProductD",
                     "id": 4001,
                     "initial_stock": 200,
-                    "safety_stock": 10,
+                    "safety_stock": 0,
                     "reorder_history_size": 7,
                     "composition":
                     {
@@ -89,7 +89,7 @@ actors= {
         {
             "id": 5,
             "name": "Base Raw Material supplier",
-            "time_average": 10,
+            "time_average": 3,
             "time_variance": 1,
             "max_inventory": 9999999999,
             "products":
@@ -117,7 +117,7 @@ def Save_Configurations(actors):
     with open(sim_cfg.Configuration_backups+time.strftime("actors_configuration_file "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w") as fp:
         fp.write(json.dumps(actors,indent=4, sort_keys=True))
         
-    print("actors_configuration.yaml updated!")
+    print("actors_configuration.json updated!")
 
 Save_Configurations(actors)
 

@@ -22,31 +22,18 @@ class transactionsClass:
         #     file.write("[")
 
 
-    def add_transaction(self, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
+    def add_transaction(self, transaction_info):#, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
         self.transaction_id = self.transaction_id + 1
-        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  | transactions_id {}  sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( self.transaction_id, sender, receiver, quantity, product, deliver_date, sending_date))
-                
-        transaction_info={"deliver_day":deliver_date,
-                "order_id": order_id,
-                "order_creation": order_creation,
-                "sending_day":sending_date,
-                "receiver":receiver,
-                "sender":sender,
-                "product":product,
-                "quantity": quantity,
-                "create_day": self.simulation.time,
-          #      "delivered": Nan,
-                "transit_time":0
-                }
-        
+        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  | transactions_id {}  transaction info: {} ".format( self.transaction_id,transaction_info))
+                   
         
         values_to_add =  transaction_info
         values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
         
         #adiciona ao registo interno
-        self.open_transactions.append(values_to_add) 
+        self.open_transactions.append(values_to_add)
         
-        #adiciona à db mongodb        
+        #adiciona à db mongodb
         self.update_database( self.transaction_id, transaction_info, delivered=False)
         
         self.simulation.update_simulation_stats("transactions_opened")
@@ -64,7 +51,7 @@ class transactionsClass:
                 raise Exception
         if delivered==1:
             try:
-                self.simulation.mongo_db.update_transaction_on_db(self.transaction_id)
+                self.simulation.mongo_db.update_transaction_on_db(self.transaction_id,transaction_info )
             except:
                 raise Exception("Error, updating database")
             
@@ -77,15 +64,18 @@ class transactionsClass:
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
                 record['delivered']=1
-                record['recording_time']=self.simulation.time
+                record['update_day']=self.simulation.time
+                record['lead_time']=self.simulation.time-record['order_criation_day']
                 
-                self.delivered_transactions.append(dict(record))
+                self.delivered_transactions.append(record)
                 self.open_transactions.remove(record)
                
                 #self.add_to_orders_log(record = record) #!obsulento com a db
-                self.update_database(transaction_id,  delivered=1)
-                self.simulation.update_simulation_stats("transactions_delivered")
-
+                self.update_database(transaction_id,  delivered=1, transaction_info=record)
+                self.simulation.update_simulation_stats("transactions_delivered"
+                                                        )
+                self.simulation.mongo_db.add_to_db(colection_name="t_bkup", data=record)
+                logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id {} sucesseful record delivered ".format(str(transaction_id))) 
                 return True
 
         print("Trasaction {} not found!! in \n{}".format(transaction_id,self.open_transactions))
@@ -137,7 +127,7 @@ class transactionsClass:
         return pending_transactions
 
     def get_delivering_transactions(self, actor):
-        self.check_transactions_integrity()
+        # self.check_transactions_integrity()
         """Verifica que existe alguma encomenda no registo com dia de entrega igual ou anterior ao presente
 
         Args:

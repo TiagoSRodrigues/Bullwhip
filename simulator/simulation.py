@@ -1,5 +1,5 @@
 import inspect
-from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
+from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns, blockchian
 from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
 
@@ -24,8 +24,9 @@ class ClassSimulation:
                     "transactions_delivered":0,
                     "days_passed":0}
 
-        self.order_priority = "faster"  # prioridades: fifo, first
+        self.order_priority = "faster"  # prioridades: fifo, faster
         #create mongodb
+
 
         # Lista que guarda todos os objectos atores 
         self.actors_collection=[]
@@ -38,6 +39,7 @@ class ClassSimulation:
         
         self.mongo_db = database.MongoDB(self)
 
+        self.blockchain= blockchian.blockchain(self)
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
         logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))

@@ -31,12 +31,13 @@ class calculate_simulations_stats():
         return actor_transactions[["lead_time"]].describe()
     
     def calculate_actors_stats(self):
-        actors_collection=self.simulation.actors_collection
-        for actor in actors_collection:
-            self.db_connection.add_to_db_actor_stats(
-                stat_name="actor_"+str(actor.id),
-                stat_value=self.get_actor_stats(actor_id=actor.id))
-            #print(self.get_actor_stats(actor_id=actor.id).to_json())
+        pass
+        # actors_collection=self.simulation.actors_collection
+        # for actor in actors_collection:
+        #     self.db_connection.add_to_db_actor_stats(
+        #         stat_name="actor_"+str(actor.id),
+        #         stat_value=self.get_actor_stats(actor_id=actor.id))
+        #     #print(self.get_actor_stats(actor_id=actor.id).to_json())
             #self.add_to_db_stats
 
     def add_open_itens_to_db(self, simulation):
