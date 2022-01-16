@@ -34,6 +34,8 @@ def main(input_data, simulation):
             
             #print("Ator ativo:", actor.id)
             logs.log(debug_msg=        logs.log(debug_msg="| Started actor    | - - - - - - - | actor: {}".format( actor.id)))
+            logs.log(debug_msg=        logs.log(debug_msg="| open orders{} ".format( actor.actor_orders_record.Open_Orders_Record[0:] )))
+            logs.log(debug_msg=        logs.log(debug_msg="| inevntario {} ".format( actor.actor_inventory.main_inventory )))
             
             simulation.speed() ## SPEED
             if not actor.is_customer:

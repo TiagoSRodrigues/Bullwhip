@@ -314,7 +314,7 @@ class actor:
                 """ devovler as encomendas pendentes ordenadas por id
                 """
                 def get_id(l):
-                    return l[-2]
+                    return l[-3]
                 to_send = self.get_open_orders()
                 
                 to_send.sort(key=get_id)
@@ -333,11 +333,11 @@ class actor:
                         continue
                     
                     elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
-                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))        
+                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))
                         continue
                         print("temp isto n devia imprimir")
                     else:
-                        ordered_product= self.get_ordered_product(order)               
+                        ordered_product= self.get_ordered_product(order)
                         if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
                             if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
                                 continue
@@ -370,7 +370,7 @@ class actor:
         waiting_orders=self.actor_orders_record.get_orders_waiting_stock()
         
         if len(waiting_orders) >0:
-            self.set_actor_state( state = 41, log_msg="processing waiting_orders ")
+            self.set_actor_state( state = 41, log_msg="processing waiting_orders {}".format(waiting_orders))
 
             """ encomenda MP para satisfazer o pedido """
             for order_id in waiting_orders:
@@ -440,19 +440,17 @@ class actor:
 
         # try:
         if len(self.order_today)>0:
+            order_data={}
             for key, value in self.order_today.items():
-                
-                #verificar se já foi encomendado
-                
-                
-                
-                # print("execute",key, value)
-                self.place_order(product_id=key, quantity=value)
-        # except:
-        #     # print("\n",self.order_today,type() )
-        #     for key, value in self.order_today.items():
-        #             print("\n",type(key),key,type(value),value)
-
+                if key in order_data:
+                    order_data[key]=order_data[key]+value
+                if key not in order_data:
+                    order_data[key]=value
+                #verificar se já foi encomendado   
+                             
+            for prd, qty in order_data.items():
+                self.place_order(product_id=prd, quantity=qty)
+        
     def order_preparation(self, product_id, product_quantity):
         """ recebe um produto e uma quantidade objectivo, 
         devolve as encomendas necessárias para a sua preparação"""
@@ -535,7 +533,7 @@ class actor:
 
         order=self.actor_orders_record.get_order_by_id(order_id)
         
-        time                 = order[0]
+        #time                 = order[0]
         product              = order[1]
         ordered_quantity     = order[2]
         client               = order[3]              #  ["Time", "Product", "Qty","Client","Order_id","Status", "notes"]
@@ -857,3 +855,4 @@ class actor:
         
         #   0                 1       2       3        4        5        6
         #[ creation Time,  Product , Qty , Client , Order_id, Status, notes]
+        #       -7            -6     -5      -4        -3      - 2    -1

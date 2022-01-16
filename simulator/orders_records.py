@@ -37,29 +37,31 @@ class ClassOrdersRecord:
             return self.get_order_by_id(order_id=order_id)[0]
 
     def get_order_by_id(self, order_id):
-        order_record = False
+        # order_record = False
         records_found = 0
         for order in self.Open_Orders_Record:
             if order[-3]==order_id:
-                order_record = order
+                order_asked = order
                 records_found+=1
 
         for order in self.closed_orders_record:
             if order[-3]==order_id:
-                order_record = order
+                order_asked = order
                 records_found+=1
 
         if records_found >1:
             logs.log(debug_msg="| FUNCTION         | Orders_records| get_order_by_id  ERROR order found in two places at same time! order_id:{}  actor: {}".format(order_id, self.actor.id))
-
-        return order_record
+            raise Exception("encomenda dupicada")
+        if records_found >0:
+            return order_asked
+        return False
 
     def get_orders_waiting_stock(self):
         return  self.orders_waiting_stock
 
     def get_orders_sequence(self):
         def get_id(l):
-                return l[-2]
+                return l[-3]
             
         open_orders = self.Open_Orders_Record
         open_orders.sort(key=get_id)
@@ -158,7 +160,7 @@ class ClassOrdersRecord:
 
         def check_open_orders_sequence():
             def get_id(l):
-                return l[-2]
+                return l[-3]
             open_orders = self.Open_Orders_Record
             open_orders.sort(key=get_id)
             
@@ -196,7 +198,7 @@ class ClassOrdersRecord:
             cloed_orders= self.closed_orders_record
 
             def get_id(l):
-                return l[-2]
+                return l[-3]
                 
             open_orders.sort(key=get_id)
             cloed_orders.sort(key=get_id)
