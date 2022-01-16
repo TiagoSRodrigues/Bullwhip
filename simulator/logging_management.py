@@ -3,7 +3,7 @@ from pprint import pprint
 import logging, time, os, gc
 import simulation_configuration  as sim_cfg
 import inspect
-
+import pymongo
 ##Logging level    log detail : 50 CRITICAL  >  40 ERROR  >  30 WARNING  >   20 INFO  >   10 DEBUG  >  0 NOTSET
 
 # Vou utilizar um sistema de 3 níveis de detalhe: baixo, médio e alto
@@ -62,6 +62,15 @@ def show_function_tree():
 
 
 def log(debug_msg = None, info_msg = None, warning_msg = None):
+    
+    # if sim_cfg.log_to_db:
+    #     sim_cfg.log_id+=1
+    #     mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
+    #     simulation_db = mongo_client["simulation"]["simulation_log"].insert_one(
+    #         {"_id":sim_cfg.log_id,
+    #          "log":debug_msg})
+    
+    
     #Receive the logging level from envirement
     log_level = logging.root.level
 
@@ -179,7 +188,6 @@ def save_all_objects():
             except:
                 errors+=1
         filehandle.write( '\n and more '+str(errors)+" Errors")
-
 
 
 def pretty(d, indent=0):

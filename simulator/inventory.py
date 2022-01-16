@@ -30,7 +30,8 @@ class ClassInventory:
             
             try: self.actor.simulation.cookbook[product['id']] = product['composition']
             except:   logs.log(debug_msg="| CREATED OBJECT   | inventory     producto sem composição:"+str(product))
-
+        
+            
         if self.actor.id == 0:
             null_product={'name': 'Product_Null', 'id': 0000, 'initial_stock': 0, 'safety_stock': 0, 'reorder_history_size': 0, 'composition': {'0000': 0}, 'in_stock': 0}
             self.main_inventory[0000]=null_product
@@ -49,7 +50,7 @@ class ClassInventory:
 
 
     def add_to_inventory(self, product, quantity):
-        logs.log(debug_msg="| FUNCTION         | inventory.add_to_inventory of actor {} product {} qty {}".format(self.actor.id, product, quantity))
+        logs.log(debug_msg="| FUNCTION         | inventory     | inventory add_to_inventory of actor {} product {} qty {}".format(self.actor.id, product, quantity))
         new_product=False
 
         present_stock = self.get_product_inventory(product)
@@ -64,7 +65,7 @@ class ClassInventory:
 
         #excede a capacidade de armazenamento
         elif (self.present_capacity  + quantity) > self.max_capacity:
-            logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory    Inventory full")
+            logs.log(debug_msg="| FUNCTION         | inventory     | inventory add_to_inventory    Inventory full")
             return False
 
         #if will not pass the max inventory
@@ -74,13 +75,13 @@ class ClassInventory:
             self.actor.simulation.mongo_db.update_inventory_db(self.actor.id, product, updated_stock)
 
             #self.actor.simulation.update_global_inventory( self.actor.id ,product, quantity )                        #update the global inventory used in the dashboard
-            logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  now product added Sucess!! ")
+            logs.log(debug_msg="| FUNCTION         | inventory     | inventory add_to_inventory  now product added Sucess!! ")
             return True
         
   
         # else:
         #     print("actor {}, product {}, inventory {} ".format(type(self.actor), type(product) ,self.main_inventory[product]))
-        #     logs.log(debug_msg="| FUNCTION         | inventory     | inventory.add_to_inventory  ERROR product does not exist !! get inventory actor: {} product: {} | inventory:{} main inventory:{}".format( self.actor, product ,self.main_inventory[product['in_stock']] ,   self.main_inventory ))
+        #     logs.log(debug_msg="| FUNCTION         | inventory     | inventory add_to_inventory  ERROR product does not exist !! get inventory actor: {} product: {} | inventory:{} main inventory:{}".format( self.actor, product ,self.main_inventory[product['in_stock']] ,   self.main_inventory ))
         #     return False
 
 

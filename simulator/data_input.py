@@ -20,7 +20,7 @@ cambio_data = "n:/TESE/Bullwhip/data/input/input_data.csv"
 
 def get_input(input_type,  days=None, min=None, max=None):
     
-    if input_type is "file":
+    if input_type == "file":
         good_values, errors, values = check_input_datafile()
         
         if errors >0:
@@ -29,10 +29,10 @@ def get_input(input_type,  days=None, min=None, max=None):
             return values
         return values[-days:]
 
-    if input_type is "sequencial":
+    if input_type == "sequencial":
         np.linspace(min,max, num=max-min, endpoint=False,  dtype=int, axis=0)
             
-    if input_type is "triangular":
+    if input_type == "triangular":
         values = []
         slope  = 1
         x = min

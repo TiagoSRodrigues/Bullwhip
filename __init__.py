@@ -1,4 +1,6 @@
 import sys,  pandas as pd, numpy as np, time, os, gc
+
+import inspect
 import simulation_configuration as sim_cfg
 if sim_cfg.print_log_in_terminal: os.system('cls' if os.name == 'nt' else 'clear')
 gc.collect()
@@ -11,10 +13,10 @@ argments=sys.argv
 
 if len(argments)==3:
     days_simulated = int(sys.argv[1])
-    sleep_time = int(sys.argv[2])
+    sleep_time = float(sys.argv[2])
 if len(argments)==3:
     days_simulated = int(sys.argv[1])
-    sleep_time = int(sys.argv[2])
+    sleep_time = float(sys.argv[2])
 if len(argments)==2:
     days_simulated = int(sys.argv[1])
     sleep_time = 0
@@ -45,6 +47,8 @@ logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.si
 #Cria atores
 ObjectActors = Object_Simulation.create_actors( actors_configuration_file = sim_cfg.actors_configuration_file)
 
+
+Object_Simulation.mongo_db.add_to_db(colection_name="simulation_stats", data={"_id":"cookbook","value":str(Object_Simulation.cookbook)})
 #prepara input
 # input = data_input.get_input(days=days_simulated,min=1,max=10)
 
@@ -56,10 +60,11 @@ input = data_input.get_input( input_type = "triangular", days=days_simulated, mi
 RUN SIMULATION
 
 """
-
-main.main(input_data=input, simulation=Object_Simulation)
-
-
+try:
+    main.main(input_data=input, simulation=Object_Simulation)
+except:
+    ee.play_error_sound()
+    raise Exception(inspect.stack())
 
 
 # """
@@ -90,7 +95,8 @@ simulation_stats.db_connection.save_stats( Object_Simulation.simulation_id)
 #termina simulação
 Object_Simulation.change_simulation_status(status=99)
 #registos de tempos e final 
+
 if sim_cfg.print_log_in_terminal:  ee.print_sucess()
 if sim_cfg.print_log_in_terminal: print("Run in "+str(time.perf_counter()-start_time))
 logs.log(info_msg="--->   Simulation Ended   <----")
-
+ee.play_final_sound()

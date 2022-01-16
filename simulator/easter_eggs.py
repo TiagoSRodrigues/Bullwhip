@@ -12,3 +12,16 @@ def print_sucess():
     ███████║╚██████╔╝╚██████╗███████╗███████║███████║╚██████╔╝  ██╗ ██╗ ██╗ \n\
     ╚══════╝ ╚═════╝  ╚═════╝╚══════╝╚══════╝╚══════╝ ╚═════╝   ╚═╝ ╚═╝ ╚═╝ \n\
                                                                             \n")        
+        
+        
+def play_final_sound():
+    from playsound import playsound
+
+    path="N:\\TESE\\Bullwhip\\data\\audio\\super_mario_stage_clear.mp3"
+    playsound(path)
+        
+def play_error_sound():
+    from playsound import playsound
+
+    path="N:\\TESE\\Bullwhip\\data\\audio\\super_mario_dies.mp3"
+    playsound(path)

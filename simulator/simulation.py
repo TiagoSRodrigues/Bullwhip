@@ -24,15 +24,8 @@ class ClassSimulation:
                     "transactions_delivered":0,
                     "days_passed":0}
 
-        self.order_priority = "first"  # prioridades: fifo, first
+        self.order_priority = "faster"  # prioridades: fifo, first
         #create mongodb
-        self.mongo_db = database.MongoDB(self)
-
-        #create supply chain
-        self.Object_supply_chain=sc.ClassSupplyChain(self)
-        logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
-
-        self.ObejctTransationsRecords = tns.transactionsClass(self)
 
         # Lista que guarda todos os objectos atores 
         self.actors_collection=[]
@@ -43,7 +36,14 @@ class ClassSimulation:
 
         self.cookbook = {}
         
-        
+        self.mongo_db = database.MongoDB(self)
+
+        #create supply chain
+        self.Object_supply_chain=sc.ClassSupplyChain(self)
+        logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
+
+        self.ObejctTransationsRecords = tns.transactionsClass(self)
+
         
         self.mongo_db.create_db_stats_document(self.simulation_id)
 
@@ -185,7 +185,7 @@ class ClassSimulation:
             # print("inventory",inventory)
             self.global_inventory = inventory_dict
             
-            logs.log(debug_msg="| Refreshed Inventory| Simulation    | Updating Global Inventory :{}".format(inventory))
+            
             return True
         except:
             raise Exception("Erro no update global inventory")

@@ -17,12 +17,13 @@ class ClassSupplyChain:
         self.simulation = simulation
         self.supply_chain_structure = []
         self.supply_chain_id="sc_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))  
-        self.end_of_chain_actors =[5] 
+        self.end_of_chain_actors =[] #TODO tinha aqui um 5, verificar se ao remove-lo n estragou nada
 
         logs.log(info_msg="| CREATED OBJECT   | Supply chain  id:"+str(self.supply_chain_id)) 
 
     def add_to_supply_chain(self,actor):
         self.supply_chain_structure.append(actor)
+        # print("add,",self.supply_chain_structure, self.end_of_chain_actors, self.get_end_of_chain_actors())
         logs.log(debug_msg="| FUNCTION         | supply_chain.add_to_supply_chain"+str(actor))
         
     def show_supply_chain(self):
@@ -32,7 +33,7 @@ class ClassSupplyChain:
         return self.supply_chain_structure
 
     def get_end_of_chain_actors(self):
-        return [max(self.end_of_chain_actors)]
+        return [max(self.supply_chain_structure)]
 
         #isto não está rubusto apenas funciona para SC lineares 
         #a função devia devolver uma lista dos elementos de fim de cadeia (que devem ter um inventário infinto)

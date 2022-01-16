@@ -1,7 +1,3 @@
-import re
-from typing_extensions import runtime
-from pymongo import collection
-import redis
 import pymongo
 import inspect
 import csv, json
@@ -21,7 +17,8 @@ class MongoDB:
         
         self.simulation_history = self.mongo_client["simulation_history"]
         if drop_history:
-            self.drop_database()
+            self.add_to_db_log(self.mongo_client.drop_database("simulation"))
+            # self.drop_database()
 
         #self.actors_collection = self.simulation_db["actors"]
         """
@@ -31,11 +28,11 @@ class MongoDB:
         for doc in self.simulation_db["simulation_stats"].find({}):
                 self.simulation_history[simulation_id].insert_one(doc)
         
-    def drop_database(self):
-        """elimina as dbs resultantes de simulações anteriores"""
-        database_list = self.mongo_client.database_names()
-        if 'simulation' in database_list:
-            self.add_to_db_log(self.mongo_client.drop_database("simulation"))
+    # def drop_database(self):
+    #     """elimina as dbs resultantes de simulações anteriores"""
+    #     database_list = self.mongo_client.database_names()
+    #     if 'simulation' in database_list:
+    #         self.add_to_db_log(self.mongo_client.drop_database("simulation"))
 
     """
     transactions
@@ -150,7 +147,7 @@ class MongoDB:
 
         else:
             self.add_to_db_log(
-                self.simulation_db[collection_name].update(
+                self.simulation_db[collection_name].update_one(
                     {"_id":product},{"$set":{"quantity":quantity, "last_update":self.simulation.time}}
                 )
             )
@@ -190,6 +187,8 @@ class MongoDB:
               "action":inspect.stack()[1][3],
               "response":str(response)}
         self.simulation_db["db_log"].insert_one(data)
+
+
 
     def create_db_stats_document(self, simulation_id):
         fist_data={"_id":simulation_id,
@@ -264,6 +263,9 @@ class MongoDB:
     def add_to_db_stats_log(self, stat_value):
         data=stat_value
         self.simulation_db["db_stats_log"].insert_one(data)
+
+    def add_to_db(self, colection_name, data):
+        self.simulation_db[colection_name].insert_one(data)
 
     def export_db(self, collection_name="db_log"):
         myquery = self.simulation_db["db_log"].find() # I am getting everything !

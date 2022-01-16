@@ -12,24 +12,14 @@ actors= {
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 1000,
+                    "initial_stock": 50,
                     "safety_stock": 10,
                     "reorder_history_size": 7,
                     "composition":
                     {
-                        2001: 1,
+                        2001: 1
                     }
-                },  {
-                    "name": "ProductAB",
-                    "id": 2001,
-                    "initial_stock": 500,
-                    "safety_stock": 10,
-                    "reorder_history_size": 7,
-                    "composition":
-                    {
-                        3001: 1,
-                    }
-                },
+                }  
               
             ]
         },
@@ -44,7 +34,7 @@ actors= {
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 500,
+                    "initial_stock": 200,
                     "safety_stock": 10,
                     "reorder_history_size": 7,
                     "composition":
@@ -65,7 +55,7 @@ actors= {
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 500,
+                    "initial_stock": 200,
                     "safety_stock": 10,
                     "reorder_history_size": 7,
                     "composition":
@@ -86,7 +76,7 @@ actors= {
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 500,
+                    "initial_stock": 200,
                     "safety_stock": 10,
                     "reorder_history_size": 7,
                     "composition":

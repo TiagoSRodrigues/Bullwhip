@@ -107,6 +107,8 @@ class ClassOrdersRecord:
                 order[-2] = status
             
     def refresh_orders_waiting_stock(self):
+        logs.log(debug_msg="| FUNCTION         | Orders_records| Refresh waiting orders")
+
         new_list=[]
         for waiting_order_id in self.orders_waiting_stock:
             for open_order in self.Open_Orders_Record:
@@ -115,10 +117,10 @@ class ClassOrdersRecord:
                     new_list.append(waiting_order_id)
         
         self.orders_waiting_stock = new_list
-        
+        # print("templ",new_list)
     
     def add_to_open_orders(self,  product, qty, client, notes={}):
-        logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + "from " + str(self.actor) + " Client: "+ str(client))
+        logs.log(debug_msg="| FUNCTION         | Orders_records| add_to_open_orders with parameters: time:" + str(self.actor.simulation.time ) + " product: "+ str(product) + " Qty " + str(qty) + "from " + str(self.actor.id) + " Client: "+ str(client))
         # actor_id = self.actor
                 
         self.last_order_id = self.last_order_id + 1   #! Está aqui um possivel erro, last order_id = last_order+1, mas tmb pode estar certo
@@ -136,7 +138,7 @@ class ClassOrdersRecord:
         self.Open_Orders_Record.append(to_add)
         self.actor.simulation.update_simulation_stats("orders_opened")
 
-        logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor, qty, product, client))
+        logs.log(debug_msg="| ORDERED ADDED    | Orders_records| Order added to {} of qty {} of Product:{} ordered from:{}".format(self.actor.id, qty, product, client))
         
 
         self.actor.simulation.mongo_db.add_order_to_db(actor_id = self.actor.id,

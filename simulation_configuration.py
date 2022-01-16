@@ -20,8 +20,8 @@ transactions_record_file = directory_path + '//data//records//transactions_recor
 
 inventory_file = directory_path + '//data//records//inventory_file.json'
 
-
-
+log_to_db=True
+log_id=0
 
 #Max number of logs to save, if all = False 
 nr_of_log_to_save= 10

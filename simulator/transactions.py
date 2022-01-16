@@ -1,3 +1,4 @@
+import inspect
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
 logs.log(debug_msg="Started transactions.py")
@@ -11,19 +12,19 @@ class transactionsClass:
     this class handle any transactions action"""
     def __init__(self, simulation):
         self.open_transactions =  []
-        self.delivered_transactions =[]     
-        self.transaction_id = 0 
+        self.delivered_transactions =[]
+        self.transaction_id = 0
         self.simulation = simulation
         
         #Start transaction log
-        with open(sim_cfg.transactions_record_file, 'a') as file:
-            # file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
-            file.write("[")
+        # with open(sim_cfg.transactions_record_file, 'a') as file:
+        #     # file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
+        #     file.write("[")
 
 
     def add_transaction(self, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
-        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
         self.transaction_id = self.transaction_id + 1
+        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  | transactions_id {}  sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( self.transaction_id, sender, receiver, quantity, product, deliver_date, sending_date))
                 
         transaction_info={"deliver_day":deliver_date,
                 "order_id": order_id,
@@ -78,7 +79,7 @@ class transactionsClass:
                 record['delivered']=1
                 record['recording_time']=self.simulation.time
                 
-                self.delivered_transactions.append(record)
+                self.delivered_transactions.append(dict(record))
                 self.open_transactions.remove(record)
                
                 #self.add_to_orders_log(record = record) #!obsulento com a db
@@ -124,7 +125,7 @@ class transactionsClass:
     def get_todays_transactions(self, actor):
         """ Este método está obsuleto, não deve ser utilizado, pode deixar encomendas atrasadas no limbo
         """
-        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
 
         pending_transactions=[]
 
@@ -136,6 +137,7 @@ class transactionsClass:
         return pending_transactions
 
     def get_delivering_transactions(self, actor):
+        self.check_transactions_integrity()
         """Verifica que existe alguma encomenda no registo com dia de entrega igual ou anterior ao presente
 
         Args:
@@ -144,7 +146,7 @@ class transactionsClass:
         Returns:
             list: lsita com id das transações transações
         """
-        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
 
         pending_transactions=[]
 
@@ -153,8 +155,8 @@ class transactionsClass:
             if (record['deliver_day'] <= self.simulation.time ) and  (record['receiver'] == actor.id):
                 pending_transactions.append(record['transaction_id'])
                 # print(record)
-                if record['deliver_day'] >= record['order_creation']:
-                    print(actor.id,"->" ,record)
+                    # if record['deliver_day'] >= record['order_creation']:
+                    #     print(actor.id,"->" ,record)
         return pending_transactions
 
 
@@ -186,14 +188,21 @@ class transactionsClass:
 
                 customer.receive_transaction( transaction_info["transaction_id"])
                 
-                self.record_delivered(trans)
                 logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
      
         except:
             print(">>>>>>>>",transactions_to_deliver)
             print(self.open_transactions)
             raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
-            
+    
+    def check_transactions_integrity(self):
+        open=self.open_transactions
+        delivered=self.delivered_transactions
+        id=self.transaction_id
+        today=self.simulation.time
+        for el in open:
+            if el["deliver_day"] < today:
+                print("check_transactions_integrity",el) 
 
 ##############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor           #

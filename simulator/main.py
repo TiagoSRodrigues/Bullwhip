@@ -23,7 +23,10 @@ def main(input_data, simulation):
 
 
         simulation.reset_all_actors_status()
-        logs.log(info_msg="day "+str(simulation.time) +"\n")
+        logs.log(info_msg="|")
+        logs.log(info_msg="|      Day "+str(simulation.time) )
+        logs.log(info_msg="|")
+        logs.log(info_msg="|    ")
 
         first_element.receive_order(supplier=int(first_element.id), quantity = int(quantity), product=1001, client = 0  )
 
