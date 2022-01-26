@@ -5,7 +5,7 @@ import numpy as np
 # from.import logging_management as logs
 
 
-cambio_data = "n:/TESE/Bullwhip/data/input/input_data.csv"
+cambio_data = "n:/TESE/Bullwhip/data/input/data_amplified.csv"
 
 # with open(file_path,"r") as csvfile:
 #     data = csv.reader(csvfile, delimiter=',')
@@ -21,6 +21,12 @@ cambio_data = "n:/TESE/Bullwhip/data/input/input_data.csv"
 def get_input(input_type,  days=None, min=None, max=None):
     
     if input_type == "file":
+        values=get_raw_data()
+        if days is None:
+            return values
+        return values[-days:]
+        
+    if input_type == "file_old":
         good_values, errors, values = check_input_datafile()
         
         if errors >0:
@@ -59,7 +65,13 @@ def get_input(input_type,  days=None, min=None, max=None):
     return values
 
     
-
+def get_raw_data():    
+    from numpy import genfromtxt
+    data = genfromtxt(cambio_data, delimiter='')
+    data=data[~np.isnan(data)]
+    return data
+    
+    
 def check_input_datafile():
     def better_round(value):
         if value%1 *10 < 5:

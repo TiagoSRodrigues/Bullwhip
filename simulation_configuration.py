@@ -24,7 +24,7 @@ log_to_db=True
 log_id=0
 
 #Max number of logs to save, if all = False 
-nr_of_log_to_save= 10
+nr_of_log_to_save= 30
 
 #Define if the logs are printed in the terminal while running
 print_log_in_terminal=True

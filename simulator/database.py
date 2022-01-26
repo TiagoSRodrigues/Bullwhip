@@ -20,6 +20,9 @@ class MongoDB:
             self.add_to_db_log(self.mongo_client.drop_database("simulation"))
             # self.drop_database()
 
+        
+        self.sim_actors_collection = self.simulation.actors_collection
+
         #self.actors_collection = self.simulation_db["actors"]
         """
         self.inventory_collection = self.simulation_db["inventory"]
@@ -126,6 +129,34 @@ class MongoDB:
     """
     INVENTORY
     """
+    def add_to_inventory_snapshot(self):
+        logs.log(debug_msg="| Database         |add_to_inventory_snapshot | Order"  )
+
+        inventory_dic={"_id": str(self.simulation.time),"inventory":{}}
+
+        for actor in self.sim_actors_collection:
+            # print(actor.actor_inventory.main_inventory)
+            actor_inv= {}
+            for key, value in actor.actor_inventory.main_inventory.items():
+                # if type(value)== type(np.int32()):value=int(value)
+                
+                if isinstance( value, dict):
+                    value_dict={}
+                    for sub_key, sub_value in value.items():
+                        # print(sub_value, type ( sub_value))
+                        # if type(sub_value)== type(np.int32()): value=int(sub_value)
+                        if isinstance( sub_value, dict):
+                            pass
+            
+            actor_inv[str(key)] = value
+                
+            # del actor_inv[str(key)]["composition"]
+            # print(actor_inv)
+            
+            inventory_dic["inventory"][str(actor.id)]=actor_inv
+        self.simulation_db["inventory_snapshot"].insert_one(inventory_dic )
+
+    
     def update_inventory_db(self,actor_id, product, quantity):
         #logs.log(debug_msg="| Database         |add to inventory| Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
 

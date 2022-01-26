@@ -33,7 +33,7 @@ class ClassInventory:
         
             
         if self.actor.id == 0:
-            null_product={'name': 'Product_Null', 'id': 0000, 'initial_stock': 0, 'safety_stock': 0, 'reorder_history_size': 0, 'composition': {'0000': 0}, 'in_stock': 0}
+            null_product={'name': 'Product_Null', 'id': 0000, 'initial_stock': 0, 'safety_stock': 0,  'composition': {'0000': 0}, 'in_stock': 0}
             self.main_inventory[0000]=null_product
             self.actor.simulation.mongo_db.update_inventory_db(actor_id=0, product=0, quantity=0)
         
@@ -47,6 +47,8 @@ class ClassInventory:
     #         #self.actor.simulation.update_global_inventory( self.actor.id ,product['id'], product['in_stock'] )
     #         self.actor.simulation.mongo_db.update_inventory_db(actor_id=self.actor.id, product=product['id'], quantity=product['in_stock'])
     #     self.actor.simulation.mongo_db.update_inventory_db(actor_id=0, product=0, quantity=0)
+
+
 
 
     def add_to_inventory(self, product, quantity):
@@ -163,7 +165,16 @@ class ClassInventory:
         return True
 
 
+    def set_product_safety_inventory(self, product_id, quantity):
+        logs.log(debug_msg="| FUNCTION         | inventory     | set_product_safety_inventory  actor{} product {} qty {}".format(self.actor.id, product_id, quantity ))
 
+        try:     
+            self.main_inventory[product_id]["safety_stock"] = quantity
+            return True
+        except:
+            print("get_product_safety_inventory error:", self.main_inventory)
+            logs.log(warning_msg="Error on get_product_safety_inventory, check product id "+str(product_id))
+            print("Error on get_product_safety_inventory")
 
 
     def get_product_safety_inventory(self, product_id):
@@ -177,14 +188,14 @@ class ClassInventory:
             print("Error on get_product_safety_inventory")
 
 
-    def get_product_reorder_history_size(self, product_id):
-        logs.log(debug_msg="| FUNCTION         | inventory     | get_product_reorder_history_size " + str( self.actor.id)+' product '+str(product_id))
+    # def get_product_reorder_history_size(self, product_id):
+    #     logs.log(debug_msg="| FUNCTION         | inventory     | get_product_reorder_history_size " + str( self.actor.id)+' product '+str(product_id))
 
-        try:
-            print("YYYYYYYYYYY",self.main_inventory[product_id]["reorder_history_size"])     
-            return self.main_inventory[product_id]["reorder_history_size"]
-        except:
-            logs.log(warning_msg="Error on get_product_reorder_history_size, check product id "+str(product_id))
+    #     try:
+    #         print("YYYYYYYYYYY",self.main_inventory[product_id]["reorder_history_size"])     
+    #         return self.main_inventory[product_id]["reorder_history_size"]
+    #     except:
+    #         logs.log(warning_msg="Error on get_product_reorder_history_size, check product id "+str(product_id))
 
     def refresh_inventory_capacity(self):
         logs.log(debug_msg="| FUNCTION         | inventory     | get_product_inventory "+str( self.actor.id))

@@ -4,17 +4,18 @@ actors= {
         {
             "id": 1,
             "name": "Retailer",
-            "time_average": 3,
-            "time_variance": 1,
-            "max_inventory": 100000,
+            "time_average": 10,
+            "time_deviation": 3,
+            "max_inventory": 1000000,
+            "safety_factor": 2.33,
+            "reorder_history_size":90,
             "products":
             [
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 50,
+                    "initial_stock": 13648,
                     "safety_stock": 0,
-                    "reorder_history_size": 7,
                     "composition":
                     {
                         2001: 1
@@ -26,17 +27,18 @@ actors= {
         {
             "id": 2,
             "name": "Distributor",
-            "time_average": 3,
-            "time_variance": 1,
-            "max_inventory": 100000,
+            "time_average": 10,
+            "time_deviation": 3,
+            "max_inventory": 1000000,
+            "safety_factor": 2.33,
+            "reorder_history_size":90,
             "products":
             [
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 200,
+                    "initial_stock": 13648,
                     "safety_stock": 0,
-                    "reorder_history_size": 7,
                     "composition":
                     {
                         3001: 1
@@ -47,17 +49,18 @@ actors= {
         {
             "id": 3,
             "name": "Factory",
-            "time_average": 3,
-            "time_variance": 1,
-            "max_inventory": 100000,
+            "time_average": 10,
+            "time_deviation": 3,
+            "max_inventory": 1000000,
+            "safety_factor": 2.33,
+            "reorder_history_size":90,
             "products":
             [
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 200,
+                    "initial_stock": 13648,
                     "safety_stock": 0,
-                    "reorder_history_size": 7,
                     "composition":
                     {
                         4001: 1
@@ -68,17 +71,18 @@ actors= {
         {
             "id": 4,
             "name": "Raw Material Supplier",
-            "time_average": 3,
-            "time_variance": 1,
-            "max_inventory": 100000,
+            "time_average": 10,
+            "time_deviation": 3,
+            "max_inventory": 1000000,
+            "safety_factor": 2.33,
+            "reorder_history_size":90,
             "products":
             [
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 200,
+                    "initial_stock": 13648,
                     "safety_stock": 0,
-                    "reorder_history_size": 7,
                     "composition":
                     {
                         5001: 1
@@ -89,15 +93,17 @@ actors= {
         {
             "id": 5,
             "name": "Base Raw Material supplier",
-            "time_average": 3,
-            "time_variance": 1,
+            "time_average": 10,
+            "time_deviation": 3,
             "max_inventory": 9999999999,
+            "safety_factor": 2.33,
+            "reorder_history_size":90,
             "products":
             [
                 {
                     "name": "ProductE",
                     "id": 5001,
-                    "initial_stock": 1,
+                    "initial_stock": 9999999999,
                     "safety_stock": 1,
                     "reorder_history_size": 7
                 }

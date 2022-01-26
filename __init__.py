@@ -12,14 +12,23 @@ from simulator import database
 argments=sys.argv
 
 if len(argments)==3:
-    days_simulated = int(sys.argv[1])
+    days_simulated = sys.argv[1]
     sleep_time = float(sys.argv[2])
-if len(argments)==3:
-    days_simulated = int(sys.argv[1])
-    sleep_time = float(sys.argv[2])
+    if days_simulated == "max":
+        days_simulated = None
+    else:
+        days_simulated=int(days_simulated)
+
+
 if len(argments)==2:
-    days_simulated = int(sys.argv[1])
+    days_simulated = sys.argv[1]
     sleep_time = 0
+    
+    if days_simulated == "max":
+        days_simulated = None
+    else:
+        days_simulated=int(days_simulated)    
+    
 if len(argments)==1:
     days_simulated = 365
     sleep_time = 0
@@ -36,8 +45,8 @@ sim_cfg.print_log_in_terminal=True
 if sim_cfg.print_log_in_terminal: ee.print_start(sim_cfg.Logging_level)
 
 
-#Cria simulação 
-Object_Simulation=simulation.ClassSimulation()
+#Cria simulação
+Object_Simulation=simulation.ClassSimulation(stock_management_mode = 1) # Modos | traditional = 1 | Machine learnning = 2 | blockchain = 3  |
 Object_Simulation.sleep_time=sleep_time
 logs.log(info_msg="| CREATED OBJECT   | Simulation    "+str(Object_Simulation.simulation_id))
 
@@ -52,8 +61,8 @@ Object_Simulation.mongo_db.add_to_db(colection_name="simulation_stats", data={"_
 #prepara input
 # input = data_input.get_input(days=days_simulated,min=1,max=10)
 
-input = data_input.get_input( input_type = "file", days=days_simulated)
-
+# input = data_input.get_input( input_type = "constant" , days=days_simulated, min=1)
+input = data_input.get_input( input_type = "file" , days=days_simulated)
 
 """
 
@@ -96,7 +105,10 @@ simulation_stats.db_connection.save_stats( Object_Simulation.simulation_id)
 Object_Simulation.change_simulation_status(status=99)
 #registos de tempos e final 
 
-if sim_cfg.print_log_in_terminal:  ee.print_sucess()
-if sim_cfg.print_log_in_terminal: print("Run in "+str(time.perf_counter()-start_time))
+
+
+if sim_cfg.print_log_in_terminal:ee.final_prints(start_time)
+
 logs.log(info_msg="--->   Simulation Ended   <----")
-ee.play_final_sound()
+# ee.play_final_sound()
+ 

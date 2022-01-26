@@ -3,7 +3,6 @@ from pprint import pprint
 import logging, time, os, gc
 import simulation_configuration  as sim_cfg
 import inspect
-import pymongo
 ##Logging level    log detail : 50 CRITICAL  >  40 ERROR  >  30 WARNING  >   20 INFO  >   10 DEBUG  >  0 NOTSET
 
 # Vou utilizar um sistema de 3 níveis de detalhe: baixo, médio e alto
@@ -12,46 +11,50 @@ import pymongo
 # alto:  level == DEBUG   == 10 Regista todos os eventos da simulação
 
 #create the log file
-logging.basicConfig(filename=sim_cfg.logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+'.log', 
+
+
+
+logging.basicConfig(filename=sim_cfg.logs_file_location+'log_'+time.strftime("%Y%m%d_%H-%M-%S",
+                                                                             time.localtime())+'.log',
         level=sim_cfg.Logging_level,
          format='%(asctime)s %(levelname)s %(message)s')
 
-#getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")  #!APAGAR se n der problemas
+# getattr(logging, sim_cfg.Logging_level.lower() )("--->   Simulation Started   <----")  #!APAGAR se n der problemas
 
-def new_log(action, args="", notes=""):
-    """Automaticamente cria um registo de log com a seguinte estrutura:
-    |                    |                              |                                       |                                 |                       |
-    |<-------20--------->|<------------30-------------->|<------------- variável -------------->|<--------    variável  --------->|                       |
-    |    file name       |      called_function         |         calling_funcion               |               args              |        notes          |
+# def new_log(action, args="", notes=""):
+#     """Automaticamente cria um registo de log com a seguinte estrutura:
+#     |                    |                              |                                       |                                 |                       |
+#     |<-------20--------->|<------------30-------------->|<------------- variável -------------->|<--------    variável  --------->|                       |
+#     |    file name       |      called_function         |         calling_funcion               |               args              |        notes          |
 
-    """
-    log_level = logging.root.level
-    print("\n\n\n\n\n")
-    for el in inspect.stack():
-        print(el)
+#     """
+#     log_level = logging.root.level
+#     print("\n\n\n\n\n")
+#     for el in inspect.stack():
+#         print(el)
     
     
-    """
-    called_function=inspect.stack()[0][3]
-    calling_funcion=inspect.stack()[1][3]
-    frame = inspect.stack()[1]
-    module = inspect.getmodule(frame[0])
-    file_name = module.__file__.split("\\")[-1]
+#     """
+#     called_function=inspect.stack()[0][3]
+#     calling_funcion=inspect.stack()[1][3]
+#     frame = inspect.stack()[1]
+#     module = inspect.getmodule(frame[0])
+#     file_name = module.__file__.split("\\")[-1]
     
-    colummn_size=30
-    #string sizes
-    file_size, action_size, args_size, notes_size = len(file_name),len(action),len(args),len(notes)
-    if (file_size or action_size) > colummn_size:
-        print("WARNNING! log size is too big", file_size, action_size)
+#     colummn_size=30
+#     #string sizes
+#     file_size, action_size, args_size, notes_size = len(file_name),len(action),len(args),len(notes)
+#     if (file_size or action_size) > colummn_size:
+#         print("WARNNING! log size is too big", file_size, action_size)
     
-    record_str="| {}{}| {}{}| {}{}| {} | {}|".format(file_name, (20-file_size)*" ",
-                                                called_function, (colummn_size-action_size)*" ",
-                                                calling_funcion, (colummn_size-action_size)*" ",
-                                                args, notes )
+#     record_str="| {}{}| {}{}| {}{}| {} | {}|".format(file_name, (20-file_size)*" ",
+#                                                 called_function, (colummn_size-action_size)*" ",
+#                                                 calling_funcion, (colummn_size-action_size)*" ",
+#                                                 args, notes )
     
-    logging.debug(record_str)
-    print(record_str)
-    """
+#     logging.debug(record_str)
+#     print(record_str)
+#     """
 def show_function_tree():
     function_tree=[]
     for el in inspect.stack():
@@ -107,6 +110,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
             logging.warning(str(warning_msg))
         if info_msg != None:
             logging.info(str(info_msg))
+
 
 
 
