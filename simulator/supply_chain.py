@@ -1,4 +1,3 @@
-from types import MemberDescriptorType
 from . import logging_management as logs
 import datetime
 
