@@ -1,11 +1,12 @@
 # from simulation_configuration import source_data
 import datetime, pandas as pd, random
+import sys
 import math
 import numpy as np
 # from.import logging_management as logs
 
 
-cambio_data = "n:/TESE/Bullwhip/data/input/data_amplified.csv"
+
 
 # with open(file_path,"r") as csvfile:
 #     data = csv.reader(csvfile, delimiter=',')
@@ -18,10 +19,10 @@ cambio_data = "n:/TESE/Bullwhip/data/input/data_amplified.csv"
 # print(df.describe())
 
 
-def get_input(input_type,  days=None, min=None, max=None):
+def get_input(input_type,  days=None, min=None, max=None, filename=None):
     
     if input_type == "file":
-        values=get_raw_data()
+        values=get_raw_data(filename)
         if days is None:
             return values
         return values[-days:]
@@ -65,9 +66,14 @@ def get_input(input_type,  days=None, min=None, max=None):
     return values
 
     
-def get_raw_data():    
+def get_raw_data(filename):
+    if "real" in filename:
+        filepath = sys.path[0] + "/data/input/real_data_interpolated.csv"
+    else:
+        filepath = sys.path[0] + "/data/input/data_amplified.csv"
+
     from numpy import genfromtxt
-    data = genfromtxt(cambio_data, delimiter='')
+    data = genfromtxt(filepath, delimiter='')
     data=data[~np.isnan(data)]
     return data
     

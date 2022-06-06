@@ -1,7 +1,4 @@
-from logging import exception
 import math
-from aiohttp import client
-from matplotlib.pyplot import get
 import numpy
 
 from simulator import simulation
@@ -93,7 +90,7 @@ class actor:
     def remove_from_stock_scheduled_to_arrive(self,product_id, quantity):
         logs.log(debug_msg="| scheduler        | actors        |  remove_from_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
 
-        # print("(-> id ", self.id,"prd", product_id,"qty", quantity)
+        # print("(-> id ", self.id,"prd", product_id,"qty", quantity)0
         if self.id != 0:
             self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]-quantity
 

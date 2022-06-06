@@ -1,9 +1,13 @@
+import os
+from time import sleep
 import pymongo
 import inspect
 import csv, json
 from . import logging_management as logs
 import numpy as np
 import pandas as pd
+# import docker
+
 class MongoDB:
     def __init__(self, simulation, drop_history=True):
         self.simulation=simulation
@@ -12,7 +16,12 @@ class MongoDB:
         Apaga as DB anteriores
         Cria as collections
         """
+        logs.log(debug_msg="| Connecting to database Connected!        ")
         self.mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
+        
+        self.check_connection()
+
+            
         self.simulation_db = self.mongo_client["simulation"]
         
         self.simulation_history = self.mongo_client["simulation_history"]
@@ -27,6 +36,7 @@ class MongoDB:
         """
         self.inventory_collection = self.simulation_db["inventory"]
         """
+
     def save_stats(self, simulation_id):
         for doc in self.simulation_db["simulation_stats"].find({}):
                 self.simulation_history[simulation_id].insert_one(doc)
@@ -200,10 +210,16 @@ class MongoDB:
     def check_connection(self):
         """check connection"""
         try:
-            if self.mongo_client.server_info():
-                return True
+            self.mongo_client.server_info()
+            logs.log(debug_msg="| Database Connected! ")
+            
         except:
-            print("Erro no Mongo DB")
+            logs.log(debug_msg="| ERROR on database Conection!!!       ")
+            print("Error on MongoDB connection ")
+            print(" START THE DOCKER CONTAINER!!!")
+
+
+        
             
     def get_document_by_id(self, doc_collection, doc_id):
         self.add_to_db_log("get document from {} with id:{}".format(doc_collection, doc_id))

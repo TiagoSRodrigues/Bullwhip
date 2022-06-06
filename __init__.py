@@ -1,3 +1,4 @@
+from fileinput import filename
 import sys,  pandas as pd, numpy as np, time, os, gc
 
 import inspect
@@ -62,7 +63,7 @@ Object_Simulation.mongo_db.add_to_db(colection_name="simulation_stats", data={"_
 # input = data_input.get_input(days=days_simulated,min=1,max=10)
 
 # input = data_input.get_input( input_type = "constant" , days=days_simulated, min=1)
-input = data_input.get_input( input_type = "file" , days=days_simulated)
+input = data_input.get_input( input_type = "file" , days=days_simulated, filename="real_data_interpolated.csv" )
 
 """
 
@@ -111,4 +112,5 @@ if sim_cfg.print_log_in_terminal:ee.final_prints(start_time)
 
 logs.log(info_msg="--->   Simulation Ended   <----")
 # ee.play_final_sound()
+ 
  
