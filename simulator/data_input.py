@@ -41,8 +41,6 @@ def get_input(input_type,  days=None, min=None, max=None, filename=None):
         a.fill(min)
         return a
 
-    
-    
     if input_type == "sequencial":
         np.linspace(min,max, num=max-min, endpoint=False,  dtype=int, axis=0)
             
@@ -72,8 +70,8 @@ def get_raw_data(filename):
     else:
         filepath = sys.path[0] + "/data/input/data_amplified.csv"
 
-    from numpy import genfromtxt
-    data = genfromtxt(filepath, delimiter='')
+    # from numpy import genfromtxt
+    data = np.genfromtxt(filepath, delimiter='')
     data=data[~np.isnan(data)]
     return data
     

@@ -1,4 +1,9 @@
-import  os
+""" This document contains the base configuration for the simulation
+
+    This excludes the actors configurations
+    that are in the actors_configurations.json file,
+    inside the simulator folder
+"""
 
 directory_path = __file__[:-28].replace('\\','//')
 
@@ -32,4 +37,3 @@ Terminal_printting_level="INFO"
 
 #Run tests before simulations
 Run_tests=False
-
