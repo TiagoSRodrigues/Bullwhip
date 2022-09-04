@@ -9,7 +9,7 @@ class ClassInventory:
     def get_product_reorder_history_size(self, product_id):
     def refresh_inventory_capacity(self):
     def show_present_composition(self):
-       
+
 class actor:
     def __init__(self, simulation_object , id:int , name:str , avg:int , var:int, max_inventory:int)
     def get_actor_product_list(self):
@@ -41,17 +41,17 @@ class MongoDB:
     def update_inventory_db(self,actor_id, product, quantity):
     def add_actor_to_db(self, actor_id, orders, inventory):
     def check_connection(self):
-    
+
 class ClassSimulation:
     def __init__(self):
     def add_to_actors_collection(self, actor):
     def get_actors_collection(self):
     def get_actors_configurations(self,actors_configuration):
-    def create_actors(self,actors_configuration_file):
+    def create_actors(self,ACTORS_CONFIG_FILE):
     def get_actor_parameters(self,configs_dict,actor):
     def change_simulation_status(self, status):
     def update_global_inventory(self, actor, product, qty):
-    
+
     def update_simulation_stat(self, stat):
 
 class transactionsClass:
@@ -63,9 +63,9 @@ class transactionsClass:
     def show_transactions_record(self, record_object, title=None):
     def get_transaction_by_id(self, id):
     def get_todays_transactions(self, actor):
-    def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+    def add_to_orders_log(self, record = dict): #  record_time são recording_time
     def deliver_to_final_client(self):
-       
+
 class ClassSupplyChain:
     def __init__(self, simulation):
     def add_to_supply_chain(self,actor):

@@ -6,7 +6,7 @@ mongo = db_connections.db_connection()
 def get_actor_inventory_df(actor_id):
     data=mongo.get_actor_inventory(actor_id)
     return pd.DataFrame(data["inventory_"+str(actor_id)][0])
-    
+
 def get_actor_orders_df(actor_id):
     data=mongo.get_actor_orders(actor_id)
     return pd.DataFrame(data["orders_"+str(actor_id)][0])
@@ -29,7 +29,7 @@ def get_transactions_df():
 
 def update_inventory_data():
     actors=mongo.get_actors_id()
-    
+
     dfs={}
     for actor in actors:
         dfs[actor]=(get_actor_inventory_df(actor))

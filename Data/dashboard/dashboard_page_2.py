@@ -1,7 +1,7 @@
 from re import X
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 from dash_html_components.Center import Center
 
@@ -10,14 +10,14 @@ import pandas as pd
 import db_connections as db_con
 import time
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import os
 import sys
 import json
 import pandas as pd
 from dash.dependencies import Input, Output
-import dash_table
+from dash import dash_table
 import data_processing as dp
 
 """ Get data """
@@ -35,7 +35,7 @@ inventory
 """
 def get_transactions_table_html():
     data=dp.get_transactions_df()
-    
+
     table=dash_table.DataTable(
         id='transactions',
         columns=[{"name": i, "id": i} for i in data.columns],
@@ -55,10 +55,10 @@ transactions_card = dbc.Card(
         dbc.CardHeader(html.H3("Transactions"), style={"font-weight": "bold","text-align": "center"}),
         dbc.CardBody(
             dbc.Row(
-                           
+
                     get_transactions_table_html() ,
             )
-               
+
             )
     ]
 )
@@ -70,7 +70,7 @@ transactions_card = dbc.Card(
 layout_page_2 = html.Div(
     [
         html.Div(id='app-1-display-value'),
-        
+
         dbc.Container(
             [dbc.Row([
                 dbc.Col(

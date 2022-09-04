@@ -1,7 +1,7 @@
 from re import X
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 
 import plotly.express as px
@@ -9,14 +9,14 @@ import pandas as pd
 import db_connections as db_con
 import time
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import os
 import sys
 import json
 import pandas as pd
 from dash.dependencies import Input, Output
-import dash_table
+from dash import dash_table
 import data_processing as dp
 
 """ Get data """
@@ -37,22 +37,22 @@ def get_inventory_table_html():
     for actor in actors_list:
         data=dp.get_actor_inventory_df(actor_id=actor)
         #print(data)
-        
+
         label=html.Label("Actor "+str(actor)),
         table=dash_table.DataTable(
             id='inventory_'+str(actor),
             columns=[{"name": i, "id": i} for i in data.columns],
             data=data.to_dict('records'),
          )
-        
+
         div=html.Div([
                         html.Label(
                             "Actor "+str(actor),
-                            style={ "font-weight": "bold","text-align": "center" }, 
+                            style={ "font-weight": "bold","text-align": "center" },
 
-                            
-                            
-                            
+
+
+
                             ),
                         table
                         ],
@@ -66,22 +66,22 @@ def get_orders_table_html():
     for actor in active_actors:
         data=dp.get_actor_orders_df(actor_id=actor)
         #print(data)
-        
+
         label=html.Label("Actor "+str(actor)),
         table=dash_table.DataTable(
             id='orders_'+str(actor),
             columns=[{"name": i, "id": i} for i in data.columns],
             data=data.to_dict('records'),
          )
-        
+
         div=html.Div([
                         html.Label(
                             "Actor "+str(actor),
-                            style={ "font-weight": "bold","text-align": "center" }, 
+                            style={ "font-weight": "bold","text-align": "center" },
 
-                            
-                            
-                            
+
+
+
                             ),
                         table
                         ],
@@ -96,10 +96,10 @@ inventory_card = dbc.Card(
         dbc.CardHeader(html.H3("Inventory")),
         dbc.CardBody(
             dbc.Row(
-                           
+
                     get_inventory_table_html() ,
             )
-               
+
             )
     ]
 )
@@ -108,10 +108,10 @@ orders_card = dbc.Card(
         dbc.CardHeader(html.H3("Orders")),
         dbc.CardBody(
             dbc.Row(
-                           
+
                     get_orders_table_html() ,
             )
-               
+
             )
     ]
 )
@@ -123,7 +123,7 @@ orders_card = dbc.Card(
 layout_page_1 = html.Div(
     [
         html.Div(id='app-1-display-value'),
-        
+
         dbc.Container(
             [dbc.Row([
                 dbc.Col(

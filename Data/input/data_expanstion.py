@@ -24,7 +24,7 @@ data = dataframe.values
 #extract the y data
 y = data[:, 1]
 
-#define the x axis 
+#define the x axis
 x = np.arange(len(data))
 
 # multiplication factor to increase data
@@ -53,26 +53,26 @@ df_y_final = pd.DataFrame(new_y)
 
 
 def compare_dataframes(df1,df2):
-    
+
     initial_data = df1.describe()
     final_data = df2.describe()
-    
+
     diference = ((final_data - initial_data) / initial_data )*100
-    
-    #harmonic_mean 
+
+    #harmonic_mean
     h1 = stats.hmean(df1)
     h2 = stats.hmean(df2)
-    
+
     h_diff = ((h2-h1 ) / h1 ) *100
-    
-    
+
+
     print(
         "Data Variation (%)  \n",
         round(diference,2),
         "\nharmonic mean: {}".format(round(float(h_diff), 2))
     )
 compare_dataframes(df1=df_y_inicial, df2=df_y_final)
-    
+
 save_to_csv(df_y_final, "real_data_interpolated.csv" )
 
 

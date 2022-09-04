@@ -22,7 +22,7 @@ class transactionsClass:
 
 
         #Start transaction log
-        # with open(sim_cfg.transactions_record_file, 'a') as file:
+        # with open(sim_cfg.TRANSCTIONS_RECORDS_FILE, 'a') as file:
         #     # file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
         #     file.write("[")
 
@@ -86,7 +86,7 @@ class transactionsClass:
             raise Exception("Erro no update, só pode ter um None | transaction_id: {}, transaction_info:{}, delivered:{}".format(transaction_id, transaction_info, delivered))
 
     def record_delivered(self,transaction_id ):
-        logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id)) 
+        logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id))
 
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
@@ -102,7 +102,7 @@ class transactionsClass:
                 self.simulation.update_simulation_stats("transactions_delivered"
                                                         )
                 self.simulation.mongo_db.add_to_db(colection_name="t_bkup", data=record)
-                logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id {} sucesseful record delivered ".format(str(transaction_id))) 
+                logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id {} sucesseful record delivered ".format(str(transaction_id)))
                 return True
 
         print("Trasaction {} not found!! in \n{}".format(transaction_id,self.open_transactions))
@@ -110,7 +110,7 @@ class transactionsClass:
 
 
     def show_all_transactions(self):
-        print("\n\nall open transactions\n",self.open_transactions, "\n\n all delivered transactions\n",self.delivered_transactions,"\n\n")    
+        print("\n\nall open transactions\n",self.open_transactions, "\n\n all delivered transactions\n",self.delivered_transactions,"\n\n")
 
     def show_transactions_record(self, record_object, title=None):
         print("\n",title,"\n")
@@ -179,12 +179,12 @@ class transactionsClass:
 
 ######################foda-se
 
-    # def add_to_orders_log(self, record = dict): #  record_time são recording_time  
+    # def add_to_orders_log(self, record = dict): #  record_time são recording_time
 
     #     recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
 
     #     #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
-    #     # with open(sim_cfg.transactions_record_file, 'a') as file:
+    #     # with open(sim_cfg.TRANSCTIONS_RECORDS_FILE, 'a') as file:
 
     #     #     file.write("\n" +str(recordstr)+"," )
 
@@ -219,7 +219,7 @@ class transactionsClass:
         today=self.simulation.time
         for el in open:
             if el["deliver_day"] < today:
-                print("check_transactions_integrity",el) 
+                print("check_transactions_integrity",el)
 
 ##############################################################################################
 #      funções relacionadas com operações realizadas pelo actor da cadeia de valor           #
@@ -243,7 +243,7 @@ class transactionsClass:
                     }
             ]
 
-            ''' 
+            '''
         # for i in range(1,10,1):
         #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
         #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)

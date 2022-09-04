@@ -1,14 +1,14 @@
 ## What this app does
-This app shows how rich meta-data can be extracted from an image segmentation and linked with 
-a datatable to explore the data. 
+This app shows how rich meta-data can be extracted from an image segmentation and linked with
+a datatable to explore the data.
 
-You see an image of a type of 
+You see an image of a type of
 [white blood cells](https://en.wikipedia.org/wiki/Agranulocyte). This image is segmented into regions with
 [scikit-image](https://scikit-image.org/docs/stable/auto_examples/segmentation/plot_regionprops.html) and we compute
- a number of properties of these regions such as their area, their perimeter length and so on. Each region is then 
- annotated on the image with a color coded contour and is also entered together with its computed properties in 
- the datatable. The annotated image and the datatable are then dynamically linked together, so that interacting with 
- one changes the displayed information in the other. 
+ a number of properties of these regions such as their area, their perimeter length and so on. Each region is then
+ annotated on the image with a color coded contour and is also entered together with its computed properties in
+ the datatable. The annotated image and the datatable are then dynamically linked together, so that interacting with
+ one changes the displayed information in the other.
 
 ## How to use this app
 In this app, you can:

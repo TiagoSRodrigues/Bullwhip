@@ -20,8 +20,8 @@ actors= {
                     {
                         2001: 1
                     }
-                }  
-              
+                }
+
             ]
         },
         {
@@ -117,12 +117,12 @@ def Save_Configurations(actors):
     import json, json,  time
     import simulation_configuration  as sim_cfg
 
-    with open(sim_cfg.actors_configuration_file,"w") as file:
+    with open(sim_cfg.ACTORS_CONFIG_FILE,"w") as file:
         file.write(json.dumps(actors))
 
-    with open(sim_cfg.Configuration_backups+time.strftime("actors_configuration_file "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w") as fp:
+    with open(sim_cfg.CONFIGS_BACKUP+time.strftime("ACTORS_CONFIG_FILE "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w") as fp:
         fp.write(json.dumps(actors,indent=4, sort_keys=True))
-        
+
     print("actors_configuration.json updated!")
 
 Save_Configurations(actors)

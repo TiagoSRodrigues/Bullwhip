@@ -1,16 +1,16 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import os, sys, json
-from dash_html_components.Title import Title 
+from dash_html_components.Title import Title
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-import dash_table
-try: import simulation_configuration as sim_cfg 
-except: 
+from dash import dash_table
+try: import simulation_configuration as sim_cfg
+except:
     sys.path.append('N:/TESE/Bullwhip')
-    import simulation_configuration as sim_cfg 
+    import simulation_configuration as sim_cfg
 
 
 
@@ -30,11 +30,11 @@ for file in dir_files:
        orders_datasets[file] = pd.read_csv(file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
 
     # elif file[0:12] == "transactions":
-    #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
+    #     transactions_dataset =  pd.read_json('TRANSCTIONS_RECORDS_FILE.json' )
 
 
 def get_transactions_dataset():
-    with open(sim_cfg.transactions_record_file, 'r') as file:
+    with open(sim_cfg.TRANSCTIONS_RECORDS_FILE, 'r') as file:
         data=file.read()+"]"
         data=data.replace("'", '"')
         data=data.replace("False", str('"'+"False"+'"'))
@@ -49,7 +49,7 @@ transactions_dataset =  pd.read_json(transactions)
 # Format the Table columns
 transactions_columns=transactions_dataset.columns
 # print(columns)
-# Define Modal - Botão top ritgh 
+# Define Modal - Botão top ritgh
 with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
     howto_md = f.read()
 
@@ -178,7 +178,7 @@ transactions_card = dbc.Card(
         dbc.CardBody(
             dbc.Row(
                 dbc.Col(
-                    
+
                         dash_table.DataTable(
                             id="transactions-table",
                             columns=[
@@ -187,7 +187,7 @@ transactions_card = dbc.Card(
                             data=transactions_dataset.to_dict('records')
 ,
                         ),
-                    
+
                 )
             )
         ),
@@ -229,7 +229,7 @@ def toggle_navbar_collapse(n, is_open):
 #     Output("transactions-table", "data"),
 #      Input('interval-component', 'n_intervals'))
 def update_table(self):
-    
+
     transactions_dataset = pd.read_json(get_transactions_dataset() )
     return transactions_dataset.to_dict('records')
 

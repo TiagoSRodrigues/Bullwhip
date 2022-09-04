@@ -4,5 +4,5 @@ For ($i=0; $i -le 4; $i++) {
     $days=$i*365
     python $FILE_PATH $days 0}
     "$i "
-    
+
 

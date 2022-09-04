@@ -1,5 +1,5 @@
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash
 
 from app import app
@@ -41,6 +41,5 @@ def display_page(btn1, btn2, btn3):
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-    
-    
-    
+
+

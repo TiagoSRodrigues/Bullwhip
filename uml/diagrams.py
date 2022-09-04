@@ -1,14 +1,14 @@
 import os
 
 
-directory_path = "/mnt/n/tese/bullwhip/simulator/" #__file__.replace("/","\\")            #split("\\",maxsplit=2, ) #
+DIRECTORY_PATH = "/mnt/n/tese/bullwhip/simulator/" #__file__.replace("/","\\")            #split("\\",maxsplit=2, ) #
 
 ('\\','//')
-# print(directory_path)
-# for el in os.listdir(directory_path):
+# print(DIRECTORY_PATH)
+# for el in os.listdir(DIRECTORY_PATH):
 #     print(el)
-    
-files = os.listdir(directory_path )
+
+files = os.listdir(DIRECTORY_PATH )
 
 for f in files:
     if f[-2:]=="py":

@@ -1,8 +1,10 @@
 import time
 import math
-def print_start(Logging_level):
+from playsound import playsound
+
+def print_start(LOGGING_LEVEL):
         print("\n ============================================================ \n        \
-  Simulation Started with logging at level: " + Logging_level+
+  Simulation Started with logging at level: " + LOGGING_LEVEL+
                 "\n ============================================================\n")
 
 def print_sucess():
@@ -17,16 +19,19 @@ def print_sucess():
 
 
 def play_final_sound():
-    from playsound import playsound
-
-    path="N:\\TESE\\Bullwhip\\data\\audio\\super_mario_stage_clear.mp3"
-    playsound(path)
+    path=r"N:\\TESE\Bullwhip\data\audio\super_mario_stage_clear.mp3"
+    try:
+        playsound(path)
+    except:
+        playsound(path)
 
 def play_error_sound():
-    from playsound import playsound
-
     path="N:\\TESE\\Bullwhip\\data\\audio\\super_mario_dies.mp3"
-    playsound(path)
+    try:
+        playsound(path)
+    except:
+        playsound(path)
+        
 
 def final_prints(start_time):
     print_sucess()

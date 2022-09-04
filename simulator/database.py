@@ -12,24 +12,24 @@ class MongoDB:
     def __init__(self, simulation, drop_history=True):
         self.simulation=simulation
         self.log_id=0
-        """Cria a ligação, 
+        """Cria a ligação,
         Apaga as DB anteriores
         Cria as collections
         """
         logs.log(debug_msg="| Connecting to database Connected!        ")
         self.mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
-        
+
         self.check_connection()
 
-            
+
         self.simulation_db = self.mongo_client["simulation"]
-        
+
         self.simulation_history = self.mongo_client["simulation_history"]
         if drop_history:
             self.add_to_db_log(self.mongo_client.drop_database("simulation"))
             # self.drop_database()
 
-        
+
         self.sim_actors_collection = self.simulation.actors_collection
 
         #self.actors_collection = self.simulation_db["actors"]
@@ -40,7 +40,7 @@ class MongoDB:
     def save_stats(self, simulation_id):
         for doc in self.simulation_db["simulation_stats"].find({}):
                 self.simulation_history[simulation_id].insert_one(doc)
-        
+
     # def drop_database(self):
     #     """elimina as dbs resultantes de simulações anteriores"""
     #     database_list = self.mongo_client.database_names()
@@ -88,7 +88,7 @@ class MongoDB:
         #     # )
         # except:
         #     print("eero", transaction_info)
-            
+
         #     self.add_to_db_log(
         #         self.simulation_db["transactions"].update_one(
         #             {"_id":transaction_id},{"$set":{"delivered":1,
@@ -149,7 +149,7 @@ class MongoDB:
             actor_inv= {}
             for key, value in actor.actor_inventory.main_inventory.items():
                 # if type(value)== type(np.int32()):value=int(value)
-                
+
                 if isinstance( value, dict):
                     value_dict={}
                     for sub_key, sub_value in value.items():
@@ -157,16 +157,16 @@ class MongoDB:
                         # if type(sub_value)== type(np.int32()): value=int(sub_value)
                         if isinstance( sub_value, dict):
                             pass
-            
+
             actor_inv[str(key)] = value
-                
+
             # del actor_inv[str(key)]["composition"]
             # print(actor_inv)
-            
+
             inventory_dic["inventory"][str(actor.id)]=actor_inv
         self.simulation_db["inventory_snapshot"].insert_one(inventory_dic )
 
-    
+
     def update_inventory_db(self,actor_id, product, quantity):
         #logs.log(debug_msg="| Database         |add to inventory| Order{} added to {} of qty {} of Product:{} ordered from:{} at time {}".format(order_id, actor_id, quantity, product, client, time ))
 
@@ -197,40 +197,40 @@ class MongoDB:
                 )
             )
             # print("true?")
-       
+
     def add_actor_to_db(self, actor_id, orders, inventory):
         data={"id":"A"+str(actor_id),
             "orders":[],
             "inventory":{}}
-     
+
         self.add_to_db_log(
             self.actors_collection.insert_many(data)
         )
-    
+
     def check_connection(self):
         """check connection"""
         try:
             self.mongo_client.server_info()
             logs.log(debug_msg="| Database Connected! ")
-            
+
         except:
             logs.log(debug_msg="| ERROR on database Conection!!!       ")
             print("Error on MongoDB connection ")
             print(" START THE DOCKER CONTAINER!!!")
 
 
-        
-            
+
+
     def get_document_by_id(self, doc_collection, doc_id):
         self.add_to_db_log("get document from {} with id:{}".format(doc_collection, doc_id))
         doc = self.simulation_db[str(doc_collection)].find_one({"_id":doc_id})
-            
+
         #print("get",doc_collection,type(doc),doc)
         if isinstance(doc, dict):
             return doc
         else:
             return False
-        
+
     def add_to_db_log(self, response):
         "esta função grava as ações na db, não mexer"
         self.log_id= self.log_id+1
@@ -252,7 +252,7 @@ class MongoDB:
 
     def add_actors_to_db_stats(self, data):
         self.simulation_db["simulation_stats"].insert_one({"_id":"active_actors","active_actors":data})
-      
+
 
     def add_to_db_actor_stats(self, stat_name, stat_value):
         data={"_id":stat_name,
@@ -272,8 +272,8 @@ class MongoDB:
 
     def add_open_itens(self,values):
         self.simulation_db["simulation_stats"].insert_one(values)
-        
-        
+
+
         # if isinstance(stat_value, pd.DataFrame):
         #     print(stat_value)
         #     self.simulation_db["simulation_stats"].find_one_and_update(
@@ -286,7 +286,7 @@ class MongoDB:
         # elif isinstance(stat_value, list):
         #     pass
         #     stat_value=tuple(stat_value)
-            
+
         # elif isinstance(stat_value, dict):
         #     pass
         #     print(stat_name,stat_value)
@@ -295,14 +295,14 @@ class MongoDB:
         #     self.simulation_db["simulation_stats"].update_one(
         #         {"_id":simulation_id},{"$set":{ stat_value.to_dict("dict")}}
         #         )
-            
-        
+
+
         # # elif self.simulation_db["simulation_stats"].find_one({"_id":simulation_id})  is None:
         # #     fist_data={"_id":simulation_id,
         # #             stat_name:stat_value}
         # #     self.simulation_db["simulation_stats"].insert_one(fist_data)
 
-        
+
         # else:
         #     pass
         #     print("else:",type(stat_value), stat_name, stat_value)
@@ -310,7 +310,7 @@ class MongoDB:
         #     self.simulation_db["simulation_stats"].update_one(
         #         {"_id":simulation_id},{"$set":{ stat_name:stat_value }}
         #         )
-            
+
     def add_to_db_stats_log(self, stat_value):
         data=stat_value
         self.simulation_db["db_stats_log"].insert_one(data)
@@ -324,7 +324,7 @@ class MongoDB:
     def export_db(self, collection_name="db_log"):
         myquery = self.simulation_db["db_log"].find() # I am getting everything !
         output = csv.writer(open('some.csv', 'wt')) # writng in this file
-                      
+
     """ STATS"""
     def get_collection_data(self, collection_name):
         data=self.simulation_db[collection_name].find()
@@ -343,7 +343,7 @@ class MongoDB:
                 data.append(el)
             main_inventory[col]=[data]
         return main_inventory
-    
+
     def get_actor_inventory(self, actor_id):
         main_inventory={}
         re_filter = {"name": {"$regex": r"^inventory_"+str(actor_id)+".*"}}
@@ -356,7 +356,7 @@ class MongoDB:
                 data.append(el)
             main_inventory[col]=[data]
         return main_inventory
-    
+
     def get_transactions(self):
         main_inventory={}
         re_filter = {"name": {"$regex": r"^transactions"}}

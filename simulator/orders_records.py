@@ -1,3 +1,4 @@
+import math
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
 import numpy as np
@@ -31,7 +32,7 @@ class ClassOrdersRecord:
 
     """
     Getters
-    """ 
+    """
 
 
     def get_order_criation(self, order=None, order_id=None):
@@ -78,6 +79,7 @@ class ClassOrdersRecord:
         return False
 
     def get_orders_waiting_stock(self):
+        self.refresh_orders_waiting_stock()
         return  self.orders_waiting_stock
 
     def get_orders_sequence(self):
@@ -257,7 +259,7 @@ class ClassOrdersRecord:
         # check_sequence(cloed_orders)
 
     def get_orders_stats(self, history_size=0):
-        """ 
+        """
         copia o histórico de encomendas,
         extai a coluna das quantidades
         retorna a média e o std
@@ -266,13 +268,12 @@ class ClassOrdersRecord:
         if len(orders_array) == 0:
             return
         orders_array=np.array(orders_array[:,2])
-        return orders_array.mean() , orders_array.std()
-    
+        return math.ceil(orders_array.mean()) , math.ceil(orders_array.std())
+
     def get_orders_history(self, history_cut=0):
-        """ 
+        """
         copia o histórico de encomendas,
         extai a coluna das quantidades
         retorna a média e o std
         """
         return self.orders_history[-history_cut:]
-  

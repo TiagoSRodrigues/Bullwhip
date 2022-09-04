@@ -52,10 +52,7 @@ class ClassSimulation:
 
         logs.log(debug_msg="| status           | Simulation created")
 
-        # try:
-        #     self.sleep_time = float( input( " Insert delay time:") )
-        # except:
-        #     self.sleep_time = 0
+        self.sleep_time = 0
 
 
     #Import Configurations
@@ -80,8 +77,8 @@ class ClassSimulation:
             actors_config[actor["id"]]=actor
         return actors_config
 
-    def create_actors(self, actors_configuration_file):
-        configs_dict=self.get_actors_configurations(actors_configuration_file)
+    def create_actors(self, ACTORS_CONFIG_FILE):
+        configs_dict=self.get_actors_configurations(ACTORS_CONFIG_FILE)
 
         #ADD  the final customer ###
 
@@ -91,7 +88,7 @@ class ClassSimulation:
 
         for actor_id in actors_list:
             logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
-            
+
             name, a_id, avg, var, max_inventory, products, safety_factor, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
 
             #Cria o ator
@@ -185,7 +182,7 @@ class ClassSimulation:
                 print("erro no update global inventory")
 
 
-            with open(sim_cfg.inventory_file, 'w') as file:
+            with open(sim_cfg.INVENTORY_FILE, 'w') as file:
                 json.dump(inventory_dict, file)
 
             # print("inventory",inventory)
@@ -204,5 +201,5 @@ class ClassSimulation:
 
         self.mongo_db.add_to_db_stats_log(stat_value= data)
 
-            # with open(sim_cfg.simulation_status_file, 'a') as file:
+            # with open(sim_cfg.SIM_STATUS_FILE_PATH, 'a') as file:
             #     file.write("\n" +str(self.simulation_stats)+"," )

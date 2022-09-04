@@ -2,8 +2,8 @@ import dash
 import dash_bootstrap_components as dbc
 from re import X
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 
 
@@ -11,7 +11,7 @@ import dash_bootstrap_components as dbc
 
 # Set up the app
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/object_properties_style.css"]
-app = dash.Dash(__name__, 
+app = dash.Dash(__name__,
                 external_stylesheets=external_stylesheets,
                 suppress_callback_exceptions=True)
 server = app.server
@@ -24,8 +24,8 @@ server = app.server
 
 
 
-""" 
-HEADER 
+"""
+HEADER
 """
 # modal_overlay = dbc.Modal(
 #     [
@@ -76,13 +76,13 @@ header = dbc.Navbar(
                                                                            "align":"left"},
                                      ),
                             html.Div("by: Tiago Rodrigues",style= {"color": "gray",
-                                                                           "font-weight": "bold", 
+                                                                           "font-weight": "bold",
                                                                            "align":"left"},
                                      )
-                         
+
                         ]),
-                        width=4,),       
-           
+                        width=4,),
+
                     dbc.Col(
                         html.Div([
                                 html.Button('Actores', id='btn-nclicks-1', n_clicks=0),
@@ -90,7 +90,7 @@ header = dbc.Navbar(
                                 html.Button('Stats', id='btn-nclicks-3', n_clicks=0),
                                 html.Div(id='container-button-timestamp')
                             ]), width=5,),
-             
+
                 ],align="center" )
             ,]
         ,

@@ -5,35 +5,59 @@
     inside the simulator folder
 """
 
-directory_path = __file__[:-28].replace('\\','//')
+import os
+import gc
+
+
+"""
+    Directories 
+    
+"""
+
+
+DIRECTORY_PATH = __file__[:-28].replace('\\','//')
 
 #Files Directories
-actors_configuration_file=directory_path + "//simulator//actors_configuration.json"
-logs_file_location = directory_path + '//data//logs//'
-source_data =  directory_path + '//data//input//input_data.csv'
-Configuration_backups= directory_path + '//data//Configuration backups//'
+ACTORS_CONFIG_FILE=DIRECTORY_PATH + "//simulator//actors_configuration.json"
+LOG_FILES_PATH = DIRECTORY_PATH + '//data//logs//'
+SOURCE_DATA_PATH =  DIRECTORY_PATH + '//data//input//input_data.csv'
+CONFIGS_BACKUP= DIRECTORY_PATH + '//data//Configuration backups//'
 
+ORDERS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//orders_record.csv'
+ORDERS_RECORDS_FILE_PATH = DIRECTORY_PATH + '//data//records//'
+TRANSCTIONS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//TRANSCTIONS_RECORDS_FILE.json'
 
-simulation_status_file = directory_path + '//data//records//simulation_status_file.json'
+INVENTORY_FILE = DIRECTORY_PATH + '//data//records//INVENTORY_FILE.json'
 
-#paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL
-Logging_level="DEBUG"
-
-orders_record_file = directory_path + '//data//records//orders_record.csv'
-orders_record_path = directory_path + '//data//records//'
-transactions_record_file = directory_path + '//data//records//transactions_record_file.json'
-
-inventory_file = directory_path + '//data//records//inventory_file.json'
-
-log_to_db=True
-log_id=0
-
-#Max number of logs to save, if all = False 
-nr_of_log_to_save= 30
+""" 
+    logging 
+"""
+#Max number of logs to save, if all = False
+NUMBER_OF_HISTORY_LOGFILES= 30
 
 #Define if the logs are printed in the terminal while running
-print_log_in_terminal=True
-Terminal_printting_level="INFO"
+LOGGING_LEVEL="DEBUG"
+PRINT_LOGS_IN_TERMINAL=True
+TERMINAL_PRINTTING_LOG_LEVEL="INFO"
 
-#Run tests before simulations
-Run_tests=False
+
+if PRINT_LOGS_IN_TERMINAL:
+    os.system('cls' if os.name == 'nt' else 'clear')
+gc.collect()
+
+
+
+""""
+
+Simulation Configuration
+
+"""
+
+
+
+INPUT_DATA_TYPE = "file" #file or constant
+DAYS_TO_SIMULATE = "max" #max or number of days
+INPUPUT_FILE_NAME = "real_data_interpolated.csv"
+
+# in order to see the evolutions of the simulation, increase the sleep time
+TIME_SLOWDOWN = 0 #seconds
