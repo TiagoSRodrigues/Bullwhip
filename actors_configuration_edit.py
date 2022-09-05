@@ -14,7 +14,7 @@ actors= {
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 13648,
+                    "initial_stock": 0,
                     "safety_stock": 0,
                     "composition":
                     {
@@ -37,7 +37,7 @@ actors= {
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 13648,
+                    "initial_stock": 0,
                     "safety_stock": 0,
                     "composition":
                     {
@@ -59,7 +59,7 @@ actors= {
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 13648,
+                    "initial_stock": 0,
                     "safety_stock": 0,
                     "composition":
                     {
@@ -81,7 +81,7 @@ actors= {
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 13648,
+                    "initial_stock": 0,
                     "safety_stock": 0,
                     "composition":
                     {

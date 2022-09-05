@@ -3,7 +3,7 @@ import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
-from dash_html_components.Center import Center
+# from dash_html_components.Center import Center
 
 import plotly.express as px
 import pandas as pd

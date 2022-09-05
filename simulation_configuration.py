@@ -25,6 +25,7 @@ CONFIGS_BACKUP= DIRECTORY_PATH + '//data//Configuration backups//'
 
 ORDERS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//orders_record.csv'
 ORDERS_RECORDS_FILE_PATH = DIRECTORY_PATH + '//data//records//'
+FINAL_EXPORT_FILES_PATH = DIRECTORY_PATH + '//data//exports//'
 TRANSCTIONS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//TRANSCTIONS_RECORDS_FILE.json'
 
 INVENTORY_FILE = DIRECTORY_PATH + '//data//records//INVENTORY_FILE.json'
@@ -56,8 +57,19 @@ Simulation Configuration
 
 
 INPUT_DATA_TYPE = "file" #file or constant
-DAYS_TO_SIMULATE = "max" #max or number of days
+
+# limits days to simulate,  to run all date use None
+DAYS_TO_SIMULATE = 365
+
 INPUPUT_FILE_NAME = "real_data_interpolated.csv"
 
 # in order to see the evolutions of the simulation, increase the sleep time
 TIME_SLOWDOWN = 0 #seconds
+
+# Simulations modes:  | traditional = 1 | Machine learnning = 2 | blockchain = 3  |
+SIMULATION_MODE = 3
+
+PRODUCTION_METHOD = 1 # 1 = produces immediately when receive raw mat. | 2 = produces for delivery
+
+#
+PLAY_SOUND = False

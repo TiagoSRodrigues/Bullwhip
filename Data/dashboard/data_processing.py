@@ -13,8 +13,9 @@ def get_actor_orders_df(actor_id):
 
 def get_transactions_df():
     data=mongo.get_transactions()
-    return pd.DataFrame(data["transactions"][0],
-                        columns=["transaction_id",
+    print(data)
+    return pd.DataFrame(data["open_transactions"][0],
+                        columns=["_id",
                                             "deliver_day",
                                             "order_id",
                                             "sending_day",

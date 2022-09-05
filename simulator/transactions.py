@@ -33,6 +33,8 @@ class transactionsClass:
         extai a coluna das quantidades
         retorna a média e o std
         """
+        logs.log(debug_msg= f"| GET TRANSACTION  | Transactions  | actor id  {actor_id} ")
+
         transaction_list=[]
         for item in self.delivered_transactions:
             if item["receiver"]  == actor_id:
@@ -51,9 +53,10 @@ class transactionsClass:
 
     def add_transaction(self, transaction_info):#, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
         self.transaction_id = self.transaction_id + 1
-        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  | transactions_id {}  transaction info: {} ".format( self.transaction_id,transaction_info))
-
-
+        # logs.log(debug_msg=f"| TRANSACTION ADDED| Transactions  | transactions_id {self.transaction_id}  transaction info: {transaction_info} ")
+        logs.new_log(day=self.simulation.time,file= "transactions", function="add_transaction", actor= transaction_info["sender"], debug_msg="Transaction added -> {}".format(transaction_info))
+                     
+                     
         values_to_add =  transaction_info
         values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
 
@@ -71,6 +74,7 @@ class transactionsClass:
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
         """
+        logs.log(debug_msg= f"| Update DB        | Transactions  | transaction id  {transaction_id}, tansaction info { transaction_info}, delivered {delivered} ")
 
         if not delivered:
             if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
@@ -163,6 +167,7 @@ class transactionsClass:
         Returns:
             list: lsita com id das transações transações
         """
+        
         logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
 
         pending_transactions=[]
@@ -213,6 +218,8 @@ class transactionsClass:
             raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
 
     def check_transactions_integrity(self):
+        logs.log(debug_msg= f"|ck transc integrty| Transactions  ")
+        
         open=self.open_transactions
         delivered=self.delivered_transactions
         id=self.transaction_id

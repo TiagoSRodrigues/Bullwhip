@@ -33,11 +33,12 @@ def main(input_data, simulation):
         logs.log(info_msg="|")
         logs.log(info_msg="|      Day "+str(simulation.time) )
         logs.log(info_msg="|")
-        logs.log(info_msg="|")
 
         first_element.receive_order(supplier=int(first_element.id), quantity = int(quantity), product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
+            logs.log(info_msg = f"|      Actor  {simulation.time}" )
+            logs.log(info_msg="|")
 
 
             #print("Ator ativo:", actor.id)

@@ -78,7 +78,7 @@ class db_connection():
 
     def get_actors_id(self):
         #query_filter = {"name": {"$regex": r"^simulation_stats"}}
-        actors_list = self.simulation_db["simulation_stats"].find_one({"_id":"actors"})["value"]
+        actors_list = self.simulation_db["simulation_stats"].find_one({"_id":"active_actors"})["active_actors"]
         actors_list.sort()
         return actors_list
 

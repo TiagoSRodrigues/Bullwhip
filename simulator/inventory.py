@@ -137,7 +137,7 @@ class ClassInventory:
     def get_product_safety_stock(self, product_id):
         logs.log(debug_msg="| FUNCTION         | inventory     | get product safety stock "+str( self.actor.id)+' product '+str(product_id))
         # import inspect
-        # print(inspect.stack())
+        # print(stack())
 
         product_id=int(product_id)
 

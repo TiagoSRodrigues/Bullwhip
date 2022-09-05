@@ -1,23 +1,10 @@
 # from simulation_configuration import SOURCE_DATA_PATH
-import datetime, pandas as pd, random
-import sys
-import math
 import numpy as np
-# from.import logging_management as logs
-
-
-
-
-# with open(file_path,"r") as csvfile:
-#     data = csv.reader(csvfile, delimiter=',')
-#     for row in data:
-#         print(', '.join(row))
-
-# df = pd.read_csv(file_path, delimiter=";", decimal=".")
-# df['date'] = pd.to_datetime(df['date'])
-
-# print(df.describe())
-
+import pandas as pd
+from sys import path
+from math  import ceil
+from math import floor
+from random import randint
 
 def get_input(input_type,  days=None, min=None, max=None, filename=None):
 
@@ -60,15 +47,15 @@ def get_input(input_type,  days=None, min=None, max=None, filename=None):
 
     values = []
     for i in range(days):
-        values.append(random.randint(min, max))
+        values.append(randint(min, max))
     return values
 
 
 def get_raw_data(filename):
     if "real" in filename:
-        filepath = sys.path[0] + "/data/input/real_data_interpolated.csv"
+        filepath = path[0] + "/data/input/real_data_interpolated.csv"
     else:
-        filepath = sys.path[0] + "/data/input/data_amplified.csv"
+        filepath = path[0] + "/data/input/data_amplified.csv"
 
     # from numpy import genfromtxt
     data = np.genfromtxt(filepath, delimiter='')
@@ -79,8 +66,8 @@ def get_raw_data(filename):
 def check_input_datafile():
     def better_round(value):
         if value%1 *10 < 5:
-            return math.floor(value)
-        return math.ceil(value)
+            return floor(value)
+        return ceil(value)
     errors=-1 #(menos um porque os headers vão dar erro)
     good_values=0
     values=[]

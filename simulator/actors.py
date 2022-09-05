@@ -1,11 +1,10 @@
 import math
-import numpy
-
+import numpy as np
 from simulator import simulation
 from . import  orders_records, inventory, logging_management as logs
 import simulation_configuration  as sim_cfg
 import numpy as np
-import inspect
+from inspect import stack
 logs.log(debug_msg="Started actors.py")
 
 ############################################################################################
@@ -60,7 +59,7 @@ class actor:
                                                     products=products)
         self.products_list = self.get_actor_product_list()
 
-        logs.log(info_msg="| CREATED OBJECT   | Actor         id="+str(self.id)+" "+self.name+"called by"+inspect.stack()[1][3])
+        logs.log(info_msg="| CREATED OBJECT   | Actor         id="+str(self.id)+" "+self.name+"called by"+stack()[1][3])
 
         # #LAST THING: Adiciona o ator à lista de objectos (atores) da simulação #*foi apagado porque n fazia sensido estar aqui, passei para a simulations, durante a criação
         # self.simulation.add_to_actors_collection(self)
@@ -78,41 +77,6 @@ class actor:
 ################################                                                 #############################
 #                                           GETTERS
 ################################                                                 #############################
-
-    def add_to_stock_scheduled_to_arrive(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
-
-        try:
-            self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]+quantity
-        except:
-            self.stock_scheduled_to_arrive[product_id]=quantity
-
-    def remove_from_stock_scheduled_to_arrive(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        |  remove_from_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
-
-        # print("(-> id ", self.id,"prd", product_id,"qty", quantity)0
-        if self.id != 0:
-            self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]-quantity
-
-    def add_to_stock_scheduled_to_send(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
-
-        try:
-            present=self.stock_scheduled_to_send[product_id]
-            self.stock_scheduled_to_send[product_id]=present+quantity
-        except:
-            self.stock_scheduled_to_send[product_id]=quantity
-
-    def remove_from_stock_scheduled_to_send(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | remove_from_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
-
-        if self.id != 0:
-            self.stock_scheduled_to_send[product_id]=self.stock_scheduled_to_send[product_id]-quantity
-
-    def add_to_received_transactions(self, transaction):
-
-        self.received_transactions.append(transaction)
-        logs.log(debug_msg="|received_transcs  | actors        | add_to_received_transactions {}".format(transaction))
 
     def get_actor_product_list(self):
         logs.log(debug_msg="| FUNCTION         | actors.get_actors_product_list"+str(self))
@@ -141,27 +105,6 @@ class actor:
             if int(product["id"]) == int(product_id):
                 #print(product["composition"])
                 return product["composition"]
-
-    def add_to_order_today(self,  product=None, quantity=None):
-        logs.log(debug_msg="| order_today      | actors        | add_to_order_today     from actor {}, product: {}, quantity: {}".format(self.id, product, quantity))
-
-        if product in self.order_today:
-            self.order_today[product] =     self.order_today[product] + quantity
-            # print( self.id, self.order_today[product] , quantity)
-        else:
-            self.order_today[product] =     quantity
-
-        return True
-
-
-        # order_data["product_id_to_order"]
-        # order_data["actor_to_order"] = in
-        # order_data["quantity_to_order"] =
-
-
-
-
-
 
     def get_open_orders(self):
         "ordens abertas que ainda não foram enviadas"
@@ -211,12 +154,56 @@ class actor:
 
         return actor_data
 
-
-
 #####################                                                 #######################
 #                                SETERS
 #####################                                                 #######################
 
+    def add_to_stock_scheduled_to_arrive(self,product_id, quantity):
+        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
+
+        try:
+            self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]+quantity
+        except:
+            self.stock_scheduled_to_arrive[product_id]=quantity
+
+    def remove_from_stock_scheduled_to_arrive(self,product_id, quantity):
+        logs.log(debug_msg="| scheduler        | actors        |  remove_from_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
+
+        # print("(-> id ", self.id,"prd", product_id,"qty", quantity)0
+        if self.id != 0:
+            self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]-quantity
+
+    def add_to_stock_scheduled_to_send(self,product_id, quantity):
+        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
+
+        try:
+            present=self.stock_scheduled_to_send[product_id]
+            self.stock_scheduled_to_send[product_id]=present+quantity
+        except:
+            self.stock_scheduled_to_send[product_id]=quantity
+
+    def remove_from_stock_scheduled_to_send(self,product_id, quantity):
+        logs.log(debug_msg="| scheduler        | actors        | remove_from_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
+
+        if self.id != 0:
+            self.stock_scheduled_to_send[product_id]=self.stock_scheduled_to_send[product_id]-quantity
+
+    def add_to_received_transactions(self, transaction):
+
+        self.received_transactions.append(transaction)
+        logs.log(debug_msg="|received_transcs  | actors        | add_to_received_transactions {}".format(transaction))
+
+
+    def add_to_order_today(self,  product=None, quantity=None):
+        logs.log(debug_msg="| order_today      | actors        | add_to_order_today     from actor {}, product: {}, quantity: {}".format(self.id, product, quantity))
+
+        if product in self.order_today:
+            self.order_today[product] =     self.order_today[product] + quantity
+            # print( self.id, self.order_today[product] , quantity)
+        else:
+            self.order_today[product] =     quantity
+
+        return True
 
     def set_actor_state(self, state:int, log_msg=None ):
         self.simulation.speed()
@@ -226,6 +213,10 @@ class actor:
         self.actor_state = state
 
 #-----   actor management   --------------------------------------------------------------------------------------------------------------------#
+
+        """ 
+            OPERATIONAL METHODS                ########################################################################################################################
+        """
 
     def receive_order(self, supplier, quantity, product, client, notes={} ):
         if quantity == 0:
@@ -242,6 +233,25 @@ class actor:
 
                 el_actor.add_to_stock_scheduled_to_send(product_id= product, quantity= quantity)
 
+    def receive_orders(self, orders_to_receive):
+        self.set_actor_state( state=21, log_msg=str(len(orders_to_receive))+" Receiving orders " )
+
+        for transaction_id in orders_to_receive:
+            if not self.receive_transaction( transaction_id ):
+                return False
+        return True
+        
+    def get_orders_to_send(self):
+        """ devovler as encomendas pendentes ordenadas por id
+        """
+        def get_id(l):
+            return l[-3]
+        to_send = self.get_open_orders()
+
+        to_send.sort(key=get_id)
+        return to_send
+    
+    
     def manage_orders(self):
         # print(self.id,self.actor_orders_record.orders_waiting_stock)
         """ gere as ordens de encomenda,
@@ -280,92 +290,60 @@ class actor:
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        Encomendas para receber: "+str(to_receive))
 
         if len(to_receive)>0 :
-            self.set_actor_state( state=21, log_msg=str(len(to_receive))+" Receiving orders " )
+            self.receive_orders(to_receive)
 
-            for transaction_id in to_receive:
-                self.receive_transaction( transaction_id )
+        if  order_priority not in ["faster" ]:
+            if order_priority == "fifo": Exception("Fifo not implemented yet")
+            raise Exception("prioridades das encomendas mal configurada ")
 
-        if  order_priority not in ["fifo","faster" ]:
-            raise Exception("prioridades das encomendas mal configurada")
-
-        # verifica se tem encomendas para ENVIAR    #########################################
-        # if order_priority == "fifo":
-        #     
-        #?     não está a ser usado
-        #     
-        #     self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
-            
-        #     while self.actor_orders_record.get_fist_open_order_id() is not False:
-        #         """enquanto existir uma encomenda para enviar vai enviando encomendas, o loop termina quando:
-        #             - não existir mais encomendas para enviar
-        #             - não existir stock suficiente para enviar
-        #                 isto pode ser por não ter MP ou por não ter stock suficiente para enviar
-        #         """
-
-        #         order_id_to_send = self.actor_orders_record.get_fist_open_order_id()
-
-        #         if self.send_transaction(order_id = order_id_to_send) is False:
-        #             if order_id_to_send in self.actor_orders_record.get_orders_waiting_stock():
-        #                 # se a encomenda já estiver na lista de encomendas a enviar passa à frente
-        #                 continue
-
-        #             order = self.actor_orders_record.get_order_by_id(order_id_to_send)
-        #             ordered_product = self.get_ordered_product(order)
-        #             ordered_quantity = self.get_ordered_quantity(order)
-
-        #             if self.manufacture_product(product=ordered_product, reference_quantity=ordered_quantity) :
-        #                 # se conseguir fabricar o produto, envia a encomenda
-        #                 self.send_transaction(order_id= order_id_to_send)
-        #                 continue
-        #             self.actor_orders_record.add_to_orders_waiting_stock(order_id_to_send)
-        #             # se não conseguir adiciona a encomenda a lista de encomendas a espera de stock e para o loop
-        #             break
 
         if order_priority == "faster":
             self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
-            def get_orders_to_send():
-                """ devovler as encomendas pendentes ordenadas por id
-                """
-                def get_id(l):
-                    return l[-3]
-                to_send = self.get_open_orders()
 
-                to_send.sort(key=get_id)
-                return to_send
 
-            orders_to_send = get_orders_to_send()
+            orders_to_send = self.get_orders_to_send()
+
 
             if len(orders_to_send)>0:
-                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} tem para enviar {} ".format(self.id,orders_to_send))
-
-                for order in orders_to_send:
-                    order_id = self.get_order_id(order)
-                    ordered_quantity=self.get_ordered_quantity(order)
-                    logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} a tentar enviar a order {} ".format(self.id,order_id))
-                    if self.send_transaction( order_id) :                                                       #tenta enviar
-                        continue
-
-                    elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
-                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))
-                        continue
-                        print("temp isto n devia imprimir")
-                    else:
-                        ordered_product= self.get_ordered_product(order)
-                        if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
-                            if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
-                                continue
-                            else:
-                                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ "Erro na manufatura, está a produzir abaixo do suficiente para enviar"+str(order))
-                        self.actor_orders_record.add_to_orders_waiting_stock(order_id= order_id)
-                            #to_send = self.get_open_orders()     # actualiza to_send
-
-
+                self.send_orders(orders_to_send)
 
         logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " tem para enviar as encomendas: "+str("to_send"))
 
         self.set_actor_state( state = 39, log_msg=str(len(orders_to_send))+" Orders sent from stock n sei se está certo")
+        return True
+    
+    def send_orders(self, orders_to_send):
+        """ envia as encomendas pendentes
+        """
+        logs.log(debug_msg="| FUNCTION         | actors        | send_orders        actor id: "+str(self.id))
+        
+        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} tem para enviar {} ".format(self.id,orders_to_send))
 
+        for order in orders_to_send:
+            order_id = self.get_order_id(order)
+            ordered_quantity=self.get_ordered_quantity(order)
+            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} a tentar enviar a order {} ".format(self.id,order_id))
+            
+            # se não existirem produtos suficientes para enviar a encomenda para função
+            if not self.send_transaction( order_id) :                                                       #tenta enviar
+                return False
+                    
+            elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
+                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))
+                continue
+                print("temp isto n devia imprimir")
+            else:
+                ordered_product= self.get_ordered_product(order)
+                if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
+                    if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
+                        continue
+                    else:
+                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ "Erro na manufatura, está a produzir abaixo do suficiente para enviar"+str(order))
+                self.actor_orders_record.add_to_orders_waiting_stock(order_id= order_id)
+                    #to_send = self.get_open_orders()     # actualiza to_send
+        return True
 
+        
     def manage_stock(self):
         """
         Executado depois da destão de encomendas
@@ -374,24 +352,25 @@ class actor:
 
 
         if self.id in [x for x in self.simulation.Object_supply_chain.get_end_of_chain_actors()]:
-            return True
+            self.set_actor_state( state = 80, log_msg=str( "o actor{} está no fim da cadeia, o estado vai alterar para terminado 80".format(self.id)))
+            #get inventory        
+            if self.actor_inventory.get_product_inventory(product_id = 5001) < 100000:
+                #if inventory is below min_stock, order MP
+                self.actor_inventory.set_product_inventory(product_id = 5001, new_quantity= 1000000000)
+            return False
 
-        # if self.stock_otimization() in [2,3]:
-        #     return
         self.stock_otimization()
-
-
 
         self.set_actor_state( state = 40, log_msg=str( "| STATE          | actors        | manage_stock      Actor {} Started stock management".format(self.id)))
         #TODO na verificação de stock para repor verificar se já foi encomendado para n repetir encomendas.
         #ATENTION NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP
 
-        if self.id in self.simulation.Object_supply_chain.get_end_of_chain_actors():
-            # checks if the actor is in the end of the supply chain
-            self.set_actor_state( state = 80, log_msg=str( "o actor{} está no fim da cadeia, o estado vai alterar para terminado 80".format(self.id)))
-            return False
+
         
         #todo talvez se possa implementar um set stock to max quando a função é chamada
+
+
+        # ORDERNS WAINTING TO BE SENT
 
         waiting_orders = self.actor_orders_record.get_orders_waiting_stock()
 
@@ -433,7 +412,7 @@ class actor:
 
                 logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
 
-                #verifica se pode produzir, se poder produz:
+                #verifica se pode produzir, se poder, produz:
                 if not self.manufacture_product(product, reference_quantity = product_safety_stock-product_stock):
                     # não pode produzir, tem que encomendar
                     #se tiver de encomendar, prepara encomenda
@@ -546,7 +525,7 @@ class actor:
             False: não conseguiu enviar
         """
 
-        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction  order: "+str(order_id)+" self= "+str(self.name) )
+        logs.log(debug_msg= f"| FUNCTION         | actors        | send_transaction  order: {str(order_id)} ator: {str(self.name)}")
         self.set_actor_state( state=31, log_msg="sending order "+str(order_id) )
         day= self.simulation.time
 
@@ -559,14 +538,14 @@ class actor:
 
 
         if (ordered_quantity) ==0 :
-            for el in inspect.stack():
+            for el in stack():
                 print(el)
             raise Exception("\n\na tentar encomendar zero!!!!\n\n"+str(order))
 
         stock_quantity       = self.get_product_inventory(product) # verifica stock
 
 
-        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction ordered:"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
+        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction ordered qty:"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
 
         self.set_actor_state(state=32)
 
@@ -696,7 +675,7 @@ class actor:
 
         if not isinstance(product, int):
             print("\n erro no produto")
-            for el in inspect.stack():
+            for el in stack():
                 print(el)
             print("\n\n\n")
 
@@ -837,7 +816,7 @@ class actor:
         return False
 
     def get_deliver_time(self):
-        return numpy.random.normal(loc=self.average_time, scale=self.deviation_time)
+        return np.random.normal(loc=self.average_time, scale=self.deviation_time)
 
     def get_transactions_by_id(self, transactions_id):
         return self.simulation.ObejctTransationsRecords.get_transaction_by_id(transactions_id)
@@ -1091,4 +1070,4 @@ class actor:
             model_fit.forecast()
             #print("->",model_fit.forecast())
         except:
-            print(inspect.stack())
+            print(stack())

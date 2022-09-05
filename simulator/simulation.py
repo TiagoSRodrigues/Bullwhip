@@ -53,6 +53,7 @@ class ClassSimulation:
         logs.log(debug_msg="| status           | Simulation created")
 
         self.sleep_time = 0
+        
 
 
     #Import Configurations

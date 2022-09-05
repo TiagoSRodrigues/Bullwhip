@@ -1,8 +1,8 @@
 import os
 from time import sleep
 import pymongo
-import inspect
-import csv, json
+from inspect import stack
+import csv
 from . import logging_management as logs
 import numpy as np
 import pandas as pd
@@ -235,7 +235,7 @@ class MongoDB:
         "esta função grava as ações na db, não mexer"
         self.log_id= self.log_id+1
         data={"_id":self.log_id,
-              "action":inspect.stack()[1][3],
+              "action":stack()[1][3],
               "response":str(response)}
         self.simulation_db["db_log"].insert_one(data)
 
@@ -321,9 +321,14 @@ class MongoDB:
     def add_maney_to_db(self, colection_name, data):
         self.simulation_db[colection_name].insert_many(data)
 
-    def export_db(self, collection_name="db_log"):
-        myquery = self.simulation_db["db_log"].find() # I am getting everything !
-        output = csv.writer(open('some.csv', 'wt')) # writng in this file
+    def export_db(self, FINAL_EXPORT_FILES_PATH):
+        collections = self.simulation_db.list_collection_names()
+
+        for collection in collections:
+            df = pd.DataFrame(list(self.simulation_db[collection].find()))
+            df.to_csv( FINAL_EXPORT_FILES_PATH + collection + ".csv", index=False)
+
+
 
     """ STATS"""
     def get_collection_data(self, collection_name):

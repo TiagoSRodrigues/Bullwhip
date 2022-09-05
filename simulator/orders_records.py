@@ -116,7 +116,7 @@ class ClassOrdersRecord:
         logs.log(debug_msg="| FUNCTION         | orders        | add to wainting orders       ")
 
         if not (isinstance(order, list) or isinstance(order_id,int)):
-            for el in inspect.stack():
+            for el in stack():
                 print(el)
 
         if order_id:
@@ -207,7 +207,7 @@ class ClassOrdersRecord:
                 if i[-3] == -5:
                     continue
                 if i[-3] < order_id:
-                    print(inspect.stack())
+                    print(stack())
                     raise Exception("ERRO",i[-3] ,"<", order_id)
             check_open_orders_sequence()
 

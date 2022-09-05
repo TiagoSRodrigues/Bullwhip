@@ -37,14 +37,14 @@ logging.basicConfig(filename=sim_cfg.LOG_FILES_PATH+'log_'+time.strftime("%Y%m%d
 #     """
 #     log_level = logging.root.level
 #     print("\n\n\n\n\n")
-#     for el in inspect.stack():
+#     for el in stack():
 #         print(el)
 
 
 #     """
-#     called_function=inspect.stack()[0][3]
-#     calling_funcion=inspect.stack()[1][3]
-#     frame = inspect.stack()[1]
+#     called_function=stack()[0][3]
+#     calling_funcion=stack()[1][3]
+#     frame = stack()[1]
 #     module = inspect.getmodule(frame[0])
 #     file_name = module.__file__.split("\\")[-1]
 
@@ -67,12 +67,26 @@ def show_function_tree():
         prints the stack of instructions that rise to the error """
 
     function_tree=[]
-    for i in inspect.stack():
+    for i in stack():
         function_tree.append([ i[1].split("\\")[-1],i[3] ])
 
     print(function_tree)
 
+def new_log(file, function, day,  actor,  debug_msg = None, info_msg = None, warning_msg = None):
+    log_level = logging.root.level
+    
+    
+  
+    file_str = "{:20}".format(file)
+    function_str = "{:30}".format(function)
+    day_str = "{:4}".format(day)
+    actor_str = "{}".format(actor)
+    
+    
+    record = f"|{day_str} | {actor_str} | {file_str} | {function_str} | {debug_msg}{info_msg}{warning_msg}"
 
+    logging.debug(record)
+  
 
 def log(debug_msg = None, info_msg = None, warning_msg = None):
     """writes the log strings to files
@@ -87,7 +101,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
     #         {"_id":sim_cfg.log_id,
     #          "log":debug_msg})
 
-
+    
     #Receive the logging level from envirement
     log_level = logging.root.level
 
@@ -119,6 +133,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 
     elif log_level == 10 and debug_msg != None :
+        debug_msg = "|     |   | " + str(debug_msg)
         logging.debug(str(debug_msg))
         if warning_msg != None:
             logging.warning(str(warning_msg))
