@@ -4,21 +4,31 @@ actors= {
         {
             "id": 1,
             "name": "Retailer",
-            "time_average": 10,
-            "time_deviation": 3,
-            "max_inventory": 1000000,
+            "time_average": 0,
+            "time_deviation": 0,
+            "max_inventory": 100000000,
             "safety_factor": 2.33,
-            "reorder_history_size":90,
+            "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 0,
-                    "safety_stock": 0,
+                    "initial_stock": 40000,
+                    "safety_stock": 20000,
                     "composition":
                     {
                         2001: 1
+                    }
+                },
+                  {
+                    "name": "ProductAA",
+                    "id": 1002,
+                    "initial_stock": 40000,
+                    "safety_stock": 20000,
+                    "composition":
+                    {
+                        2001: 2
                     }
                 }
 
@@ -27,18 +37,18 @@ actors= {
         {
             "id": 2,
             "name": "Distributor",
-            "time_average": 10,
-            "time_deviation": 3,
-            "max_inventory": 1000000,
+            "time_average": 0,
+            "time_deviation": 0,
+            "max_inventory": 100000000,
             "safety_factor": 2.33,
-            "reorder_history_size":90,
+            "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 0,
-                    "safety_stock": 0,
+                    "initial_stock": 40000,
+                    "safety_stock": 20000,
                     "composition":
                     {
                         3001: 1
@@ -49,18 +59,18 @@ actors= {
         {
             "id": 3,
             "name": "Factory",
-            "time_average": 10,
-            "time_deviation": 3,
-            "max_inventory": 1000000,
+            "time_average": 0,
+            "time_deviation": 0,
+            "max_inventory": 100000000,
             "safety_factor": 2.33,
-            "reorder_history_size":90,
+            "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 0,
-                    "safety_stock": 0,
+                    "initial_stock": 40000,
+                    "safety_stock": 20000,
                     "composition":
                     {
                         4001: 1
@@ -71,18 +81,18 @@ actors= {
         {
             "id": 4,
             "name": "Raw Material Supplier",
-            "time_average": 10,
-            "time_deviation": 3,
-            "max_inventory": 1000000,
+            "time_average": 0,
+            "time_deviation": 0,
+            "max_inventory": 100000000,
             "safety_factor": 2.33,
-            "reorder_history_size":90,
+            "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 0,
-                    "safety_stock": 0,
+                    "initial_stock": 40000,
+                    "safety_stock": 20000,
                     "composition":
                     {
                         5001: 1
@@ -93,18 +103,18 @@ actors= {
         {
             "id": 5,
             "name": "Base Raw Material supplier",
-            "time_average": 10,
-            "time_deviation": 3,
+            "time_average": 0,
+            "time_deviation": 0,
             "max_inventory": 9999999999,
             "safety_factor": 2.33,
-            "reorder_history_size":90,
+            "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductE",
                     "id": 5001,
                     "initial_stock": 9999999999,
-                    "safety_stock": 1,
+                    "safety_stock": 999999,
                     "reorder_history_size": 7
                 }
             ]

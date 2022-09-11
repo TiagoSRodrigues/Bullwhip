@@ -1,15 +1,16 @@
 # from simulation_configuration import SOURCE_DATA_PATH
+import csv
 import numpy as np
 import pandas as pd
 from sys import path
 from math  import ceil
 from math import floor
 from random import randint
-
-def get_input(input_type,  days=None, min=None, max=None, filename=None):
+from . import logging_management as logs
+def get_input(input_type,  days=None, min=None, max=None, filepath=None):
 
     if input_type == "file":
-        values=get_raw_data(filename)
+        values=get_raw_data(filepath)
         if days is None:
             return values
         return values[-days:]
@@ -18,7 +19,8 @@ def get_input(input_type,  days=None, min=None, max=None, filename=None):
         good_values, errors, values = check_input_datafile()
 
         if errors >0:
-            print("erros: {} good values: {}". format(errors, good_values))
+            logs.new_log(file="data_input", function="get_input", actor=" ", debug_msg= f"erros no input: {errors}")
+
         if days is None:
             return values
         return values[-days:]
@@ -51,16 +53,25 @@ def get_input(input_type,  days=None, min=None, max=None, filename=None):
     return values
 
 
-def get_raw_data(filename):
-    if "real" in filename:
-        filepath = path[0] + "/data/input/real_data_interpolated.csv"
-    else:
-        filepath = path[0] + "/data/input/data_amplified.csv"
-
+def get_raw_data(filepath):
     # from numpy import genfromtxt
-    data = np.genfromtxt(filepath, delimiter='')
-    data=data[~np.isnan(data)]
-    return data
+
+    with open(filepath, "r") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        values = []
+        not_values =[]
+        for row in csv_reader:
+            try:
+                val=int(row[0])
+                values.append(val)
+            except:
+                not_values.append(row)
+
+    if not_values: 
+        logs.log(debug_msg = f"values not included: {not_values}")
+    return values
+
+
 
 
 def check_input_datafile():

@@ -44,7 +44,7 @@ class calculate_simulations_stats():
         open_transactions = simulation.ObejctTransationsRecords.open_transactions
         open_orders = {}
         for actor in simulation.actors_collection:
-            open_orders[actor.id] = actor.actor_orders_record.Open_Orders_Record
+            open_orders[actor.id] = actor.actor_orders_record.open_orders_record
         save_data={"_id":"open_itens",
                    "data":
             {

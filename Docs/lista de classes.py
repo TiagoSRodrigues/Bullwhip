@@ -3,7 +3,7 @@ class ClassInventory:
     def update_inicial_inventory(self):
     def add_to_inventory(self, product, quantity):
     def remove_from_inventory(self, product, quantity):
-    def get_product_inventory(self, product_id):
+    def get_product_stock(self, product_id):
     def set_product_inventory(self, product_id, qty):
     def get_product_safety_inventory(self, product_id):
     def get_product_reorder_history_size(self, product_id):
@@ -16,7 +16,7 @@ class actor:
     def get_product_composition(self, product_id):
     def get_orders_pending(self):
     def get_actor_present_capacity(self):
-    def get_product_inventory(self,product):
+    def get_product_stock(self,product):
     def get_product_safety_inventory(self,product):
     def get_product_reorder_history_size(self,product):
     def get_todays_transactions(self):

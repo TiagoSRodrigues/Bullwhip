@@ -1,12 +1,18 @@
+import csv
 import os
 from time import sleep
 import pymongo
 from inspect import stack
-import csv
+import json
+
+from simulator.actors import actor
 from . import logging_management as logs
 import numpy as np
 import pandas as pd
-# import docker
+from datetime import datetime
+import random
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 class MongoDB:
     def __init__(self, simulation, drop_history=True):
@@ -413,4 +419,173 @@ class MongoDB:
                 data.append(el)
             stats[col]=[data]
         return stats
+
+
+
+"""
+############################################################################################################
+
+
+                                   LOCAL DATABASE
+
+
+############################################################################################################
+"""
+
+
+
+
+
+class local_db:
+    def __init__(self, simulation, drop_history=True):
+        self.simulation=simulation
+        self.log_id=0
+
+        self.transaction_id = 0
+        self.transactions = {}
+        self.inventory_history = []
+        self.inventory_history_id = 0
+        self.orders = []
+
+    def add_transaction_to_db(self, transaction_id=int, transaction_data=dict):
+        """        adiciona a transação à coleção transactions da db simunation no mongodb
+        """
+        self.transaction_id += 1
+        self.transactions[self.transaction_id] = transaction_data
+        return True
+
+
+    def export_db(self, FINAL_EXPORT_FILES_PATH):
+        with open(f"{FINAL_EXPORT_FILES_PATH}transactions.json", 'w') as fp:
+            json.dump(self.transactions, fp)
+
+
+        print(f"            {len(self.transactions)} tansactions exported")
+
+        with open(f"{FINAL_EXPORT_FILES_PATH}orders.csv", "w", newline='') as f:
+            header = "Criation_Time, Product, Quantity, Client, Order_id, Status, Notes-fornecedor\n"
+            f.write(str(header))
+            writer = csv.writer(f, delimiter=',')
+            writer.writerows(self.orders)
+
+
+        print(f"            {len(self.orders)} orders exported")
+
+
+        with open(f"{FINAL_EXPORT_FILES_PATH}inventory_history.json", 'w') as fp:
+            json.dump(self.inventory_history, fp)
+
+        print(f"            {len(self.orders)} inventory records exported")
+
+
+    def update_transaction_on_db(self, transaction_id, transaction_data):
+        self.transaction_id += 1
+        self.transactions[self.transaction_id] = transaction_data
+        return True
+
+    def add_order_to_db(self,actor_id, time,  product, quantity, client, order_id, status):
+        self.orders.append([ time,  product, quantity, client, order_id, status, actor_id])
+        return True
+
+
+    """
+
+
+
+
+    {'name': 'ProductD', 'id': 4001, 'initial_stock': 20000, 'safety_stock': 0, 'composition': {'5001': 1}, 'in_stock': 20000}
+
+    2001 {'name': 'ProductB', 'id': 2001, 'initial_stock': 20000, 'safety_stock': 0, 'composition': {'3001': 1}, 'in_stock': 8217}
+
+
+    INVENTORY
+    """
+    def add_to_inventory_history(self,day, actor_id, inventory):
+
+        stock = {}
+        for prd, detail in inventory.items():
+            stock[prd] = detail["in_stock"]
+
+
+        record={"actor":actor_id,
+                "day":day,
+            "stock":stock
+            }
+        self.inventory_history_id+=1
+        self.inventory_history.append(record)
+
+
+
+    def update_inventory_db(self,actor_id, product, quantity):
+             pass
+
+    def check_connection(self):
+          pass
+
+
+    def get_document_by_id(self, doc_collection, doc_id):
+           pass
+
+    def add_to_db_log(self, response):
+        pass
+
+
+
+    def create_db_stats_document(self, simulation_id):
+        pass
+
+
+    def add_simulation_stats_to_db(self,  stat_value):
+        pass
+    def add_actors_to_db_stats(self, data):
+        pass
+
+    def add_to_db_actor_stats(self, stat_name, stat_value):
+        pass
+
+    def add_to_actor_delivered_transactions(self, actor_id, transactions):
+        pass
+
+
+    def add_runtime_to_stats_db(self,values):
+        pass
+
+    def add_open_itens(self,values):
+        pass
+
+    def add_to_db_stats_log(self, stat_value):
+        pass
+
+    def add_to_db(self, colection_name, data):
+        pass
+
+    def add_maney_to_db(self, colection_name, data):
+        pass
+
+
+    """ STATS"""
+    def get_collection_data(self, collection_name):
+        pass
+
+    def get_inventories(self):
+        pass
+
+    def get_actor_inventory(self, actor_id):
+        pass
+
+    def get_transactions(self):
+        pass
+
+    def get_orders(self):
+        pass
+
+    def get_actor_orders(self, actor_id):
+        pass
+
+    def get_simulation_stats(self):
+        pass
+    def close_order_on_db(self, actor_id, order_id):
+        pass
+
+
 

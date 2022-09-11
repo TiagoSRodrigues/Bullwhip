@@ -72,36 +72,33 @@ def show_function_tree():
 
     print(function_tree)
 
-def new_log(file, function, day,  actor,  debug_msg = None, info_msg = None, warning_msg = None):
+def new_log(file, function, day="",  actor="",  debug_msg = None, info_msg = None, warning_msg = None):
+    # """Automaticamente cria um registo de log:
     log_level = logging.root.level
-    
-    
-  
-    file_str = "{:20}".format(file)
+
+
+
+    file_str = "{:17}".format(file)
     function_str = "{:30}".format(function)
     day_str = "{:4}".format(day)
     actor_str = "{}".format(actor)
-    
-    
-    record = f"|{day_str} | {actor_str} | {file_str} | {function_str} | {debug_msg}{info_msg}{warning_msg}"
+
+    # if parameter is none, set to ""
+    if debug_msg is None: debug_msg = ""
+    if info_msg is None: info_msg = ""
+    if warning_msg is None: warning_msg = ""
+
+    record = f"|{day_str} | {actor_str} | {file_str}| {function_str}| {debug_msg}{info_msg}{warning_msg}"
 
     logging.debug(record)
-  
+
 
 def log(debug_msg = None, info_msg = None, warning_msg = None):
     """writes the log strings to files
 
     """
-    # Depriciated
-    
-    # if sim_cfg.LOG_TO_BD:
-    #     sim_cfg.log_id+=1
-    #     mongo_client = pymongo.MongoClient("mongodb://localhost:2021/")
-    #     simulation_db = mongo_client["simulation"]["simulation_log"].insert_one(
-    #         {"_id":sim_cfg.log_id,
-    #          "log":debug_msg})
 
-    
+
     #Receive the logging level from envirement
     log_level = logging.root.level
 
@@ -133,7 +130,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 
     elif log_level == 10 and debug_msg != None :
-        debug_msg = "|     |   | " + str(debug_msg)
+        debug_msg = "|     |   " + str(debug_msg)
         logging.debug(str(debug_msg))
         if warning_msg != None:
             logging.warning(str(warning_msg))
@@ -169,7 +166,20 @@ def delete_old_logs(folder=None, file=None,  NUMBER_OF_HISTORY_LOGFILES=None):
 #     for i in tqdm(steps):
 #         pass
 
+def get_stack():
+    """ DEBUG FUNCTION
+        prints the stack of instructions that rise to the error """
 
+    function_tree=[]
+    for i in inspect.stack():
+        function_tree.append([ i[1].split("\\")[-1],i[3] ])
+    print(function_tree)
+    return 
+
+
+def get_full_stack():
+      for i in inspect.stack():
+          print(i, end="\n\n")
 
 def print_day(simulation, quantity):
     if sim_cfg.PRINT_LOGS_IN_TERMINAL:
@@ -242,7 +252,6 @@ delete_old_logs( folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = s
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_4.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_5.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_6.csv"           )
-# delete_old_logs( file = sim_cfg.SIM_STATUS_FILE_PATH  )
 # delete_old_logs( file = sim_cfg.INVENTORY_FILE          )
 
 

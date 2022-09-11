@@ -1,7 +1,7 @@
 import math
 import numpy as np
-from simulator import simulation
-from . import  orders_records, inventory, logging_management as logs
+from simulator import simulation, transactions
+from . import  orders_records, inventory, logging_management as logs, easter_eggs as ee
 import simulation_configuration  as sim_cfg
 import numpy as np
 from inspect import stack
@@ -27,7 +27,8 @@ class actor:
         self.products             = products
         self.simulation           = simulation_object
 
-        print("actor",id, "reorder_history_size",self.reorder_history_size)
+
+        ee.print_actor(self.id,self.reorder_history_size)
         # if self.id == 0:
         #     self.is_customer = True
         # else: self.is_customer = False
@@ -59,7 +60,7 @@ class actor:
                                                     products=products)
         self.products_list = self.get_actor_product_list()
 
-        logs.log(info_msg="| CREATED OBJECT   | Actor         id="+str(self.id)+" "+self.name+"called by"+stack()[1][3])
+        logs.new_log(actor=self.id, file="actors", function="constructor",  info_msg=f"Actor created           id={str(self.id)} name: {self.name} called by "+stack()[1][3])
 
         # #LAST THING: Adiciona o ator à lista de objectos (atores) da simulação #*foi apagado porque n fazia sensido estar aqui, passei para a simulations, durante a criação
         # self.simulation.add_to_actors_collection(self)
@@ -68,18 +69,42 @@ class actor:
                                                  "stock":{}})
         #logs
         try:
-            logs.log(debug_msg = "| OBJECT CRIATED   | ACTORS    Created actor: "+str(self.id)+" " + str(self.name) + " AVG: "+ str(self.average_time) + " VAR: "+ str(self.deviation_time) +
-                " max_inventory " + str(self.max_inventory) + " Products " + str(self.products) )
+            logs.new_log(actor=self.id, file="actors", function="constructor",  info_msg=f"Actor data : AVG: {str(self.average_time)} var: {str(self.deviation_time)} max_inventory: {str(self.max_inventory)}  Products: {str(self.products)}")
         except:
             logs.log(debug_msg = "Error in Actors logging")
 
 
-################################                                                 #############################
-#                                           GETTERS
-################################                                                 #############################
+        """  
+        doh
 
+
+
+
+                                                        tttt                                                                   
+                                                    ttt:::t                                                                   
+                                                    t:::::t                                                                   
+                                                    t:::::t            
+        ggggggggg   ggggg    eeeeeeeeeeee    ttttttt:::::tttttttttttttt
+        g:::::::::ggg::::g  ee::::::::::::ee  t:::::::::::::::::tt:::::
+        g:::::::::::::::::g e::::::eeeee:::::eet:::::::::::::::::tt::::
+        g::::::ggggg::::::gge::::::e     e:::::etttttt:::::::tttttttttt
+        g:::::g     g:::::g e:::::::eeeee::::::e      t:::::t          
+        g:::::g     g:::::g e:::::::::::::::::e       t:::::t          
+        g:::::g     g:::::g e::::::eeeeeeeeeee        t:::::t          
+        g::::::g    g:::::g e:::::::e                 t:::::t    tttttt
+        g:::::::ggggg:::::g e::::::::e                t::::::tttt:::::t
+        g::::::::::::::::g  e::::::::eeeeeeee        tt::::::::::::::t 
+        gg::::::::::::::g   ee:::::::::::::e          tt:::::::::::tt  
+            gggggggg::::::g     eeeeeeeeeeeeee            ttttttttttt  
+                    g:::::g                                                               
+        gggggg      g:::::g                                                               
+        g:::::gg   gg:::::g                                                                                                                        
+        g::::::ggg:::::::g                                                                                                                        
+        gg:::::::::::::g                                                                                                                                                             
+
+        """
     def get_actor_product_list(self):
-        logs.log(debug_msg="| FUNCTION         | actors.get_actors_product_list"+str(self))
+        logs.new_log(file="actors",function="get_actor_product_list", actor=self.id, debug_msg=f"actor {self.id} products: {self.products}")
 
         products_list=[]
         for product in self.products:
@@ -96,70 +121,199 @@ class actor:
             dict :  compusição do producto, ex:{'2001': 1}
         """
         if str(product_id)[0] in  self.simulation.Object_supply_chain.get_end_of_chain_actors():
-            logs.log(debug_msg="| FUNCTION         | actors        | get_product_composition tentativa de ver composição de produdo de fim de SC . product id:"+str(product_id))
+            logs.new_log(file="actors",function="get_product_composition", actor=self.id, debug_msg=f"get_product_composition tentativa de ver composição de produdo de fim de SC . product id:{str(product_id)}")
+
             return False
 
 
         for product in self.products:
-            logs.log(debug_msg="| FUNCTION         | actors        | get_product_composition tentativa de ver composição de produdo id:"+str(product_id))
+            logs.new_log(file="actors",function="get_actor_product_list", actor=self.id, debug_msg="get_product_composition tentativa de ver composição de produdo id:"+str(product_id))
             if int(product["id"]) == int(product_id):
                 #print(product["composition"])
                 return product["composition"]
 
     def get_open_orders(self):
         "ordens abertas que ainda não foram enviadas"
-        # logs.log(debug_msg="| FUNCTION         | actors        | get_open_orders       "+str( self.id))
+        # logs.new_log(file="actors",function="get_open_orders", actor=self.id, debug_msg="get_open_orders       "+str( self.id))
 
         pending=[]
 
-        for record in self.actor_orders_record.Open_Orders_Record:
+        for record in self.actor_orders_record.open_orders_record:
             order_state= self.get_order_state(order= record)
             if order_state in [0]:#,9]:
                 pending.append(record)
 
-        logs.log(debug_msg="| FUNCTION         | actors        | get_open_orders     from actor {}, pending: {}".format(self.id, pending))
+        logs.new_log(file="actors",function="get_actor_product_list", actor=self.id, debug_msg="get_open_orders     from actor {}, pending: {}".format(self.id, pending))
 
         return pending
 
-    def get_actor_present_capacity(self):
-        return self.actor_inventory.present_capacity
+    # def get_actor_present_capacity(self):
+    #     return self.actor_inventory.present_capacity
 
-    def get_product_inventory(self,product):
-        logs.log(debug_msg="| FUNCTION         | actors        | get_product_inventory actor {} product {}, stock: {}".format(self.id, product, self.actor_inventory.get_product_inventory(product)))
-        return self.actor_inventory.get_product_inventory(product_id =product)
+    def get_product_stock(self,product):
+        inventory = self.actor_inventory.get_product_stock(product_id = product)
+        logs.new_log(day=self.simulation.time, actor=self.id, function="get_product_stock", file="actors", debug_msg=f"actor {self.id} inventory  {inventory}" )
+        return inventory
+
 
     def get_product_safety_inventory(self,product):
-        logs.log(debug_msg="| FUNCTION         | actors get_product_safety_inventory ")
         return self.actor_inventory.get_product_safety_inventory(product)
 
-
-
-    # def get_product_reorder_history_size(self,product):
-    #     # logs.log(debug_msg="| FUNCTION         | actors get_product_safety_inventory "+str( self)+str(product))
-    #     return self.actor_inventory.get_product_reorder_history_size(product)
 
     def get_delivering_transactions(self):
         return self.simulation.ObejctTransationsRecords.get_delivering_transactions(self)
 
-    def get_actor_info(self):
-        actor_data= {"id", self.id,
-        "name", self.name,
-        "avg", self.average_time,
-        "var", self.deviation_time,
-        "max_inventory", self.max_inventory,
-        "products", self.products,
-        "simulation_object", self.simulation,
-        "stock_record", self.actor_orders_record,
-        "actor_inventory",self.actor_inventory}
+    # def get_actor_info(self):
+    #     actor_data= {"id", self.id,
+    #     "name", self.name,
+    #     "avg", self.average_time,
+    #     "var", self.deviation_time,
+    #     "max_inventory", self.max_inventory,
+    #     "products", self.products,
+    #     "simulation_object", self.simulation,
+    #     "stock_record", self.actor_orders_record,
+    #     "actor_inventory",self.actor_inventory}
 
-        return actor_data
+    #     return actor_data
 
-#####################                                                 #######################
-#                                SETERS
-#####################                                                 #######################
+    def get_orders_to_send(self):
+        """ devovler as encomendas pendentes ordenadas por id
+        """
+        #! analisar, à 1ª vista , parece bem
+        def get_id(l):
+            return l[-3]
+
+        to_send = self.get_open_orders()
+        to_send.sort(key=get_id)
+
+        return to_send
+
+
+
+
+    def get_deliver_time(self):
+        return np.random.normal(loc=self.average_time, scale=self.deviation_time)
+
+    def get_transactions_by_id(self, transactions_id):
+        return self.simulation.ObejctTransationsRecords.get_transaction_by_id(transactions_id)
+
+    def get_ordered_product(self,order = None ,order_id = None):
+        if order:
+            return order[1]
+        elif order_id:
+            return self.actor_orders_record.get_order_by_id(order_id)[1]
+
+    def get_ordered_quantity(self,order = None ,order_id = None):
+        if order:
+            return order[2]
+        elif order_id:
+            return self.actor_orders_record.get_order_by_id(order_id)[2]
+
+    def get_order_id(self, order=list ):
+        return order[-3]
+
+    def get_order_by_id(self, order_id ):
+        return  self.actor_orders_record.get_order_by_id(order_id)
+
+    def set_order_processed(self, order_id ):
+        return  self.actor_orders_record.set_order_processed(order_id=order_id)
+
+    def get_order_criation_date(self, order=None, order_id=None ):
+        if order:
+            return order[0]
+        elif order_id:
+            return self.actor_orders_record.get_order_by_id(order_id)[0]
+
+    def get_order_state(self, order = None ,order_id = None):
+        if order:
+            return order[5]
+        elif order_id:
+            return self.actor_orders_record.get_order_by_id(order_id)[5]
+
+        #   0                 1       2       3        4        5        6
+        #  [ creation Time,  Product , Qty , Client , Order_id, Status, notes]
+        #       -7            -6     -5      -4        -3      - 2    -1
+
+        #! TOD Validar este history hard limit a zero
+    def get_orders_history(self, history_cut=0):
+        #retorna a média e o std
+        return self.actor_orders_record.get_orders_history(history_cut)
+
+    def get_orders_stats(self,product, reorder_history_size=0):
+        #retorna a média e o std
+        return self.actor_orders_record.get_orders_stats(product= product,history_days= reorder_history_size)
+
+    def get_transactions_stats(self, actor_id, product, history_size=1000000):
+        #retorna a média e o std
+        return self.simulation.ObejctTransationsRecords.get_transactions_stats(actor_id, product, history_size)
+
+    def get_delivery_stats(self, product_id):
+        """calcula a media e o desvio padrão do tempo de entrega de um produto
+            indo buscar a composição do produto e calculando as estatisticas de cada um dos componentes
+            devolve o tempo maior        
+        """
+        avg, std = 0, 0
+        composition = self.get_product_composition(product_id)
+        for product in composition.keys():
+            try:
+                p_avg, p_std = self.get_transactions_stats(actor_id= self.id,product=product, history_size= self.reorder_history_size)
+                if p_avg > avg:
+                    avg = p_avg
+                    std = p_std
+            except:
+                continue        
+        logs.new_log(actor=self.id, file="actors", function="get_delivery_stats", day=self.simulation.time, debug_msg=f"product_id: {product_id} avg: {avg} std: {std}")
+
+        return avg, std
+
+
+    def get_order_quantity(self, avg_demand, deviation_demand, avg_delivery_time, deviation_delivery_time, safety_factor = 1):
+        """ Calulates the order quantity based on: 
+        the average demand,
+        the deviation of the demand, 
+        the average delivery time, 
+        the deviation of the delivery time and 
+        the safety factor, if none, sets to 1
+
+        """
+        if avg_delivery_time == 0:
+            avg_delivery_time = 1
+
+        order_point_base = avg_demand * avg_delivery_time 
+
+
+        safety_component = safety_factor * (  math.sqrt( 
+                                        (avg_delivery_time * deviation_demand**2  ) + ((avg_demand**2) * (deviation_delivery_time **2) )
+                                        )
+                                            )
+        order_quantity = order_point_base + safety_component
+        logs.new_log(day=self.simulation.time, actor=self.id, function="get_order_quantity", file="actors", debug_msg= f"| stock_otimization| calculate_order order_point_base: {order_point_base} safety_component: {safety_component} order_quantity: {order_quantity}")              
+        return  order_quantity
+
+
+
+
+        """                                         tttt          
+                                                  ttt:::t          
+                                                  t:::::t          
+                                                  t:::::t          
+           ssssssssss       eeeeeeeeeeee    ttttttt:::::ttttttt    
+         ss::::::::::s    ee::::::::::::ee  t:::::::::::::::::t    
+       ss:::::::::::::s  e::::::eeeee:::::eet:::::::::::::::::t    
+       s::::::ssss:::::se::::::e     e:::::etttttt:::::::tttttt    
+        s:::::s  ssssss e:::::::eeeee::::::e      t:::::t          
+          s::::::s      e:::::::::::::::::e       t:::::t          
+             s::::::s   e::::::eeeeeeeeeee        t:::::t          
+       ssssss   s:::::s e:::::::e                 t:::::t    tttttt
+       s:::::ssss::::::se::::::::e                t::::::tttt:::::t
+       s::::::::::::::s  e::::::::eeeeeeee        tt::::::::::::::t
+        s:::::::::::ss    ee:::::::::::::e          tt:::::::::::tt
+         sssssssssss        eeeeeeeeeeeeee            ttttttttttt  
+
+        """
 
     def add_to_stock_scheduled_to_arrive(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="add_to_stock_scheduled_to_arrive", file="actors", debug_msg= "add_to_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))              
 
         try:
             self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]+quantity
@@ -167,23 +321,23 @@ class actor:
             self.stock_scheduled_to_arrive[product_id]=quantity
 
     def remove_from_stock_scheduled_to_arrive(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        |  remove_from_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="remove_from_stock_scheduled_to_arrive", file="actors", debug_msg= " remove_from_stock_scheduled_to_arrive actor {} product {} qty {}".format(self.id,product_id, quantity))            
 
         # print("(-> id ", self.id,"prd", product_id,"qty", quantity)0
         if self.id != 0:
             self.stock_scheduled_to_arrive[product_id]=self.stock_scheduled_to_arrive[product_id]-quantity
 
     def add_to_stock_scheduled_to_send(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | add_to_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="add_to_stock_scheduled_to_send", file="actors", debug_msg= "add_to_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))            
 
         try:
             present=self.stock_scheduled_to_send[product_id]
-            self.stock_scheduled_to_send[product_id]=present+quantity
+            self.stock_scheduled_to_send[product_id] = present + quantity
         except:
-            self.stock_scheduled_to_send[product_id]=quantity
+            self.stock_scheduled_to_send[product_id] = quantity
 
     def remove_from_stock_scheduled_to_send(self,product_id, quantity):
-        logs.log(debug_msg="| scheduler        | actors        | remove_from_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="remove_from_stock_scheduled_to_send", file="actors", debug_msg= "remove_from_stock_scheduled_to_send actor {} product {} qty {}".format(self.id,product_id, quantity))            
 
         if self.id != 0:
             self.stock_scheduled_to_send[product_id]=self.stock_scheduled_to_send[product_id]-quantity
@@ -191,11 +345,11 @@ class actor:
     def add_to_received_transactions(self, transaction):
 
         self.received_transactions.append(transaction)
-        logs.log(debug_msg="|received_transcs  | actors        | add_to_received_transactions {}".format(transaction))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="add_to_received_transactions", file="actors", debug_msg= "add_to_received_transactions {}".format(transaction))            
 
 
     def add_to_order_today(self,  product=None, quantity=None):
-        logs.log(debug_msg="| order_today      | actors        | add_to_order_today     from actor {}, product: {}, quantity: {}".format(self.id, product, quantity))
+        logs.new_log(day=self.simulation.time, actor=self.id, function="add_to_order_today", file="actors", debug_msg= "from actor {}, product: {}, quantity: {}".format(self.id, product, quantity))            
 
         if product in self.order_today:
             self.order_today[product] =     self.order_today[product] + quantity
@@ -207,25 +361,105 @@ class actor:
 
     def set_actor_state(self, state:int, log_msg=None ):
         self.simulation.speed()
-        if log_msg== None: logs.log(debug_msg= "| STATE CHANGE     | a:"+ str(self.id)+" state: " + str(state)+" |" )
-        else: logs.log(debug_msg= "| STATE CHANGE     | a:"+ str(self.id)+" state: " + str(state)+" | "+str(log_msg) )
+        # if log_msg== None: 
+        #     logs.new_log(day=self.simulation, actor=self.id, file="actors", function="set_actor_state",  debug_msg= f"| STATE CHANGE     | a:{str(self.id)} state: {str(state)} |" )
+        # else: 
+        logs.new_log(day=self.simulation.time, actor=self.id, file="actors", function="set_actor_state",  debug_msg= f"| STATE CHANGE     | a:{str(self.id)} state: {str(state)} | {str(log_msg)}" )
 
         self.actor_state = state
+
+
+    def get_order_preparation(self, product_id, product_quantity):
+        """ recebe um produto e uma quantidade objectivo,
+        devolve as encomendas necessárias para a sua preparação"""
+
+        #vai buscar a composição
+        # a composição diz quanto tem de encomendar para 1 unidade do produto
+        composition =  self.simulation.cookbook[product_id]
+
+        order_data=[]
+        #ver a qunatidade minima-
+            #encomenda o necessário
+        # print(product_id,composition)
+        for key , value in composition.items():
+            product_order = {}
+            # print(key,value)
+            key=str(key)
+            if key[0] == str(self.id): continue
+
+            product_order["product_id_to_order"] = int(key)
+            product_order["actor_to_order"] = int(str(key)[0])
+            product_order["quantity_to_order"] =int(value) * int(product_quantity)
+            order_data.append(product_order)
+
+           # quantity_to_order = int(self.actor_inventory.get_product_reorder_history_size(product_id=product )) * value
+        logs.new_log(day=self.simulation.time, actor=self.id, function="get_order_preparation", file="actors", debug_msg= "order preparation from actor {}  produto {}  composition {} order data {}".format(( self.id),str(product_id),str(composition),str(order_data)))            
+
+        return order_data
+
+    def get_product_safety_stock(self, product_id):
+        """recebe um produto e devolve a quantidade de stock de segurança"""
+        safety_stock =  self.actor_inventory.get_product_safety_stock(product_id=product_id)
+        logs.new_log(day=self.simulation.time, actor=self.id, function="get_product_safety_stock", file="actors", debug_msg= f"get_product_safety_stock produto {product_id}  safety stock {safety_stock}")            
+        return safety_stock
+
+
 
 #-----   actor management   --------------------------------------------------------------------------------------------------------------------#
 
         """ 
-            OPERATIONAL METHODS                ########################################################################################################################
+
+
+
+                                                    tttt          
+                                                ttt:::t          
+                                                t:::::t          
+                                                t:::::t          
+        aaaaaaaaaaaaa      ccccccccccccccccttttttt:::::ttttttt    
+        a::::::::::::a   cc:::::::::::::::ct:::::::::::::::::t    
+        aaaaaaaaa:::::a c:::::::::::::::::ct:::::::::::::::::t    
+                a::::ac:::::::cccccc:::::ctttttt:::::::tttttt    
+            aaaaaaa:::::ac::::::c     ccccccc      t:::::t          
+        aa::::::::::::ac:::::c                   t:::::t          
+        a::::aaaa::::::ac:::::c                   t:::::t          
+        a::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt
+        a::::a    a:::::ac:::::::cccccc:::::c      t::::::tttt:::::t
+        a:::::aaaa::::::a c:::::::::::::::::c      tt::::::::::::::t
+        a::::::::::aa:::a cc:::::::::::::::c        tt:::::::::::tt
+        aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  
+
+
         """
+    def place_order(self, product_id, quantity, client= None):
+
+        if client is None:
+            client= self.id
+        self.set_actor_state(state=65, log_msg="placing orders")
+
+        logs.new_log(day=self.simulation.time, actor=self.id, function="place_order", file="actors", debug_msg= "place_order from actor {} producto {} quantity {}".format( self.id,product_id, quantity))         
+        supplier_id = str(product_id)[0]
+        product  =  product_id
+        quantity =  quantity
+
+
+        for actor_object in self.simulation.actors_collection:
+
+            if int(actor_object.id) == int(supplier_id):
+                actor_object.receive_order( supplier= supplier_id, quantity=quantity, product=product, client= client, notes={} )    #adiciona encomenda no ator destino
+                actor_object.add_to_stock_scheduled_to_send(product_id=product_id, quantity= quantity)                                #adiciona À lista a enviar do ator destino
+                self.add_to_stock_scheduled_to_arrive(product_id=product_id, quantity= quantity)                                      #adiciona À lista a recever do ator
+
+        logs.new_log(day=self.simulation.time, actor=self.id, function="place_order", file="actors", debug_msg= f"placing order of producto {product_id} quantity {quantity} to supplier {supplier_id} ")              
+        return True
 
     def receive_order(self, supplier, quantity, product, client, notes={} ):
+
         if quantity == 0:
-            return
+            raise ValueError("quantity can't be 0")
 
         if int(supplier) == int(client):
-            raise ValueError("Erro nos clientes - receive order",self.id , client )
-        logs.log(debug_msg = "| Ordered recived  | actors        | receive_order -  actor  "+str(self.id)+" received order from actor: "+ str(client) + " of "+ str(quantity) + " of the product " + str(product) )
-
+            raise ValueError("Erro nos clientes - receive order   suplpyer {self.i} == client {client}")
+        logs.new_log(file="actors", function="receive_order", day=self.simulation.time, actor=self.id, debug_msg= f" receiver actor: {str(self.id)} received from : {str(client)} of qty {str(quantity)} of the product {product}" )
 
         for el_actor in self.simulation.actors_collection:
             if int(el_actor.id) == int(supplier):
@@ -240,27 +474,14 @@ class actor:
             if not self.receive_transaction( transaction_id ):
                 return False
         return True
-        
-    def get_orders_to_send(self):
-        """ devovler as encomendas pendentes ordenadas por id
-        """
-        def get_id(l):
-            return l[-3]
-        to_send = self.get_open_orders()
 
-        to_send.sort(key=get_id)
-        return to_send
-    
-    
+
+
     def manage_orders(self):
         # print(self.id,self.actor_orders_record.orders_waiting_stock)
         """ gere as ordens de encomenda,
         tem um sistema de estados para evidar rotas incorrecta e para facilitar a analise dos logs
 
-
-        Existem dois modos de gestão de encomendas, fifo e fist: fifo só envia as ecomentdas disponiveis,
-        fist envia as encomendas por ordem, mas se uma não tiver stock suficiente para enviar passa à frente e tenta enviar as restasntes.
-        ao mesmo tempo faz a encomenda do material para desolver a encomenda pendente.
 
         Returns:
             não retorna nada
@@ -274,12 +495,12 @@ class actor:
         #     80 pronto
         """
 
-        order_priority = self.simulation.order_priority #fifo or faster
         self.order_today={}
-        self.set_actor_state( state = 20, log_msg="Checking transctions to receive" )
-        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        actor id: "+str(self.id))#+" em stock:"+str(self.actor_inventory.main_inventory))
 
-        # orders          =   self.actor_orders_record.Open_Orders_Record
+        self.set_actor_state( state = 20, log_msg="Checking transctions to receive" )
+        logs.new_log(actor=self.id, day=self.simulation.time, function="manage_orders", file="actors", debug_msg= f"actor id: {self.id}" )
+
+        # orders          =   self.actor_orders_record.open_orders_record
         # max_capacity    =   self.actor_inventory.max_capacity
         # inventory       =   self.actor_inventory.main_inventory
 
@@ -287,63 +508,65 @@ class actor:
         # verifica se tem encomendas para RECEBER       ######################################
 
         to_receive = self.get_delivering_transactions()
-        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders        Encomendas para receber: "+str(to_receive))
+
+        logs.new_log(actor=self.id, day=self.simulation.time, function="manage_orders", file="actors", debug_msg=f"Encomendas para receber: {str(to_receive)}")
 
         if len(to_receive)>0 :
             self.receive_orders(to_receive)
 
-        if  order_priority not in ["faster" ]:
-            if order_priority == "fifo": Exception("Fifo not implemented yet")
-            raise Exception("prioridades das encomendas mal configurada ")
 
 
-        if order_priority == "faster":
-            self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: {}".format(order_priority) )
+        # verifica se tem encomendas para Enviar       ######################################
+        self.set_actor_state( state = 30, log_msg="Checking transctions to send with mode: ")
+
+        orders_to_send = self.get_orders_to_send()
 
 
-            orders_to_send = self.get_orders_to_send()
+        if orders_to_send:
+            logs.new_log(actor=self.id, day=self.simulation.time, function="manage_orders", file="actors", debug_msg= f"encomendas para enviar: { str(orders_to_send)}" )
+            self.send_orders(orders_to_send)
 
-
-            if len(orders_to_send)>0:
-                self.send_orders(orders_to_send)
-
-        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ " tem para enviar as encomendas: "+str("to_send"))
+        else:
+            logs.new_log(actor=self.id, day=self.simulation.time, function="manage_orders", file="actors", debug_msg= f"sem ncomendas para enviar: { str(orders_to_send)}" )
 
         self.set_actor_state( state = 39, log_msg=str(len(orders_to_send))+" Orders sent from stock n sei se está certo")
         return True
-    
+
     def send_orders(self, orders_to_send):
         """ envia as encomendas pendentes
         """
-        logs.log(debug_msg="| FUNCTION         | actors        | send_orders        actor id: "+str(self.id))
-        
-        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} tem para enviar {} ".format(self.id,orders_to_send))
-
         for order in orders_to_send:
             order_id = self.get_order_id(order)
             ordered_quantity=self.get_ordered_quantity(order)
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} a tentar enviar a order {} ".format(self.id,order_id))
+            logs.new_log(actor=self.id, day=self.simulation.time, function="send_orders", file="actors", debug_msg= f" a tentar enviar a order {order_id}")
+
+
+            # se não existirem produtos suficientes para enviar a encomenda
+            transaction_id = self.send_transaction( order_id )
+            if transaction_id:
+                logs.new_log(actor=self.id, day=self.simulation.time, function="send_orders", file="actors", debug_msg= f" order {order_id} enviada com sucesso na transaction {transaction_id}" )
             
-            # se não existirem produtos suficientes para enviar a encomenda para função
-            if not self.send_transaction( order_id) :                                                       #tenta enviar
-                return False
-                    
+            if not transaction_id :                                                       #tenta enviar
+                logs.new_log(actor=self.id, day=self.simulation.time, function="send_orders", file="actors", debug_msg= f"ERRO falhou o envio da order {order_id}" )
+                continue #isto devia ser um return false - 
+            #!analisar
             elif order_id in self.actor_orders_record.get_orders_waiting_stock():                       #se n enviou verifica se já estava à espera, significa que já foi encomendadad MP
-                logs.log(debug_msg="| FUNCTION         | actors        | manage_orders    actor {} order{} - continue becouse is in waiting lit".format(self.id,order_id))
+                logs.new_log(actor=self.id, file="actors", function="send_orders", debug_msg= f"ERROR (se aparecer no log é possivel erro) order {order_id} - continue becouse is in waiting stock" )
                 continue
-                print("temp isto n devia imprimir")
+
             else:
                 ordered_product= self.get_ordered_product(order)
                 if self.manufacture_product(ordered_product, reference_quantity= ordered_quantity):
                     if self.send_transaction(order_id):        # tanta produzir, se conseguir envia logo
                         continue
                     else:
-                        logs.log(debug_msg="| FUNCTION         | actors        | manage_orders       o actor"+str(self.id)+ "Erro na manufatura, está a produzir abaixo do suficiente para enviar"+str(order))
+                        logs.new_log(actor=self.id, day=self.simulation.time, function="send_orders", file="actors", debug_msg= f"  o actor {str(self.id)} Erro na manufatura, está a produzir abaixo do suficiente para enviar {str(order)}")
+
                 self.actor_orders_record.add_to_orders_waiting_stock(order_id= order_id)
                     #to_send = self.get_open_orders()     # actualiza to_send
         return True
 
-        
+
     def manage_stock(self):
         """
         Executado depois da destão de encomendas
@@ -354,7 +577,8 @@ class actor:
         if self.id in [x for x in self.simulation.Object_supply_chain.get_end_of_chain_actors()]:
             self.set_actor_state( state = 80, log_msg=str( "o actor{} está no fim da cadeia, o estado vai alterar para terminado 80".format(self.id)))
             #get inventory        
-            if self.actor_inventory.get_product_inventory(product_id = 5001) < 100000:
+            logs.new_log(actor=self.id, day=self.simulation.time, function="manage_stock", file="actors", debug_msg= f"actor: {self.id} detected, state chenged to 80" )
+            if self.actor_inventory.get_product_stock(product_id = 5001) < 100000:
                 #if inventory is below min_stock, order MP
                 self.actor_inventory.set_product_inventory(product_id = 5001, new_quantity= 1000000000)
             return False
@@ -366,35 +590,36 @@ class actor:
         #ATENTION NÃO MUDAR O ESTADO OS OBJECTOS DENTRO DE UM LOOP
 
 
-        
+
         #todo talvez se possa implementar um set stock to max quando a função é chamada
 
 
-        # ORDERNS WAINTING TO BE SENT
+        # ORDERS WAINTING TO BE SENT
 
-        waiting_orders = self.actor_orders_record.get_orders_waiting_stock()
+        # waiting_orders = self.actor_orders_record.get_orders_waiting_stock()
 
-        if len(waiting_orders) >0:
-            self.set_actor_state( state = 41, log_msg="processing waiting_orders {}".format(waiting_orders))
+        # if len(waiting_orders) >0:
+        #     self.set_actor_state( state = 41, log_msg="processing waiting_orders {}".format(waiting_orders))
 
-            #encomenda MP para satisfazer o pedido 
-            for order_id in waiting_orders:
+        #     #encomenda MP para satisfazer o pedido 
+        #     for order_id in waiting_orders:
 
-                #prepare order:
-                order_data= self.order_preparation(
-                    product_id=self.get_ordered_product(order_id=order_id),
-                    product_quantity= self.get_ordered_quantity(order_id=order_id)
-                    )
+        #         #prepare order:
+        #         order_data= self.get_order_preparation(
+        #             product_id=self.get_ordered_product(order_id=order_id),
+        #             product_quantity= self.get_ordered_quantity(order_id=order_id)
+        #             )
+        #         #!apagar
+        #         # self.add_to_order_today(
+        #         #     product=order_data["product_id_to_order"],
+        #         #     quantity=order_data["quantity_to_order"]
+        #         #     )
 
-                self.add_to_order_today(
-                    product=order_data["product_id_to_order"],
-                    quantity=order_data["quantity_to_order"]
-                    )
+        #         self.set_order_processed(order_id=order_id)
 
-                self.set_order_processed(order_id=order_id)
-                
         for product in self.products_list:
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} in product list {}".format(self.id, product, self.products_list))
+            logs.new_log(actor=self.id, day=self.simulation.time, function="manage_stock", file="actors", debug_msg= "product {} in product list {}".format(self.id, product, self.products_list) )
+
             self.set_actor_state( state = 42, log_msg=" cheking inventary stocks")
 
 
@@ -403,38 +628,39 @@ class actor:
 
             #!nota: ele só pode produzir aquilo que lhe pertece, logo só gere o stock do que pode produzir
 
-            product_stock        = int( self.get_product_inventory(product))
+            product_stock        = int( self.get_product_stock(product))
             product_safety_stock = int(self.get_product_safety_inventory(product))
 
-            logs.log(debug_msg="| FUNCTION         | actors        | manage_stock actor {} product {} stock {} stafety stock {}".format(self.id, product, product_stock, product_safety_stock))
+            logs.new_log(actor=self.id, day=self.simulation.time, function="manage_stock", file="actors", debug_msg= "product {} stock {} stafety stock {}".format(self.id, product, product_stock, product_safety_stock) )
+
             if  product_stock <= product_safety_stock:
                 self.set_actor_state( state = 43, log_msg="stock inferior ao safety ")
 
-                logs.log(debug_msg="| FUNCTION         | actors        | product_inventory "+str(self.get_product_inventory(product ))+" <= get_product_safety_inventory "+str(self.get_product_safety_inventory(product ) ))
+                logs.new_log(actor=self.id, day=self.simulation.time, function="manage_stock", file="actors", debug_msg= f"product_inventory {str(self.get_product_stock(product ))} <= get_product_safety_inventory {str(self.get_product_safety_inventory(product))}")
 
                 #verifica se pode produzir, se poder, produz:
                 if not self.manufacture_product(product, reference_quantity = product_safety_stock-product_stock):
                     # não pode produzir, tem que encomendar
                     #se tiver de encomendar, prepara encomenda
-                    logs.log(debug_msg="| FUNCTION         | actors        | manage_stock IF não consegiu manufacture_product {} sem stock, actor {}".format(str(product), self.id))
+                    logs.new_log(actor=self.id, day=self.simulation.time, function="manage_stock", file="actors", debug_msg= "IF não consegiu manufacture_product {} sem stock, actor {}".format(str(product), self.id) )
 
                     if str(product)[0] == str(self.id):  #afere se pode produzir, para encomendar MP
                           #prepare order:
-                        order_data= self.order_preparation(
+
+                        order_data= self.get_order_preparation(
                             product_id=product,
                             product_quantity= product_safety_stock-product_stock
                             )
+                        for product_order in order_data:         
 
-                        if not self.add_to_order_today(
-                            product=order_data["product_id_to_order"],
-                            quantity=order_data["quantity_to_order"]
-                            ):
+                            if not self.place_order( product_order["product_id_to_order"], quantity = product_order["quantity_to_order"]):
+                                logs.new_log(day=self.simulation.time, actor=self.id, function="manage_stock", file="actors", debug_msg="ERROR, order not placed!!!")
 
-                            # place_order( product_id = product, quantity= product_safety_stock):
-                            raise("erro grave, não produz nem encomenda!!!!!")
 
-          
-                    logs.log(debug_msg="| FUNCTION         | actors        | str(product)[0] == str(self.id)  actor:{} the quantity {} of the product {}".format(self.id, product_safety_stock - product_stock, product))
+                                # place_order( product_id = product, quantity= product_safety_stock):
+                                raise("erro grave, não produz nem encomenda!!!!!")
+
+
 
         self.set_actor_state(state=49, log_msg="Manage stock finished")
         self.execute_todays_orders() #TODO verificar se isto funciona
@@ -458,52 +684,6 @@ class actor:
                 # print(prd, qty)
                 self.place_order(product_id=prd, quantity=qty)
 
-    def order_preparation(self, product_id, product_quantity):
-        """ recebe um produto e uma quantidade objectivo,
-        devolve as encomendas necessárias para a sua preparação"""
-
-        #vai buscar a composição
-
-        composition =  self.simulation.cookbook[product_id]
-
-        order_data={}
-        #ver a qunatidade minima-
-            #encomenda o necessário
-        # print(product_id,composition)
-        for key , value in composition.items():
-            # print(key,value)
-            key=str(key)
-            if key[0] == str(self.id): continue
-
-            order_data["product_id_to_order"] = int(key)
-            order_data["actor_to_order"] = int(str(key)[0])
-            order_data["quantity_to_order"] =int(value) * product_quantity
-
-           # quantity_to_order = int(self.actor_inventory.get_product_reorder_history_size(product_id=product )) * value
-        logs.log(debug_msg="| FUNCTION         | actors        | order preparation from actor {}  produto {}  composition {} order data {}".format(( self.id),str(product_id),str(composition),str(order_data)))
-
-        return order_data
-
-    def place_order(self, product_id, quantity, client= None):
-
-        if client is None:
-            client= self.id
-        self.set_actor_state(state=65, log_msg="placing orders")
-
-        logs.log(debug_msg="| FUNCTION         | actors        | place_order from actor {} producto {} quantity {}".format( self.id,product_id, quantity))
-
-        supplier_id = str(product_id)[0]
-        product  =  product_id
-        quantity =  quantity
-
-
-        for actor_object in self.simulation.actors_collection:
-
-            if int(actor_object.id) == int(supplier_id):
-                actor_object.receive_order( supplier= supplier_id, quantity=quantity, product=product, client= client, notes={} )    #adiciona encomenda no ator destino
-                actor_object.add_to_stock_scheduled_to_send(product_id=product_id, quantity= quantity)                                #adiciona À lista a enviar do ator destino
-                self.add_to_stock_scheduled_to_arrive(product_id=product_id, quantity= quantity)                                      #adiciona À lista a recever do ator
-        return True
 
     def send_transaction(self, order_id =int):
         """cria uma transação
@@ -525,7 +705,8 @@ class actor:
             False: não conseguiu enviar
         """
 
-        logs.log(debug_msg= f"| FUNCTION         | actors        | send_transaction  order: {str(order_id)} ator: {str(self.name)}")
+        logs.new_log(day=self.simulation.time, actor= self.id, file="actors", function="send_transaction",   debug_msg= f"tryng to send order: {order_id}" )
+
         self.set_actor_state( state=31, log_msg="sending order "+str(order_id) )
         day= self.simulation.time
 
@@ -538,14 +719,13 @@ class actor:
 
 
         if (ordered_quantity) ==0 :
-            for el in stack():
-                print(el)
+            logs.new_log(day=self.simulation.time, file="actors", actor=self.id, function="send_transaction",   debug_msg="ERROR, trying to order 0")
             raise Exception("\n\na tentar encomendar zero!!!!\n\n"+str(order))
 
-        stock_quantity       = self.get_product_inventory(product) # verifica stock
+        stock_quantity       = self.get_product_stock(product) # verifica stock
 
 
-        logs.log(debug_msg="| FUNCTION         | actors        | send_transaction ordered qty:"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
+        logs.new_log(day=self.simulation.time, file="actors", actor=self.id, function="send_transaction",   debug_msg=" ordered qty:"+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
 
         self.set_actor_state(state=32)
 
@@ -599,9 +779,9 @@ class actor:
 
             self.remove_from_stock_scheduled_to_send(product_id=product, quantity=ordered_quantity)
 
-            logs.log(debug_msg="| FUNCTION         | actors        | send_transaction SUCECESSFULL SENDED order id:"+str(order_id))
+            logs.new_log(file="actors", function="send_transaction", actor=self.id, debug_msg= f"Transaction SUCECESSFULLY SENDED !!!  transaction id:{str(transaction)} order id:{str(order_id)}")
             self.set_actor_state(state=37, log_msg="Orders sending complete")
-            return True
+            return transaction
         else:
             logs.log(debug_msg="| FUNCTION         | actors        | send_transaction NAO ENVIVOU PQ N TINHA STOCK  qty ORDERED: "+str(ordered_quantity)+" em stock: "+str(stock_quantity) )
             return False
@@ -647,10 +827,13 @@ class actor:
 
         self.add_to_received_transactions(transaction=transaction_id)
 
+
         self.remove_from_stock_scheduled_to_arrive(product_id=product, quantity= ordered_quantity)
         self.set_actor_state(state= 29, log_msg=" Finished transcaction reception")
 
-        logs.log(debug_msg="| FUNCTION         | actors        | receive_transaction transasctions id: {}".format(transaction_id))
+        #apagar logs.log(debug_msg="| FUNCTION         | actors        | receive_transaction transasctions id: {}".format(transaction_id))
+        logs.new_log(file="actors", function="receive_transaction", day=self.simulation.time, actor=self.id, debug_msg= f"  Transaction SUCECESSFULLY received id: {transaction_id}" )
+
 
 
 
@@ -658,8 +841,6 @@ class actor:
         """ produção de produtos
         vai ler a composição do produto ao cook book
         valida os stocks e calcula a quantidade máxima que consegue produzir
-
-
 
         Args:
             product ([type]): [description]
@@ -670,20 +851,15 @@ class actor:
             False: não conseguiu produzir
             False: se for o ator de fim de cadeia
         """
-        # if self.actor_state < 40 or self.actor_state > 60:
-        #     raise Exception("Illigal entrace in manufacture_product")
 
         if not isinstance(product, int):
-            print("\n erro no produto")
-            for el in stack():
-                print(el)
-            print("\n\n\n")
+            raise Exception("product must be an int")
 
 
         if str(product)[0] in [str(x) for x in self.simulation.Object_supply_chain.get_end_of_chain_actors()]:
-            logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product ERRO actor: {}  product {} -  o ator de fim de cadeia deve ter sotock infinito".format(str(self.id) , str(product)))
-            self.actor_inventory.add_to_inventory( product=product, quantity = 999999)
-            logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product ERRO 999999 produtos {} adicionados ao stock do ator {}".format( str(product), str(self.id)   )  )
+            logs.new_log(file="actors", function="manufacture_product", day=self.simulation.time, actor=self.id, debug_msg= f"  " )
+            # self.actor_inventory.add_to_inventory( product=product, quantity = 999999)
+            # logs.log(debug_msg="| FUNCTION         | actors        | manufacture_product ERRO 999999 produtos {} adicionados ao stock do ator {}".format( str(product), str(self.id)   )  )
             return True
 
                 #raise Exception("tring to manufacture in the end of supply chain ")
@@ -704,14 +880,15 @@ class actor:
 
             for raw_material_id in recepe:
 
-                in_stock =  self.get_product_inventory( raw_material_id )
+                in_stock =  self.get_product_stock( raw_material_id )
                 production_matrix.append(
                     # product id,                   #ratio
                     [raw_material_id ,  in_stock  // int(recepe[raw_material_id])    ])
 
                 RL_id, min  = production_matrix[0]
 
-            min_qty=production_matrix[0][-1]
+            min_qty = math.floor(production_matrix[0][-1])
+
             for el in production_matrix:
                 if el[-1] < min_qty:
                     min_qty, RL_id =el[-1], el[0]
@@ -766,7 +943,7 @@ class actor:
         for ingredient in recepe:
 
             # verifica se tem stocks
-            in_stock= self.get_product_inventory(ingredient)
+            in_stock= self.get_product_stock(ingredient)
             necessary_stock = recepe[ingredient] * quantity
             #print("temp"in_stock, necessary_stock)
             if in_stock >= necessary_stock:
@@ -800,7 +977,7 @@ class actor:
         ["Time", "Product", "Qty","Client","Order_id","Status"]
         """
         #history=self.simulation.mongo_db.get_actor_orders( self.id)
-        open_orders = self.actor_orders_record.Open_Orders_Record
+        open_orders = self.actor_orders_record.open_orders_record
 
         orders_above_safety=[]
         for order in open_orders:
@@ -815,63 +992,40 @@ class actor:
             return orders_above_safety
         return False
 
-    def get_deliver_time(self):
-        return np.random.normal(loc=self.average_time, scale=self.deviation_time)
 
-    def get_transactions_by_id(self, transactions_id):
-        return self.simulation.ObejctTransationsRecords.get_transaction_by_id(transactions_id)
 
-    def get_ordered_product(self,order = None ,order_id = None):
-        if order:
-            return order[1]
-        elif order_id:
-            return self.actor_orders_record.get_order_by_id(order_id)[1]
 
-    def get_ordered_quantity(self,order = None ,order_id = None):
-        if order:
-            return order[2]
-        elif order_id:
-            return self.actor_orders_record.get_order_by_id(order_id)[2]
 
-    def get_order_id(self, order=list ):
-        return order[-3]
 
-    def get_order_by_id(self, order_id ):
-        return  self.actor_orders_record.get_order_by_id(order_id)
 
-    def set_order_processed(self, order_id ):
-        return  self.actor_orders_record.set_order_processed(order_id=order_id)
+    """                                                                                                                            
 
-    def get_order_criation_date(self, order=None, order_id=None ):
-        if order:
-            return order[0]
-        elif order_id:
-            return self.actor_orders_record.get_order_by_id(order_id)[0]
 
-    def get_order_state(self, order = None ,order_id = None):
-        if order:
-            return order[5]
-        elif order_id:
-            return self.actor_orders_record.get_order_by_id(order_id)[5]
+            mmmmmmm    mmmmmmm     aaaaaaaaaaaaa  nnnn  nnnnnnnn      aaaaaaaaaaaaa     ggggggggg   ggggg    eeeeeeeeeeee    
+            mm:::::::m  m:::::::mm   a::::::::::::a n:::nn::::::::nn    a::::::::::::a   g:::::::::ggg::::g  ee::::::::::::ee  
+            m::::::::::mm::::::::::m  aaaaaaaaa:::::an::::::::::::::nn   aaaaaaaaa:::::a g:::::::::::::::::g e::::::eeeee:::::ee
+            m::::::::::::::::::::::m           a::::ann:::::::::::::::n           a::::ag::::::ggggg::::::gge::::::e     e:::::e
+            m:::::mmm::::::mmm:::::m    aaaaaaa:::::a  n:::::nnnn:::::n    aaaaaaa:::::ag:::::g     g:::::g e:::::::eeeee::::::e
+            m::::m   m::::m   m::::m  aa::::::::::::a  n::::n    n::::n  aa::::::::::::ag:::::g     g:::::g e:::::::::::::::::e 
+            m::::m   m::::m   m::::m a::::aaaa::::::a  n::::n    n::::n a::::aaaa::::::ag:::::g     g:::::g e::::::eeeeeeeeeee  
+            m::::m   m::::m   m::::ma::::a    a:::::a  n::::n    n::::na::::a    a:::::ag::::::g    g:::::g e:::::::e           
+            m::::m   m::::m   m::::ma::::a    a:::::a  n::::n    n::::na::::a    a:::::ag:::::::ggggg:::::g e::::::::e          
+            m::::m   m::::m   m::::ma:::::aaaa::::::a  n::::n    n::::na:::::aaaa::::::a g::::::::::::::::g  e::::::::eeeeeeee  
+            m::::m   m::::m   m::::m a::::::::::aa:::a n::::n    n::::n a::::::::::aa:::a gg::::::::::::::g   ee:::::::::::::e  
+            mmmmmm   mmmmmm   mmmmmm  aaaaaaaaaa  aaaa nnnnnn    nnnnnn  aaaaaaaaaa  aaaa   gggggggg::::::g     eeeeeeeeeeeeee  
+                                                                                                    g:::::g                     
+                                                                                        gggggg      g:::::g                     
+                                                                                        g:::::gg   gg:::::g                     
+                                                                                        g::::::ggg:::::::g                     
+                                                                                        gg:::::::::::::g                      
+                                                                                            ggg::::::ggg                        
+                                                                                            gggggg                     
 
-        #   0                 1       2       3        4        5        6
-        #  [ creation Time,  Product , Qty , Client , Order_id, Status, notes]
-        #       -7            -6     -5      -4        -3      - 2    -1
 
-        #! TOD Validar este history hard limit a zero
-    def get_orders_history(self, history_cut=0):
-        #retorna a média e o std
-        return self.actor_orders_record.get_orders_history(history_cut)
-    def get_orders_stats(self, reorder_history_size=0):
-        #retorna a média e o std
-        return self.actor_orders_record.get_orders_stats(reorder_history_size)
-    def get_transactions_stats(self, actor_id, history_size=1000000):
-        #retorna a média e o std
-        return self.simulation.ObejctTransationsRecords.get_transactions_stats(actor_id, history_size)
 
+    """
 
     def stock_otimization(self):
-
         if self.simulation.stock_management_mode == 1:
             self.traditional_stock_management()
             return 1
@@ -885,42 +1039,66 @@ class actor:
             raise Exception("Erro no stock otimization, método não selecionado")
 
     def traditional_stock_management(self):
-        #analisa o stock dos ultimos dias
-        orders_stats = self.get_orders_stats(self.reorder_history_size)
+        logs.new_log(day=self.simulation.time, actor=self.id, function="traditional_stock_management", file="actors", )
 
-        necessary_parameters=0
+        #para cada um dos produtos
+        for product in self.get_actor_product_list():
 
+            #valita de tem todos os parametros necessários
+            parameters=0
 
-        if orders_stats:
-            avg_demand, deviation_demand = orders_stats
-            necessary_parameters = necessary_parameters + len(orders_stats)
+            #analisa o stock dos ultimos dias
+            orders_stats = self.get_orders_stats(product=product, reorder_history_size= self.reorder_history_size)
 
-        transasctions_stats = self.get_transactions_stats(self.id, self.reorder_history_size)
+            if orders_stats:
+                avg_demand, deviation_demand = orders_stats
+                parameters = parameters + len(orders_stats)
+            
+  
 
-        if transasctions_stats:
-            avg_delivery_time, deviation_delivery_time = transasctions_stats
-            necessary_parameters = necessary_parameters + len(transasctions_stats)
-
-        safety_factor = self.safety_factor
-
-        if safety_factor:
-            necessary_parameters = necessary_parameters + 1
-
-        if necessary_parameters < 4:
-            return
-
-        logs.log(debug_msg="| stock_otimization| traditional_stock_management actor: {} avg_demand: {} deviation_demand: {}\ avg_delivery_time: {} deviation_delivery_time: {}  safety_factor: {}".format(
-            self.id, avg_demand, deviation_demand, avg_delivery_time, deviation_delivery_time, safety_factor ))
-
-        new_delivery_value= ( avg_demand * avg_delivery_time ) + safety_factor * (  math.sqrt(
-                                                                           avg_delivery_time * deviation_demand**2  +
-                                                                   ((avg_demand**2) * (deviation_delivery_time **2) ))
-        )
-        # new_delivery_value= ( avg_demand * avg_delivery_time ) + ( safety_factor * deviation_demand * math.sqrt(avg_delivery_time ) )
+            # analisa as tansações
 
 
-        self.actor_inventory.set_product_safety_inventory(product_id= self.id*1000+1, quantity = int(new_delivery_value) )
+            transasctions_stats = self.get_delivery_stats(product_id=product)
 
+            if transasctions_stats:
+                avg_delivery_time, deviation_delivery_time = transasctions_stats
+                parameters = parameters + len(transasctions_stats)
+
+            if self.safety_factor:
+                parameters += 1
+
+            if parameters < 5:
+                logs.new_log(day=self.simulation.time, actor=self.id, function="traditional_stock_management", file="actors", debug_msg="ERROR, missing parameters to calculate order")
+                continue
+
+            logs.new_log(actor=self.id, file="actors", function="traditional_stock_management", day=self.simulation.time,
+                         debug_msg=f" avg_demand: {avg_demand} deviation_demand: {deviation_demand} avg_delivery_time: {avg_delivery_time} deviation_delivery_time: {deviation_delivery_time}  safety_factor: {self.safety_factor}")
+
+            if parameters == 5:
+                new_delivery_quantity = self.get_order_quantity( avg_demand = avg_demand,
+                                                            deviation_demand = deviation_demand,
+                                                            avg_delivery_time = avg_delivery_time,
+                                                            deviation_delivery_time = deviation_delivery_time,
+                                                            safety_factor = self.safety_factor)
+            
+            else: 
+                new_delivery_quantity = self.get_product_safety_stock(product_id=product)
+
+            #prepara a encomendas
+            #vai ver a composição 
+            #manda vir a quantidade necessária para o new_delivery_quantity
+            order_info = self.get_order_preparation( product_quantity= new_delivery_quantity, product_id=product)
+
+            for product_order in order_info:         
+
+                # #ESTOUAQUI
+                if not self.place_order( product_order["product_id_to_order"], quantity = product_order["quantity_to_order"]):
+                    logs.new_log(day=self.simulation.time, actor=self.id, function="traditional_stock_management", file="actors", debug_msg="ERROR, order not placed!!!")
+
+        # self.actor_inventory.set_product_safety_inventory(product_id= self.id*1000+1, quantity = int(new_delivery_quantity) )
+
+    # def prepare_order()
 
     def blockchian_stock_management(self):
         # print("new actor \n")
@@ -928,7 +1106,7 @@ class actor:
         todays_order=[]
         #for actor in actors_colection:
         if self.id == 1:
-            for open_order in self.actor_orders_record.Open_Orders_Record:
+            for open_order in self.actor_orders_record.open_orders_record:
                 if open_order[0]>0:
                     if self.get_order_criation_date(order=open_order) == self.simulation.time:
                         todays_order=open_order
@@ -943,7 +1121,7 @@ class actor:
 
             # self.send_transaction( order_id=)
 
-            # list_of_open_orders=actor.actor_orders_record.Open_Orders_Record
+            # list_of_open_orders=actor.actor_orders_record.open_orders_record
             # #loop pelas encomendas do ator
             # for item in list_of_open_orders:
             #     # if self.get_order_state(item)==
@@ -951,7 +1129,7 @@ class actor:
 
             # if len(orders_data)==1: break
 
-        
+
 
     def blockchian_stock_management_old(self):
         # print("new actor \n")
@@ -966,7 +1144,7 @@ class actor:
             orders_data = []
             inventory_data=0
 
-            list_of_open_orders=actor.actor_orders_record.Open_Orders_Record
+            list_of_open_orders=actor.actor_orders_record.open_orders_record
             #loop pelas encomendas do ator
             for item in list_of_open_orders:
                 # if self.get_order_state(item)==
@@ -1012,7 +1190,7 @@ class actor:
 
             # for order in orders_data:
 
-            # inventory_data = inventory_data + self.get_product_inventory(product=item[1])
+            # inventory_data = inventory_data + self.get_product_stock(product=item[1])
 
             # block_array.append(item[1:2])
             # # ["Time", "Product", "Qty","Client","Order_id","Status"]
@@ -1020,54 +1198,3 @@ class actor:
 
 
             #adicionar aos atores
-    def machine_learnning_stock_management(self):
-        import numpy as np
-        import pandas as pd
-        from pandas.plotting import autocorrelation_plot
-        from statsmodels.tsa.arima.model import ARIMA
-        from matplotlib import pyplot
-
-        orders_list=self.get_orders_history(self.reorder_history_size)
-        orders_array = np.array(orders_list[-0:])
-        orders_array=orders_array[:,2]
-
-        if len(orders_list) < 3:
-            return
-        def add_timeseries(array):
-            # create dummy dates for the arima modules....
-            dates = pd.date_range('1900-1-1', periods=len(array), freq='D')
-            # add the dates and the data to a new dataframe
-            ts = pd.DataFrame({'dates': dates, 'values': array})
-            # set the dataframe index to be the dates column
-            # print(ts["values"])
-            ts["values"] = ts["values"].astype(int)
-            return  ts.set_index('dates')
-
-        wtime=add_timeseries(orders_array)
-
-        # print(type(wtime))
-        # new=np.concatenate((orders_array,wtime),axis=0)
-        # print(new)
-
-        # data=wtime.index = wtime.index.to_period('D')
-
-        # print(wtime.dtypes)
-        # fit model
-        model = ARIMA(wtime, order=(5,1,0))
-        model_fit = model.fit()
-        # summary of fit model
-        # print(model_fit.summary())
-        # line plot of residuals
-        # residuals = pd.DataFrame(model_fit.resid)
-        # residuals.plot()
-        # pyplot.show()
-        # density plot of residuals
-        # residuals.plot(kind='kde')
-        # pyplot.show()
-        # summary stats of residuals
-        # print(residuals.describe())
-        try:
-            model_fit.forecast()
-            #print("->",model_fit.forecast())
-        except:
-            print(stack())

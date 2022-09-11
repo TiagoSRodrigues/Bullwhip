@@ -1,4 +1,5 @@
 import inspect
+from random import random
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns, blockchian
 from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
@@ -38,7 +39,10 @@ class ClassSimulation:
 
         self.cookbook = {}
 
-        self.mongo_db = database.MongoDB(self, drop_history=True)
+        if sim_cfg.DB_TYPE == 1:
+            self.mongo_db = database.MongoDB(self, drop_history=True)
+        elif sim_cfg.DB_TYPE == 2:
+            self.mongo_db = database.local_db(self, drop_history=True)
 
         # self.blockchain= blockchian.blockchain(self)
         #create supply chain
@@ -53,13 +57,17 @@ class ClassSimulation:
         logs.log(debug_msg="| status           | Simulation created")
 
         self.sleep_time = 0
-        
+
 
 
     #Import Configurations
     # Esta função vai buscar a lista dos atores ao ficheiro de configuração
     # trata-se apenas de uma lista dos atores presentes na configuração, sem ordem definida
-    #
+
+
+
+
+
     def add_to_actors_collection(self, actor):
         self.actors_collection.append(actor)
 
@@ -88,7 +96,7 @@ class ClassSimulation:
 
 
         for actor_id in actors_list:
-            logs.log(debug_msg= self.get_actor_parameters(configs_dict, actor_id))
+            logs.new_log(file="simulation", function="create_actors", actor=actor_id,day=0,  debug_msg= self.get_actor_parameters(configs_dict, actor_id))
 
             name, a_id, avg, var, max_inventory, products, safety_factor, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
 
@@ -180,7 +188,7 @@ class ClassSimulation:
                             # print("\n\n\n CONA\n  ",inventory[actor_id][prod],"->",quantity)
                             inventory_dict[actor_id][prod] = quantity
             except:
-                print("erro no update global inventory")
+                raise Exception("Erro no update global inventory")
 
 
             with open(sim_cfg.INVENTORY_FILE, 'w') as file:
@@ -195,12 +203,38 @@ class ClassSimulation:
             raise Exception("Erro no update global inventory")
 
     def update_simulation_stats(self, stat):
+        # esta função serve para validar os resultados finais da simulação. doble check dos numeros
+
+
 
         self.simulation_stats[stat] = int( self.simulation_stats[stat] ) + 1
+
 
         data=dict(self.simulation_stats)
 
         self.mongo_db.add_to_db_stats_log(stat_value= data)
 
-            # with open(sim_cfg.SIM_STATUS_FILE_PATH, 'a') as file:
-            #     file.write("\n" +str(self.simulation_stats)+"," )
+
+
+    def save_simulation_stats(self):
+        data=dict(self.simulation_stats)
+
+        with open(sim_cfg.SIM_STATUS_FILE_PATH, 'w') as file:
+            json.dump(data, file)
+
+    def export_db(self,export_directory):
+        self.mongo_db.export_db(export_directory)
+
+    def validate_data_compatibilty(self, input_data, actors_config):
+        #check if any order is bigger than safety stock
+        max_input = max(input_data)
+
+        configs = self.get_actors_configurations(actors_configuration=actors_config)
+
+
+        for s in configs.values():
+            for p in s["products"]:
+                safety_stock = p["safety_stock"]
+                if safety_stock < max_input:
+                    raise Exception(f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
+        return True
