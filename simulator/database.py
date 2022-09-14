@@ -1,18 +1,13 @@
 import csv
-import os
-from time import sleep
 import pymongo
 from inspect import stack
 import json
 
-from simulator.actors import actor
 from . import logging_management as logs
 import numpy as np
 import pandas as pd
 from datetime import datetime
-import random
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
+
 
 class MongoDB:
     def __init__(self, simulation, drop_history=True):
@@ -135,10 +130,10 @@ class MongoDB:
                 {"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}}
                 )
         )
-
-    def get_actor_orders(self, actor_id):
-        collection_name="orders_"+str(actor_id)
-        self.simulation_db[collection_name].find()
+    #!apagar
+    # def get_actor_orders(self, actor_id):
+    #     collection_name="orders_"+str(actor_id)
+    #     self.simulation_db[collection_name].find()
 
 
 
@@ -210,7 +205,7 @@ class MongoDB:
             "inventory":{}}
 
         self.add_to_db_log(
-            self.actors_collection.insert_many(data)
+            self.sim_actors_collection.insert_many(data)
         )
 
     def check_connection(self):
@@ -456,26 +451,28 @@ class local_db:
 
 
     def export_db(self, FINAL_EXPORT_FILES_PATH):
-        with open(f"{FINAL_EXPORT_FILES_PATH}transactions.json", 'w') as fp:
+        with open(f"{FINAL_EXPORT_FILES_PATH}transactions_{logs.get_timestamp()}.json", 'w') as fp:
             json.dump(self.transactions, fp)
 
 
-        print(f"            {len(self.transactions)} tansactions exported")
+        # print(f"            {len(self.transactions)} tansactions exported")
 
-        with open(f"{FINAL_EXPORT_FILES_PATH}orders.csv", "w", newline='') as f:
+        with open(f"{FINAL_EXPORT_FILES_PATH}orders_{logs.get_timestamp()}.csv", "w", newline='') as f:
             header = "Criation_Time, Product, Quantity, Client, Order_id, Status, Notes-fornecedor\n"
             f.write(str(header))
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.orders)
 
 
-        print(f"            {len(self.orders)} orders exported")
+        # print(f"            {len(self.orders)} orders exported")
+        self.simulation.simulation_stats_exported["orders_exported"]=           len(self.orders)
+        self.simulation.simulation_stats_exported["transactions_exported"]=      len(self.transactions)
+        self.simulation.simulation_stats_exported["inventory_records_exported"]=len(self.inventory_history)
 
-
-        with open(f"{FINAL_EXPORT_FILES_PATH}inventory_history.json", 'w') as fp:
+        with open(f"{FINAL_EXPORT_FILES_PATH}inventory_history_{logs.get_timestamp()}.json", 'w') as fp:
             json.dump(self.inventory_history, fp)
 
-        print(f"            {len(self.orders)} inventory records exported")
+        # print(f"            {len(self.orders)} inventory records exported")
 
 
     def update_transaction_on_db(self, transaction_id, transaction_data):
@@ -490,15 +487,7 @@ class local_db:
 
     """
 
-
-
-
-    {'name': 'ProductD', 'id': 4001, 'initial_stock': 20000, 'safety_stock': 0, 'composition': {'5001': 1}, 'in_stock': 20000}
-
-    2001 {'name': 'ProductB', 'id': 2001, 'initial_stock': 20000, 'safety_stock': 0, 'composition': {'3001': 1}, 'in_stock': 8217}
-
-
-    INVENTORY
+       INVENTORY
     """
     def add_to_inventory_history(self,day, actor_id, inventory):
 
@@ -517,14 +506,14 @@ class local_db:
 
 
     def update_inventory_db(self,actor_id, product, quantity):
-             pass
+        pass
 
     def check_connection(self):
-          pass
+        pass
 
 
     def get_document_by_id(self, doc_collection, doc_id):
-           pass
+        pass
 
     def add_to_db_log(self, response):
         pass

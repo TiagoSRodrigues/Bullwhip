@@ -14,9 +14,10 @@ class ClassOrdersRecord:
         self.last_order_id = self.actor.id * 10**6       #tracks the last product id
 
         #Status order 0-Received
-        #             1-sended
-        #             8- waiting for order raw_material
-        #             9- waiting raw material
+        #             1 - sended
+        #             5 - waiting for order raw_material
+        #             9 - sended
+        
         #Acho que o nome n vai servir para nada,
         # columns = ["Criation Time", "Product", "Qty", "Client", "Order_id", "Status", "Notes"]
         # columns = [        0,            1       2      3           4           5        6   ]
@@ -30,8 +31,7 @@ class ClassOrdersRecord:
 
         # self.order_history=np.
 
-        logs.log(info_msg="| CREATED OBJECT   | Order_record  actor:"+str(self.actor))
-
+        logs.new_log(file="orders_records", actor=self.actor.id, function="constructor", debug_msg= f" orders records created : {self.actor.id}")
 
         """  
         doh
@@ -88,7 +88,6 @@ class ClassOrdersRecord:
             return self.get_order_by_id(order_id=order_id)[-3]
 
     def get_order_by_id(self, order_id):
-        # order_record = False
         records_found = 0
         for order in self.open_orders_record:
             if order[-3]==order_id:
@@ -159,19 +158,17 @@ class ClassOrdersRecord:
 
 
     def add_to_orders_waiting_stock(self, order=None, order_id=None):
-        logs.log(debug_msg="| FUNCTION         | orders        | add to wainting orders       ")
+        logs.new_log(file="orders_records", actor=self.actor.id, function="add_to_orders_waiting_stock", debug_msg= f"order: {order} {order_id}")
 
         if not (isinstance(order, list) or isinstance(order_id,int)):
             raise Exception("add_to_orders_waiting_stock: order or order_id must be a list or int")
 
         if order_id:
             # self.orders_waiting_stock.append(order_id)
-            self.set_order_status(order_id= order_id, status=8)
+            self.set_order_status(order_id= order_id, status=5)
         if order:
             order_id=self.get_order_id(order=order)
-
-            # self.orders_waiting_stock.append(order_id)
-            self.set_order_status(order_id=order_id, status=8)
+            self.set_order_status(order_id=order_id, status=5)
 
     def set_order_processed(self, order=None, order_id=None):
         if order_id:
@@ -187,11 +184,11 @@ class ClassOrdersRecord:
                 order[-2] = status
 
     def refresh_orders_waiting_stock(self):
-        logs.log(debug_msg="| FUNCTION         | Orders_records| Refresh waiting orders")
+        logs.new_log(file="orders_records", actor=self.actor.id, function="refresh_orders_waiting_stock", debug_msg= "Orders_records| Refresh waiting orders")
 
         new_list=[]
         for open_order in self.open_orders_record:
-            if self.get_order_status(order=open_order) in [0,8]:
+            if self.get_order_status(order=open_order) == 5 :
                 new_list.append(self.get_order_id(order= open_order))
 
         self.orders_waiting_stock = new_list
@@ -222,7 +219,7 @@ class ClassOrdersRecord:
         self.open_orders_record.append(to_add)
 
         logs.new_log(day=self.actor.simulation.time, actor=self.actor.id, function="add_to_open_orders", file="actors" , debug_msg= f" ORDERED ADDED  product {product} quantity {qty} client {client} notes {notes} | order id {self.last_order_id} ")
-
+        # print(f" ORDERED ADDED  product {product} quantity {qty} client {client} notes {notes} | order id {self.last_order_id} ")
         self.actor.simulation.mongo_db.add_order_to_db(actor_id = self.actor.id,
                                                        time = self.actor.simulation.time ,
                                                        product = product,
@@ -234,7 +231,8 @@ class ClassOrdersRecord:
         self.check_orders_integrity()  #TODO acho que isto n devia estar aqui mas sim no remove
         self.actor.simulation.update_simulation_stats("orders_opened")
 
-    def remove_from_open_orders(self,  order_id):
+    def close_order(self,  order_id):
+        #
         time = self.actor.simulation.time
 
         def check_open_orders_sequence():
@@ -251,7 +249,7 @@ class ClassOrdersRecord:
                 if i[-3] == -5:
                     continue
                 if i[-3] < order_id:
-                    logs.new_log(file="orders_records", actor=self.actor.id, function="remove_from_open_orders", debug_msg= f"ERRO nos oder id")
+                    logs.new_log(file="orders_records", actor=self.actor.id, function="close_order", debug_msg= f"ERRO nos oder id")
                     raise Exception("ERRO",i[-3] ,"<", order_id)
 
             check_open_orders_sequence()
@@ -259,16 +257,18 @@ class ClassOrdersRecord:
         for record in self.open_orders_record:
             if record[-3] == order_id:
                 record[0] = time
+                record[-2] = 9
                 self.open_orders_record.remove(record)
                 self.closed_orders_record.append(record)
                 order= self.get_order_by_id(order_id=order_id )
-
+                
+                self.actor.simulation.update_simulation_stats("orders_closed")
 
                 #self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-3], status =1)
                 self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-3])
 
         self.refresh_orders_waiting_stock()
-        logs.new_log(file="orders_records", actor=self.actor.id, function="remove_from_open_orders", debug_msg= f"remove_from_open_orders order {str(order_id)} removed from actor {str(self.actor.id)} {str(self.open_orders_record)}")
+        logs.new_log(file="orders_records", actor=self.actor.id, function="close_order", debug_msg= f"close_order order {str(order_id)} removed from actor {str(self.actor.id)} {str(self.open_orders_record)}")
 
 
     def check_orders_integrity(self):

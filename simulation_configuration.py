@@ -37,7 +37,7 @@ SIM_STATUS_FILE_PATH = DIRECTORY_PATH + "//data//records//simulations_stats.json
 # logging 
 
 #Max number of logs to save, if all = False
-NUMBER_OF_HISTORY_LOGFILES= 30
+NUMBER_OF_HISTORY_LOGFILES= 10
 
 #Define if the logs are printed in the terminal while running
 LOGGING_LEVEL="DEBUG"
@@ -62,7 +62,7 @@ DB_TYPE = 2
 INPUT_DATA_TYPE = "file" #file or constant
 
 # limits days to simulate,  to run all date use None
-DAYS_TO_SIMULATE = 365
+DAYS_TO_SIMULATE = None
 
 
 # in order to see the evolutions of the simulation, increase the sleep time

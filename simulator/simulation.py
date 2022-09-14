@@ -25,10 +25,13 @@ class ClassSimulation:
                     "transactions_opened":0,
                     "transactions_delivered":0,
                     "days_passed":0}
+        
+        self.simulation_stats_exported={}
 
         self.order_priority = "faster"  # prioridades: fifo, faster
         #create mongodb
 
+        self.inventory_history = []
 
         # Lista que guarda todos os objectos atores
         self.actors_collection=[]
@@ -47,8 +50,8 @@ class ClassSimulation:
         # self.blockchain= blockchian.blockchain(self)
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
-        logs.log(debug_msg="| CREATED OBJECT   | Supply Chain  "+str( self.Object_supply_chain))
-
+        
+        logs.new_log(file="simulation", function="construction", actor=0, debug_msg=" Supply Chain  "+str( self.Object_supply_chain.supply_chain_structure))
         self.ObejctTransationsRecords = tns.transactionsClass(self)
 
 
@@ -65,8 +68,13 @@ class ClassSimulation:
     # trata-se apenas de uma lista dos atores presentes na configuração, sem ordem definida
 
 
-
-
+    def update_inventory_history(self):
+        for actor in self.actors_collection:
+            record = {"day": self.time,
+                      "actor"  : actor.id,
+                      "data": actor.get_actor_inventory()}
+            self.inventory_history.append(record)
+        
 
     def add_to_actors_collection(self, actor):
         self.actors_collection.append(actor)
@@ -107,11 +115,22 @@ class ClassSimulation:
 
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
-            logs.log(debug_msg="| FUNCTION         | Object_supply_chain.add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
+            logs.new_log(state=" ", file="simulation", function="get_actors_configurations", actor=actor_id, debug_msg="Object_supply_chain add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
+
 
             self.add_to_actors_collection(actor_object)
         self.mongo_db.add_actors_to_db_stats(tuple(actors_list))
         return actors_list
+
+    def get_actor_delivery_stats(self, actor_id):
+        # devolve os valres default
+        for actor in self.actors_collection:
+            if actor.id == int(actor_id):
+                return {"average_time": actor.average_time, "deviation_time" : actor.deviation_time}
+                
+        
+        return self.get_actor_by_id(actor_id).get_actor_default_parameters()
+
 
     def get_actor_parameters(self,configs_dict,actor):
         name                 = configs_dict[actor]["name"]
@@ -144,6 +163,19 @@ class ClassSimulation:
                 return actor
         return False
 
+
+    def show_simulation_stats(self):
+        print("           Simulation Stats")
+        print(" ------------------------------------------------")
+        for key, value in self.simulation_stats.items():
+            print("          ",key,":",value)
+        
+        print(" ------------------------------------------------")
+        for key, value in self.simulation_stats_exported.items():
+            print("          ",key,":",value)
+        print(" ------------------------------------------------")
+        self.check_final_stats_integrity()
+
     def reset_all_actors_status(self):
         for actor in self.actors_collection:
             actor.actor_state = 0
@@ -151,9 +183,13 @@ class ClassSimulation:
     def speed(self):
         time.sleep(self.sleep_time)
 
+
+
     #---------------------------------------------------------------------------------------------------------------------Dashboard
     def update_global_inventory(self, actor_id, product, qty):
-        logs.log(debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor {} product {} qty{} inventory:{}".format( actor_id, product, qty,self.global_inventory))
+        logs.log()
+        logs.new_log(state=" ", file="actors", function="update_global_inventory", actor=actor_id, debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor {} product {} qty{} inventory:{}".format( actor_id, product, qty,self.global_inventory) )
+
         try:
             inventory_dict = self.global_inventory
             actor_id, product_id, quantity  = int(actor_id), int(product), int(qty)
@@ -205,17 +241,19 @@ class ClassSimulation:
     def update_simulation_stats(self, stat):
         # esta função serve para validar os resultados finais da simulação. doble check dos numeros
 
-
-
         self.simulation_stats[stat] = int( self.simulation_stats[stat] ) + 1
-
-
         data=dict(self.simulation_stats)
-
         self.mongo_db.add_to_db_stats_log(stat_value= data)
 
 
+    def check_final_stats_integrity(self):
+        orders_integrity = self.simulation_stats_exported["orders_exported"] == self.simulation_stats["orders_opened"] + self.simulation_stats["orders_closed"]
+        print("           orders_integrity:      ",orders_integrity,"Δ", self.simulation_stats_exported["orders_exported"] - self.simulation_stats["orders_opened"] - self.simulation_stats["orders_closed"] )
 
+        transactions_integrity = self.simulation_stats_exported["transactions_exported"] == self.simulation_stats["transactions_opened"] + self.simulation_stats["transactions_delivered"]
+        print("           transactions_integrity:",transactions_integrity, "Δ", self.simulation_stats["transactions_opened"] + self.simulation_stats["transactions_delivered"] - self.simulation_stats_exported["transactions_exported"]  )
+        
+        
     def save_simulation_stats(self):
         data=dict(self.simulation_stats)
 

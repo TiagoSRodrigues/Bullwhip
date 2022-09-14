@@ -1,5 +1,6 @@
 # Version 10
 
+import logging
 from time import perf_counter
 from inspect import stack
 import simulation_configuration as sim_cfg
@@ -83,13 +84,23 @@ if sim_cfg.DB_TYPE == 1:
 if sim_cfg.DB_TYPE == 2:
     Object_Simulation.export_db(sim_cfg.FINAL_EXPORT_FILES_PATH)
     
+    
+import os
+
 #termina simulação
 Object_Simulation.change_simulation_status(status=99)
 
+Object_Simulation.show_simulation_stats()
 #registos de tempos e final
 if sim_cfg.PRINT_LOGS_IN_TERMINAL:ee.final_prints(start_time)
 
 logs.log(info_msg="--->   Simulation Ended   <----")
+
+
+logging.shutdown()
+print("\ntamnho do log file: ",os.path.getsize(sim_cfg.LOG_FILES_PATH))
+
+
 
 if sim_cfg.PLAY_SOUND:
     ee.play_final_sound()

@@ -58,7 +58,7 @@ class transactionsClass:
     def __init__(self, simulation):
     def add_transaction(self, sender, receiver, quantity, product, deliver_date, sending_date):
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
-    def record_delivered(self,transaction_id ):
+    def update_transaction(self,transaction_id ):
     def show_all_transactions(self):
     def show_transactions_record(self, record_object, title=None):
     def get_transaction_by_id(self, id):

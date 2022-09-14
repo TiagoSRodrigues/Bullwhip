@@ -20,8 +20,7 @@ import simulation_configuration  as sim_cfg
 
 
 
-logging.basicConfig(filename=sim_cfg.LOG_FILES_PATH+'log_'+time.strftime("%Y%m%d_%H-%M-%S",
-                                                                             time.localtime())+'.log',
+logging.basicConfig(filename=sim_cfg.LOG_FILES_PATH+'log_'+time.strftime("%Y%m%d_%H-%M-%S",time.localtime())+'.log',
         level=sim_cfg.LOGGING_LEVEL,
          format='%(asctime)s %(levelname)s %(message)s')
 
@@ -72,7 +71,7 @@ def show_function_tree():
 
     print(function_tree)
 
-def new_log(file, function, day="",  actor="",  debug_msg = None, info_msg = None, warning_msg = None):
+def new_log(file, function, day="",  actor="", state="", debug_msg = None, info_msg = None, warning_msg = None):
     # """Automaticamente cria um registo de log:
     log_level = logging.root.level
 
@@ -82,13 +81,14 @@ def new_log(file, function, day="",  actor="",  debug_msg = None, info_msg = Non
     function_str = "{:30}".format(function)
     day_str = "{:4}".format(day)
     actor_str = "{}".format(actor)
+    actor_state = "{:2}".format(state)
 
     # if parameter is none, set to ""
     if debug_msg is None: debug_msg = ""
     if info_msg is None: info_msg = ""
     if warning_msg is None: warning_msg = ""
 
-    record = f"|{day_str} | {actor_str} | {file_str}| {function_str}| {debug_msg}{info_msg}{warning_msg}"
+    record = f"|{day_str} | {actor_str} |  {actor_state}| {file_str}| {function_str}| {debug_msg}{info_msg}{warning_msg}"
 
     logging.debug(record)
 
@@ -140,13 +140,33 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 
 
+
+
+def save_to_file(file_name, data, format):
+    """Saves the data to a file
+
+    Args:
+        file_name (string): name of the file
+        data (string): data to be saved
+    """
+    with open(file_name, "w") as f:
+        f.write(str(data))
+
+
+
+
+def append_line_to_file(file_path, line, insert_time=False):
+    """Appends a line to a file"""
+    with open(file_path, "a") as file:
+        file.write(line)
+
 #this funcion delete old logs, to avoid excessive trash
 def delete_old_logs(folder=None, file=None,  NUMBER_OF_HISTORY_LOGFILES=None):
     try:
         if folder != None:
             arr = os.listdir(sim_cfg.LOG_FILES_PATH)
 
-            if NUMBER_OF_HISTORY_LOGFILES == all:
+            if NUMBER_OF_HISTORY_LOGFILES == "all":
                 os.remove(sim_cfg.LOG_FILES_PATH)
 
             for el in range(0,len(arr)-NUMBER_OF_HISTORY_LOGFILES):
@@ -220,6 +240,8 @@ def get_variables(var=None):
         for el in locals():
             print(el)
 
+def get_timestamp():
+    return time.strftime("%Y%m%d_%H-%M-%S", time.localtime())
 
 def save_all_objects():
     filename="All_objects_"+time.strftime("%Y%m%d_%H-%M-%S", time.localtime())+".txt"
@@ -242,10 +264,11 @@ def pretty(d, indent=0):
         else:
             print( emoji.emojize('  :shell: ' , use_aliases=True ) * (indent+1) + str(value))
 
+delete_old_logs( folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = sim_cfg.NUMBER_OF_HISTORY_LOGFILES)
 
     #https://www.webfx.com/tools/emoji-cheat-sheet/
-
-delete_old_logs( folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = sim_cfg.NUMBER_OF_HISTORY_LOGFILES)
+delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver" )
+delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2" )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_1.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_2.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_3.csv"           )

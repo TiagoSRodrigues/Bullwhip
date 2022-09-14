@@ -24,13 +24,15 @@ class ClassInventory:
             #change the key initial to in_stock
             product["in_stock"] = product["initial_stock"]
             #del product["initial_stock"]                               #isto vai ser informação denecessária mas vamos manter para já
-            self.main_inventory[product['id']]=product
+            
+            self.main_inventory[int(product['id'])]=product
 
             self.actor.simulation.mongo_db.update_inventory_db(actor_id=self.actor.id, product=product['id'], quantity=product['in_stock'])
 
             try: self.actor.simulation.cookbook[product['id']] = product['composition']
-            except:   logs.log(debug_msg="| CREATED OBJECT   | inventory     producto sem composição:"+str(product))
-
+            except:
+                logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="constructor", day=self.actor.simulation.time,  debug_msg=  f"product {product['id']} without composition" )
+                
 
         if self.actor.id == 0:
             null_product={'name': 'Product_Null', 'id': 0000, 'initial_stock': 0, 'safety_stock': 0,  'composition': {'0000': 0}, 'in_stock': 0}
@@ -40,7 +42,7 @@ class ClassInventory:
         self.present_capacity = self.refresh_inventory_capacity()
         # self.update_inicial_inventory()
 
-        logs.log(info_msg="| CREATED OBJECT   | inventory     actor:"+str(actor))
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="constructor", day=self.actor.simulation.time,  debug_msg=  f"Inventory created" )
 #-----------------------------------------------------------------
     # def  update_inicial_inventory(self):
     #     for product in self.products:
@@ -52,7 +54,8 @@ class ClassInventory:
 
 
     def add_to_inventory(self, product, quantity):
-        logs.new_log(actor=self.actor.id, function="add_to_inventory", file="inventory", debug_msg=f"product: {product}, quantity: {quantity}")
+        product, quantity = int(product), int(quantity)
+        
         new_product=False
 
         present_stock = self.get_product_stock(product)
@@ -60,7 +63,10 @@ class ClassInventory:
             present_stock = 0
             new_product = True
 
+        logs.new_log(actor=self.actor.id, function="add_to_inventory", file="inventory", debug_msg=f"product: {product}, quantity: {quantity}, present_stock: {present_stock}")
+        
         updated_stock = present_stock + quantity
+        
         #quantidade inválida
         if quantity < 0:
             raise Exception("trying to add negative quantity")
@@ -78,7 +84,7 @@ class ClassInventory:
             self.actor.simulation.mongo_db.update_inventory_db(self.actor.id, product, updated_stock)
 
             #self.actor.simulation.update_global_inventory( self.actor.id ,product, quantity )                        #update the global inventory used in the dashboard
-            logs.new_log(actor=self.actor.id, function="add_to_inventory", file="inventory", debug_msg=f"product added with sucess Inventory | product: {product}, quantity: {quantity}")
+            logs.new_log(actor=self.actor.id, function="add_to_inventory", file="inventory", debug_msg=f"product added with sucess Inventory | product: {product}, present qty: {present_stock} + quantity: {quantity} -> new qty: {updated_stock}")
 
             return True
 
@@ -90,8 +96,9 @@ class ClassInventory:
 
 
 
-    def remove_from_inventory(self,  product, quantity):
-        logs.log(debug_msg  = "| FUNCTION         | inventory     | trying to remove_from_inventory actor:{} product:{} qty:{}".format(self.actor.id, product, quantity))
+    def remove_from_inventory(self,  product:int, quantity:int):
+        product, quantity = int(product), int(quantity)
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="remove_from_inventory", day=self.actor.simulation.time,  debug_msg=  "trying to remove_from_inventory actor:{} product:{} qty:{}".format(self.actor.id, product, quantity) )
 
 
         present_stock = self.get_product_stock(product)
@@ -105,43 +112,41 @@ class ClassInventory:
 
         #se não tiver quantidade em stock para enviar devolve falso
         if updated_stock < 0:
-            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory not enough stock of product {} for odered qty of {} in actor {}. actual stock:{}".format(product, quantity, self.actor.id,product_stock))
+            logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="remove_from_inventory", day=self.actor.simulation.time,  debug_msg=  " inventory     | remove_from_inventory not enough stock of product {} for odered qty of {} in actor {}. actual stock:{}".format(product, quantity, self.actor.id,product_stock) )
+
             return False
 
         #se o stock não é zero, e a quantidade é maior que o stock, envia
         else:
             self.set_product_inventory(product_id= product, new_quantity=updated_stock)
-            return True
             #atualiza do stock global
 
-            #print("temp remove {} from ",self.get_product_stock(product))
             #self.actor.simulation.update_global_inventory(actor_id= actor_id, product_id= product, quantity = new_quantity )
-            logs.log(debug_msg  = "| FUNCTION         | inventory     | remove_from_inventory SUCESS!!!! product {} for odered qty of {}".format(product, quantity))
+            logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="remove_from_inventory", day=self.actor.simulation.time,  debug_msg=  f" inventory     | SUCCESS!!!!  removed for odered qty of {quantity} in actor {self.actor.id}. actual stock:{updated_stock}" )
+            return True
 
 
 
 #############################################
-    def get_product_stock(self, product_id):
-        # logs.log(debug_msg="| FUNCTION         | inventory     | get product_inv "+str( self.actor.id)+' product '+str(product_id)+" stock==="+str(self.main_inventory))
+    def get_product_stock(self, product_id:int):
+        product_id = int(product_id)
 
 
         product_id=int(product_id)
-
         if product_id in self.main_inventory:
             if "in_stock" in self.main_inventory[product_id]:
-                print(f"get get_product_stock : actor {self.actor.id} - inventory {self.main_inventory}")
                 return self.main_inventory[product_id]["in_stock"]
 
             if "in_stock" not in self.main_inventory[product_id]:
-                print("deu merda")
+                raise Exception("product not in inventory")
         else:
+            logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="get_product_stock", day=self.actor.simulation.time,  debug_msg=  f"product {product_id} not in inventory" )
             return False
 
 
-    def get_product_safety_stock(self, product_id):
-        logs.log(debug_msg="| FUNCTION         | inventory     | get product safety stock "+str( self.actor.id)+' product '+str(product_id))
-        # import inspect
-        # print(stack())
+    def get_product_safety_stock(self, product_id:int):
+        product_id = int(product_id)
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="get_product_safety_stock", day=self.actor.simulation.time,  debug_msg=  f"get product safety stock {str( self.actor.id)} product {str(product_id)}" )
 
         product_id=int(product_id)
 
@@ -155,9 +160,9 @@ class ClassInventory:
             return False
 
 
-    def set_product_inventory(self, product_id, new_quantity):
-        logs.new_log(actor=self.actor.id, file="inventory", function="set_product_inventory", day=self.actor.simulation.time,  debug_msg= f"setting {new_quantity} to prd  {product_id} | present inventory {self.main_inventory}" )
-        product_id=int(product_id)
+    def set_product_inventory(self, product_id:int, new_quantity:int):
+        product_id, new_quantity = int(product_id), int(new_quantity)
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_inventory", day=self.actor.simulation.time,  debug_msg= f"setting {new_quantity} to prd  {product_id} | present inventory {self.main_inventory}" )
         # print("keys")
         # for key in self.main_inventory:
             # print(key, type(key))
@@ -165,20 +170,24 @@ class ClassInventory:
         # se não existir no inventário, cria    
         # print( "actor", self.actor.id , self.main_inventory)
         
-        if self.get_product_stock(product_id) is False:
+        present_stock = self.get_product_stock(product_id)
+        if present_stock is False:
+            #produto novo, é adicionado ao inventário
             self.main_inventory[product_id] = {'id': product_id, 'in_stock': new_quantity}
-
+            logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_inventory", day=self.actor.simulation.time,debug_msg= f"producto não existia, foi dicionado" )
+            return True
+        
         #se existe no inventário
-        else:
-            # print("nok")
-            self.main_inventory[product_id]["in_stock"] = new_quantity
+        self.main_inventory[product_id]["in_stock"] = new_quantity
         self.actor.simulation.mongo_db.update_inventory_db(actor_id = self.actor.id, product=product_id, quantity=new_quantity )
-        logs.log(debug_msg=f"| FUNCTION         | inventory     | set_product_inventory inventory of {product_id} updated to {new_quantity} ")
+
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_inventory", day=self.actor.simulation.time,debug_msg= f"inventory of {product_id} updated to {new_quantity}" )
+
         return True
 
 
     def set_product_safety_inventory(self, product_id, quantity):
-        logs.log(debug_msg="| FUNCTION         | inventory     | set_product_safety_inventory  actor{} product {} qty {}".format(self.actor.id, product_id, quantity ))
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_safety_inventory", day=self.actor.simulation.time,debug_msg=  "actor{} product {} qty {}".format(self.actor.id, product_id, quantity ) )
 
         try:
             self.main_inventory[product_id]["safety_stock"] = quantity
@@ -190,7 +199,7 @@ class ClassInventory:
 
 
     def get_product_safety_inventory(self, product_id):
-        logs.log(debug_msg="| FUNCTION         | inventory     | get_product_safety_inventory " + str( self.actor.id)+' product '+str(product_id))
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="get_product_safety_inventory", day=self.actor.simulation.time,  debug_msg= f" get_product_safety_inventory {str( self.actor.id)} product {str(product_id)}" )
 
         try:
             return self.main_inventory[product_id]["safety_stock"]
@@ -208,7 +217,7 @@ class ClassInventory:
     #         logs.log(warning_msg="Error on get_product_reorder_history_size, check product id "+str(product_id))
 
     def refresh_inventory_capacity(self):
-        logs.log(debug_msg="| FUNCTION         | inventory     | get_product_stock "+str( self.actor.id))
+        logs.new_log(state=self.actor.actor_state,actor=self.actor.id, file="inventory", function="refresh_inventory_capacity", day=self.actor.simulation.time,  debug_msg= " get_product_stock "+str( self.actor.id) )
 
         present_capacity=0
 

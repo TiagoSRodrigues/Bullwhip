@@ -1,3 +1,4 @@
+import json
 from simulator import data_input
 from.import logging_management as logs
 # Funções para correr a simulação, o pré simulação fica no init
@@ -21,18 +22,30 @@ def main(input_data, simulation):
     ee.print_days(len(input_data))
 
     simulation.speed()  ## SPEED
+
     for quantity in input_data:
         logs.new_log(day=simulation.time, actor=" ", function="main", file="main", 
                     debug_msg= "new day <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>") 
 
+
+        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", debug_msg= f"global inventory | simulation    | global inventory{simulation.global_inventory}")
+        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", debug_msg= f"global inventory | simulation    | open transctions{simulation.ObejctTransationsRecords.open_transactions}")
+
+
+        simulation.update_inventory_history()
+        if simulation.time == 100:
+            with open("inventary_log.json", "w") as file:
+                json.dump(simulation.inventory_history, file, indent=4)    
+                
+                #file.write(str(simulation.inventory_history).replace("'", '"'))
+            # print(simulation.inventory_history)
+        
         simulation.reset_all_actors_status()
         # simulation.mongo_db.add_to_inventory_snapshot()
 
-
+        simulation.ObejctTransationsRecords.check_transactions_integrity()
         simulation.ObejctTransationsRecords.deliver_to_final_client()
         logs.print_day(simulation, quantity=quantity)
-
-        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", debug_msg= f"global inventory | simulation    | global inventory {simulation.global_inventory}")
 
         #apagar logs.new_log(day=simulation.time, actor=" ", function="main", file="main",info_msg="|")
         #apagar logs.new_log(day=simulation.time, actor=" ", function="main", file="main",info_msg="|      Day "+str(simulation.time) )
@@ -45,25 +58,32 @@ def main(input_data, simulation):
             #apagar logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg="|")
 
 
-            #apagar print("Ator ativo:", actor.id)
-            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"| open orders{actor.actor_orders_record.open_orders_record[0:]} ")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"open orders{actor.actor_orders_record.open_orders_record[0:]} < open ")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"closed orders{actor.actor_orders_record.closed_orders_record} < closed ")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"orders_history{actor.actor_orders_record.orders_history} < hist")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"orders_waiting_stock{actor.actor_orders_record.orders_waiting_stock} wait")
 
             simulation.speed() ## SPEED
             if not actor.id==0:
 
                     logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"present stock {actor.actor_inventory.main_inventory} ")
+                    
                     simulation.mongo_db.add_to_inventory_history(actor_id=actor.id, inventory=actor.actor_inventory.main_inventory, day=simulation.time)
 
 
                     logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= "starting management ")
-                    actor.manage_orders()
+                    if not actor.manage_orders():
+                        raise Exception("Error in actor orders management")
 
                     logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= "starting sock management ")
-                    actor.manage_stock()
-
+                    if not actor.manage_stock():
+                        raise Exception("Error in actor stock management")
+                        
             #apagar print( actor.id, actor.actor_inventory.main_inventory, "yap")
 
         simulation.time += 1
+        simulation.update_simulation_stats("days_passed")
+  
 
 
     simulation.mongo_db.add_maney_to_db(colection_name="final_open_transactions", data=  simulation.ObejctTransationsRecords.open_transactions)
