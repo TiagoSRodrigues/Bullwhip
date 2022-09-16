@@ -16,10 +16,7 @@ from simulator import final_stats
 from simulator import database
 
 
-args= list(sys.argv)
-if len(args) > 1:
-    sim_cfg.ACTORS_CONFIG_FILE=[2]
-    sim_cfg.SIMULATION_MODE = [1]
+
 start_time = perf_counter()
 
 # print the simulation start header 

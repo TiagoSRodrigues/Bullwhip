@@ -41,7 +41,7 @@ SIM_STATUS_FILE_PATH = DIRECTORY_PATH + "//data//records//simulations_stats.json
 NUMBER_OF_HISTORY_LOGFILES= 10
 
 #Define if the logs are printed in the terminal while running 
-LOGGING_LEVEL="INFO"  # "DEGUB" "WARNING" "INFO"
+LOGGING_LEVEL="DEBUG"  # "DEGUB" "WARNING" "INFO"
 PRINT_LOGS_IN_TERMINAL=False
 TERMINAL_PRINTTING_LOG_LEVEL="INFO"
 
@@ -71,7 +71,7 @@ DAYS_TO_SIMULATE = "all"
 TIME_SLOWDOWN = 0 #seconds
 
 # Simulations modes:  | traditional = 1 | Machine learnning = 2 | blockchain = 3  |
-SIMULATION_MODE = 3
+SIMULATION_MODE = 1
 
 PRODUCTION_METHOD = 1 # 1 = produces immediately when receive raw mat. | 2 = produces for delivery
 

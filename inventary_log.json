@@ -11,7 +11,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -31,7 +32,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -51,7 +53,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -71,7 +74,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -89,7 +93,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -109,7 +113,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -125,7 +129,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -145,7 +150,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -165,7 +171,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -185,7 +192,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -203,7 +211,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -223,7 +231,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -239,7 +247,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -259,7 +268,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -279,7 +289,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -299,7 +310,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -317,7 +329,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -337,7 +349,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -353,7 +365,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -373,7 +386,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -393,7 +407,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -413,7 +428,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -431,7 +447,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -451,7 +467,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -467,7 +483,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -487,7 +504,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -507,7 +525,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -527,7 +546,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -545,7 +565,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -565,7 +585,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -581,7 +601,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -601,7 +622,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -621,7 +643,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -641,7 +664,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -659,7 +683,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -679,7 +703,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -695,7 +719,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -715,7 +740,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -735,7 +761,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -755,7 +782,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -773,7 +801,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -793,7 +821,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -809,7 +837,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -829,7 +858,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -849,7 +879,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -869,7 +900,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -887,7 +919,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -907,7 +939,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -923,7 +955,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -943,7 +976,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -963,7 +997,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -983,7 +1018,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1001,7 +1037,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1021,7 +1057,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1037,7 +1073,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1057,7 +1094,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1077,7 +1115,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1097,7 +1136,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1115,7 +1155,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1135,7 +1175,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1151,7 +1191,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1171,7 +1212,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1191,7 +1233,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1211,7 +1254,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1229,7 +1273,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1249,7 +1293,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1265,7 +1309,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1285,7 +1330,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1305,7 +1351,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1325,7 +1372,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1343,7 +1391,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1363,7 +1411,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1379,7 +1427,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1399,7 +1448,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1419,7 +1469,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1439,7 +1490,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1457,7 +1509,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1477,7 +1529,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1493,7 +1545,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1513,7 +1566,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1533,7 +1587,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1553,7 +1608,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1571,7 +1627,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1591,7 +1647,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1607,7 +1663,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1627,7 +1684,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1647,7 +1705,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1667,7 +1726,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1685,7 +1745,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1705,7 +1765,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1721,7 +1781,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1741,7 +1802,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1761,7 +1823,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1781,7 +1844,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1799,7 +1863,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1819,7 +1883,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1835,7 +1899,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1855,7 +1920,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1875,7 +1941,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -1895,7 +1962,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -1913,7 +1981,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -1933,7 +2001,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -1949,7 +2017,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -1969,7 +2038,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -1989,7 +2059,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2009,7 +2080,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2027,7 +2099,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2047,7 +2119,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2063,7 +2135,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2083,7 +2156,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2103,7 +2177,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2123,7 +2198,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2141,7 +2217,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2161,7 +2237,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2177,7 +2253,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2197,7 +2274,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2217,7 +2295,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2237,7 +2316,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2255,7 +2335,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2275,7 +2355,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2291,7 +2371,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2311,7 +2392,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2331,7 +2413,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2351,7 +2434,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2369,7 +2453,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2389,7 +2473,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2405,7 +2489,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2425,7 +2510,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2445,7 +2531,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2465,7 +2552,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2483,7 +2571,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2503,7 +2591,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2519,7 +2607,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2539,7 +2628,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2559,7 +2649,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2579,7 +2670,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2597,7 +2689,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2617,7 +2709,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2633,7 +2725,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2653,7 +2746,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2673,7 +2767,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2693,7 +2788,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2711,7 +2807,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2731,7 +2827,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2747,7 +2843,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2767,7 +2864,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2787,7 +2885,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2807,7 +2906,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2825,7 +2925,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2845,7 +2945,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2861,7 +2961,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2881,7 +2982,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -2901,7 +3003,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -2921,7 +3024,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -2939,7 +3043,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -2959,7 +3063,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -2975,7 +3079,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -2995,7 +3100,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3015,7 +3121,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3035,7 +3142,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3053,7 +3161,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3073,7 +3181,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3089,7 +3197,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3109,7 +3218,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3129,7 +3239,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3149,7 +3260,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3167,7 +3279,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3187,7 +3299,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3203,7 +3315,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3223,7 +3336,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3243,7 +3357,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3263,7 +3378,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3281,7 +3397,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3301,7 +3417,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3317,7 +3433,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3337,7 +3454,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3357,7 +3475,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3377,7 +3496,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3395,7 +3515,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3415,7 +3535,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3431,7 +3551,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3451,7 +3572,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3471,7 +3593,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3491,7 +3614,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3509,7 +3633,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3529,7 +3653,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3545,7 +3669,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3565,7 +3690,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3585,7 +3711,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3605,7 +3732,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3623,7 +3751,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3643,7 +3771,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3659,7 +3787,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3679,7 +3808,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3699,7 +3829,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3719,7 +3850,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3737,7 +3869,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3757,7 +3889,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3773,7 +3905,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3793,7 +3926,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3813,7 +3947,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3833,7 +3968,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3851,7 +3987,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3871,7 +4007,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -3887,7 +4023,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -3907,7 +4044,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -3927,7 +4065,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -3947,7 +4086,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -3965,7 +4105,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -3985,7 +4125,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4001,7 +4141,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4021,7 +4162,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4041,7 +4183,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4061,7 +4204,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4079,7 +4223,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4099,7 +4243,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4115,7 +4259,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4135,7 +4280,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4155,7 +4301,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4175,7 +4322,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4193,7 +4341,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4213,7 +4361,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4229,7 +4377,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4249,7 +4398,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4269,7 +4419,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4289,7 +4440,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4307,7 +4459,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4327,7 +4479,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4343,7 +4495,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4363,7 +4516,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4383,7 +4537,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4403,7 +4558,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4421,7 +4577,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4441,7 +4597,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4457,7 +4613,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4477,7 +4634,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4497,7 +4655,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4517,7 +4676,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4535,7 +4695,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4555,7 +4715,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4571,7 +4731,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4591,7 +4752,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4611,7 +4773,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4631,7 +4794,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4649,7 +4813,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4669,7 +4833,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4685,7 +4849,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4705,7 +4870,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4725,7 +4891,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4745,7 +4912,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4763,7 +4931,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4783,7 +4951,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4799,7 +4967,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4819,7 +4988,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4839,7 +5009,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4859,7 +5030,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4877,7 +5049,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -4897,7 +5069,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -4913,7 +5085,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -4933,7 +5106,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -4953,7 +5127,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -4973,7 +5148,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -4991,7 +5167,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5011,7 +5187,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5027,7 +5203,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5047,7 +5224,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5067,7 +5245,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5087,7 +5266,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5105,7 +5285,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5125,7 +5305,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5141,7 +5321,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5161,7 +5342,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5181,7 +5363,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5201,7 +5384,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5219,7 +5403,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5239,7 +5423,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5255,7 +5439,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5275,7 +5460,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5295,7 +5481,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5315,7 +5502,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5333,7 +5521,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5353,7 +5541,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5369,7 +5557,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5389,7 +5578,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5409,7 +5599,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5429,7 +5620,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5447,7 +5639,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5467,7 +5659,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5483,7 +5675,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5503,7 +5696,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5523,7 +5717,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5543,7 +5738,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5561,7 +5757,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5581,7 +5777,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5597,7 +5793,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5617,7 +5814,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5637,7 +5835,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5657,7 +5856,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5675,7 +5875,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5695,7 +5895,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5711,7 +5911,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5731,7 +5932,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5751,7 +5953,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5771,7 +5974,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5789,7 +5993,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5809,7 +6013,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5825,7 +6029,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5845,7 +6050,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5865,7 +6071,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5885,7 +6092,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -5903,7 +6111,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -5923,7 +6131,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -5939,7 +6147,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -5959,7 +6168,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -5979,7 +6189,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -5999,7 +6210,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6017,7 +6229,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6037,7 +6249,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6053,7 +6265,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6073,7 +6286,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6093,7 +6307,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6113,7 +6328,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6131,7 +6347,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6151,7 +6367,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6167,7 +6383,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6187,7 +6404,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6207,7 +6425,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6227,7 +6446,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6245,7 +6465,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6265,7 +6485,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6281,7 +6501,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6301,7 +6522,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6321,7 +6543,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6341,7 +6564,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6359,7 +6583,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6379,7 +6603,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6395,7 +6619,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6415,7 +6640,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6435,7 +6661,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6455,7 +6682,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6473,7 +6701,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6493,7 +6721,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6509,7 +6737,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6529,7 +6758,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6549,7 +6779,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6569,7 +6800,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6587,7 +6819,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6607,7 +6839,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6623,7 +6855,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6643,7 +6876,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6663,7 +6897,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6683,7 +6918,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6701,7 +6937,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6721,7 +6957,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6737,7 +6973,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6757,7 +6994,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6777,7 +7015,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6797,7 +7036,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6815,7 +7055,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6835,7 +7075,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6851,7 +7091,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6871,7 +7112,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -6891,7 +7133,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -6911,7 +7154,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -6929,7 +7173,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -6949,7 +7193,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -6965,7 +7209,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -6985,7 +7230,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7005,7 +7251,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7025,7 +7272,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7043,7 +7291,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7063,7 +7311,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7079,7 +7327,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7099,7 +7348,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7119,7 +7369,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7139,7 +7390,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7157,7 +7409,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7177,7 +7429,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7193,7 +7445,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7213,7 +7466,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7233,7 +7487,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7253,7 +7508,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7271,7 +7527,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7291,7 +7547,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7307,7 +7563,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7327,7 +7584,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7347,7 +7605,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7367,7 +7626,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7385,7 +7645,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7405,7 +7665,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7421,7 +7681,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7441,7 +7702,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7461,7 +7723,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7481,7 +7744,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7499,7 +7763,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7519,7 +7783,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7535,7 +7799,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7555,7 +7820,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7575,7 +7841,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7595,7 +7862,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7613,7 +7881,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7633,7 +7901,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7649,7 +7917,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7669,7 +7938,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7689,7 +7959,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7709,7 +7980,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7727,7 +7999,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7747,7 +8019,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7763,7 +8035,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7783,7 +8056,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7803,7 +8077,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7823,7 +8098,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7841,7 +8117,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7861,7 +8137,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7877,7 +8153,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -7897,7 +8174,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -7917,7 +8195,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -7937,7 +8216,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -7955,7 +8235,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -7975,7 +8255,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -7991,7 +8271,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8011,7 +8292,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8031,7 +8313,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8051,7 +8334,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8069,7 +8353,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8089,7 +8373,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8105,7 +8389,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8125,7 +8410,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8145,7 +8431,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8165,7 +8452,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8183,7 +8471,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8203,7 +8491,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8219,7 +8507,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8239,7 +8528,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8259,7 +8549,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8279,7 +8570,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8297,7 +8589,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8317,7 +8609,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8333,7 +8625,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8353,7 +8646,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8373,7 +8667,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8393,7 +8688,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8411,7 +8707,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8431,7 +8727,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8447,7 +8743,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8467,7 +8764,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8487,7 +8785,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8507,7 +8806,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8525,7 +8825,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8545,7 +8845,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8561,7 +8861,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8581,7 +8882,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8601,7 +8903,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8621,7 +8924,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8639,7 +8943,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8659,7 +8963,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8675,7 +8979,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8695,7 +9000,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8715,7 +9021,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8735,7 +9042,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8753,7 +9061,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8773,7 +9081,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8789,7 +9097,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8809,7 +9118,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8829,7 +9139,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8849,7 +9160,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8867,7 +9179,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -8887,7 +9199,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -8903,7 +9215,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -8923,7 +9236,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -8943,7 +9257,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -8963,7 +9278,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -8981,7 +9297,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9001,7 +9317,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9017,7 +9333,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9037,7 +9354,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9057,7 +9375,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9077,7 +9396,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9095,7 +9415,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9115,7 +9435,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9131,7 +9451,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9151,7 +9472,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9171,7 +9493,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9191,7 +9514,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9209,7 +9533,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9229,7 +9553,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9245,7 +9569,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9265,7 +9590,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9285,7 +9611,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9305,7 +9632,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9323,7 +9651,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9343,7 +9671,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9359,7 +9687,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9379,7 +9708,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9399,7 +9729,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9419,7 +9750,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9437,7 +9769,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9457,7 +9789,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9473,7 +9805,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9493,7 +9826,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9513,7 +9847,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9533,7 +9868,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9551,7 +9887,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9571,7 +9907,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9587,7 +9923,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9607,7 +9944,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9627,7 +9965,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9647,7 +9986,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9665,7 +10005,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9685,7 +10025,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9701,7 +10041,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9721,7 +10062,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9741,7 +10083,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9761,7 +10104,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9779,7 +10123,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9799,7 +10143,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9815,7 +10159,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9835,7 +10180,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9855,7 +10201,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9875,7 +10222,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -9893,7 +10241,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -9913,7 +10261,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -9929,7 +10277,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -9949,7 +10298,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -9969,7 +10319,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -9989,7 +10340,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10007,7 +10359,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10027,7 +10379,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10043,7 +10395,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10063,7 +10416,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10083,7 +10437,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10103,7 +10458,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10121,7 +10477,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10141,7 +10497,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10157,7 +10513,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10177,7 +10534,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10197,7 +10555,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10217,7 +10576,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10235,7 +10595,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10255,7 +10615,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10271,7 +10631,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10291,7 +10652,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10311,7 +10673,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10331,7 +10694,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10349,7 +10713,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10369,7 +10733,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10385,7 +10749,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10405,7 +10770,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10425,7 +10791,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10445,7 +10812,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10463,7 +10831,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10483,7 +10851,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10499,7 +10867,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10519,7 +10888,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10539,7 +10909,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10559,7 +10930,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10577,7 +10949,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10597,7 +10969,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10613,7 +10985,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10633,7 +11006,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10653,7 +11027,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10673,7 +11048,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10691,7 +11067,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10711,7 +11087,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10727,7 +11103,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10747,7 +11124,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10767,7 +11145,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10787,7 +11166,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10805,7 +11185,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10825,7 +11205,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10841,7 +11221,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10861,7 +11242,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10881,7 +11263,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -10901,7 +11284,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -10919,7 +11303,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -10939,7 +11323,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -10955,7 +11339,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -10975,7 +11360,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -10995,7 +11381,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -11015,7 +11402,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -11033,7 +11421,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -11053,7 +11441,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -11069,7 +11457,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -11089,7 +11478,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -11109,7 +11499,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -11129,7 +11520,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -11147,7 +11539,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -11167,7 +11559,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -11183,7 +11575,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -11203,7 +11596,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -11223,7 +11617,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -11243,7 +11638,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -11261,7 +11657,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -11281,7 +11677,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     },
@@ -11297,7 +11693,8 @@
                 "composition": {
                     "2001": 1
                 },
-                "in_stock": 0
+                "in_stock": 244621,
+                "waiting_stock": 74795.15042315965
             },
             "2001": {
                 "id": 2001,
@@ -11317,7 +11714,8 @@
                 "composition": {
                     "3001": 1
                 },
-                "in_stock": 0
+                "in_stock": 5384366,
+                "waiting_stock": 550781.0878947193
             },
             "3001": {
                 "id": 3001,
@@ -11337,7 +11735,8 @@
                 "composition": {
                     "4001": 1
                 },
-                "in_stock": 0
+                "in_stock": 25409259,
+                "waiting_stock": 4015651.8517770716
             },
             "4001": {
                 "id": 4001,
@@ -11357,7 +11756,8 @@
                 "composition": {
                     "5001": 1
                 },
-                "in_stock": 0
+                "in_stock": 84731956,
+                "waiting_stock": 29256787.205973208
             },
             "5001": {
                 "id": 5001,
@@ -11375,7 +11775,7 @@
                 "initial_stock": 9999999999,
                 "safety_stock": 999999,
                 "reorder_history_size": 7,
-                "in_stock": 9999043336
+                "in_stock": 9854016347
             }
         }
     },
@@ -11395,7 +11795,7 @@
             },
             "1001": {
                 "id": 1001,
-                "in_stock": 641194
+                "in_stock": 902479
             }
         }
     }
