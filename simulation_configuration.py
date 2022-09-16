@@ -21,6 +21,7 @@ BACKUP_FOLDER= DIRECTORY_PATH + "//data//Backups"
 CONFIGS_BACKUP= BACKUP_FOLDER + "//Configuration backups//"
 LOG_FILES_PATH = DIRECTORY_PATH + '//data//logs//'
 
+RESULTS_PATH = DIRECTORY_PATH +"//data//results//"
 
 #files path
 SOURCE_DATA_PATH =  DIRECTORY_PATH + '//data//input//data_amplified.csv'
@@ -64,7 +65,7 @@ INPUT_DATA_TYPE = "file" #file or constant
 MINIMUM_DAILY_ORDERS = 1000
 MAXIMUM_DAILY_ORDERS = 1000
 # limits days to simulate,  to run all date use "all"
-DAYS_TO_SIMULATE = "all"
+DAYS_TO_SIMULATE = None   #! <------
 
 
 # in order to see the evolutions of the simulation, increase the sleep time

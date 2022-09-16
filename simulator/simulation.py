@@ -14,7 +14,7 @@ logs.log(debug_msg="Started simulation.py")
 ## check if testes are configurated to run
 
 class ClassSimulation:
-    def __init__(self, stock_management_mode):
+    def __init__(self, stock_management_mode, actors_configs):
         self.stock_management_mode = stock_management_mode   # Modos | traditional = 1 | blockchain = 2  | Machine learnning = 3
         self.simulation_status = "0-Created"
         self.simulation_id=time.strftime("%Y%m%d_%H%M%S", time.gmtime())
@@ -60,6 +60,7 @@ class ClassSimulation:
         logs.log(debug_msg="| status           | Simulation created")
 
         self.sleep_time = 0
+        self.create_actors( ACTORS_CONFIG_FILE = actors_configs)
 
 
 

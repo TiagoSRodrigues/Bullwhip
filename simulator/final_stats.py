@@ -1,5 +1,7 @@
 
 import os
+
+from simulator.logging_management import save_to_file
 from . import database
 import pandas as pd
 import simulation_configuration as sim_cfg
@@ -62,8 +64,8 @@ class calculate_simulations_stats():
 
             self.db_connection.add_to_actor_delivered_transactions(actor_id= actor.id, transactions = transactions_list)
     
-    def extract_results(self):
-
+    def extract_results(self, file_name=None):
+        # RESULTS_PATH  
         def read_inventory_file(file_path):
             with open(file_path, "r") as file:
                 data = file.read()
@@ -90,17 +92,15 @@ class calculate_simulations_stats():
                 if "actor_" in file:
                     inventory_files[f"actor_{i}"] = file
                     i+=1        
-        
-        print("\n",
-        "|-------> Transações\n"+
-        f"Lead Time - média: {transactions[['lead_time']].mean()[0]:,.{0}f} dias\n".replace(',', ' ')+
-        f"Lead Time - std: {transactions[['lead_time']].std()[0]:,.{0}f} dias\n".replace(',', ' ')+
-        f"Quantidade encomendada - avg: {transactions[['quantity']].mean()[0]:,.{0}f} dias\n".replace(',', ' ')+
-        f"Quantidade encomendada - std: {transactions[['quantity']].std()[0]:,.{0}f} dias \n".replace(',', ' ')+
-        f"Quantidade encomendada - min: {transactions[['quantity']].min()[0]:,.{0}f} dias \n".replace(',', ' ')+
-        f"Quantidade encomendada - max: {transactions[['quantity']].max()[0]:,.{0}f} dias \n".replace(',', ' ')+
-        f"Quantidade encomendada total: {transactions[['quantity']].sum()[0]:,.{0}f} dias \n".replace(',', ' ')
-        )
+        string1="  Final results exports  "
+        string1.__add__("\n|-------> Transações\n")
+        string1.__add__(f"Lead Time - média: {transactions[['lead_time']].mean()[0]:,.{0}f} dias\n".replace(',', ' '))
+        string1.__add__(f"Lead Time - std: {transactions[['lead_time']].std()[0]:,.{0}f} dias\n".replace(',', ' '))
+        string1.__add__(f"Quantidade encomendada - avg: {transactions[['quantity']].mean()[0]:,.{0}f} dias\n".replace(',', ' '))
+        string1.__add__(f"Quantidade encomendada - std: {transactions[['quantity']].std()[0]:,.{0}f} dias \n".replace(',', ' '))
+        string1.__add__(f"Quantidade encomendada - min: {transactions[['quantity']].min()[0]:,.{0}f} dias \n".replace(',', ' '))
+        string1.__add__(f"Quantidade encomendada - max: {transactions[['quantity']].max()[0]:,.{0}f} dias \n".replace(',', ' '))
+        string1.__add__(f"Quantidade encomendada total: {transactions[['quantity']].sum()[0]:,.{0}f} dias \n".replace(',', ' '))
             
             
         # for actor, inv in inventories.items():
@@ -120,19 +120,18 @@ class calculate_simulations_stats():
 
 
 
-        print("|-------> Inventários ")
+        string1=string1+"|-------> Inventários "
         for actor, inv in inventories.items():
-            # print("a",actor)
             for col in inventories[actor].columns:
-                # print(col,"----------------------------------------")
                 if col != "day":
                     # print("a", actor, "c", col, "d",  inventories[actor])
-                    print(f"{actor} {col} -média: {inventories[actor][col].mean():,.{0}f} unidades \n".replace(',', ' ')+
-                    f"{actor} {col} -máximo: {inventories[actor][col].max():,.{0}f} unidades \n".replace(',', ' ')+
-                    f"{actor} {col} -mínimo: {inventories[actor][col].min():,.{0}f} unidades \n".replace(',', ' ')+
-                    f"{actor} {col} -desvio padrão: {inventories[actor][col].std():,.{0}f} unidades \n".replace(',', ' ')+
-                    f"{actor} {col} -total: {inventories[actor][col].sum():,.{0}f} unidades\n".replace(',', ' ')
-                    )
+                    string1.__add__(f"{actor} {col} -média: {inventories[actor][col].mean():,.{0}f} unidades \n".replace(',', ' '))
+                    string1.__add__(f"{actor} {col} -máximo: {inventories[actor][col].max():,.{0}f} unidades \n".replace(',', ' '))
+                    string1.__add__(f"{actor} {col} -mínimo: {inventories[actor][col].min():,.{0}f} unidades \n".replace(',', ' '))
+                    string1.__add__(f"{actor} {col} -desvio padrão: {inventories[actor][col].std():,.{0}f} unidades \n".replace(',', ' '))
+                    string1.__add__(f"{actor} {col} -total: {inventories[actor][col].sum():,.{0}f} unidades\n".replace(',', ' '))        
+        if file_name:
+            save_to_file(file_name=sim_cfg.FINAL_EXPORT_FILES_PATH+file, data=string1 )
                     
 
     def save_final_stats_on_db(simulation):

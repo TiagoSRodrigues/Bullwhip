@@ -143,7 +143,7 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
 
 
 
-def save_to_file(file_name, data, format):
+def save_to_file(file_name, data, format=None):
     """Saves the data to a file
 
     Args:
