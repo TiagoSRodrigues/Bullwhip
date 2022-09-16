@@ -11,7 +11,7 @@ Actors:
     safety_stock: 2
   Reorder_history_days: 7
   Time_Average: 2
-  Time_variance: 3
+  time_deviation: 3
 - Id: 2
   Max_inventory: 60
   Name: Distribuidor
@@ -24,7 +24,7 @@ Actors:
     safety_stock: 4
   Reorder_history_days: 7
   Time_Average: 2
-  Time_variance: 3
+  time_deviation: 3
 - Id: 3
   Max_inventory: 60
   Name: "F\xE1brica"
@@ -37,7 +37,7 @@ Actors:
     safety_stock: 5
   Reorder_history_days: 7
   Time_Average: 2
-  Time_variance: 3
+  time_deviation: 3
 - Id: 4
   Max_inventory: 60
   Name: "Fornecedor de Mat\xE9ria prima"
@@ -50,7 +50,7 @@ Actors:
     safety_stock: 2
   Reorder_history_days: 7
   Time_Average: 2
-  Time_variance: 3
+  time_deviation: 3
 - Id: 5
   Max_inventory: 60
   Name: "Fornecedor Mat\xE9ria prima 2"
@@ -61,4 +61,4 @@ Actors:
     safety_stock: 1
   Reorder_history_days: 7
   Time_Average: 2
-  Time_variance: 3
+  time_deviation: 3

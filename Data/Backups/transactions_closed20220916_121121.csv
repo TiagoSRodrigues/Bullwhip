@@ -1,0 +1,1 @@
+{'deliver_day': 4, 'order_id': 5000001, 'order_criation_day': 1, 'sending_day': 1, 'receiver': 4, 'sender': 5, 'product': 5001, 'quantity': 11763, 'transit_time': 3, 'lead_time': 3, 'theoretical_lead': 3, 'update_day': 4, 'transaction_id': 2, 'delivered': 1},

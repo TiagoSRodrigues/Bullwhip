@@ -1,14 +1,14 @@
 import time
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import os
 import sys
 import json
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import dash_table
+from dash import dash_table
 
 try:
     import simulation_configuration as sim_cfg
@@ -29,37 +29,37 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 
-#sim_cfg_orders_record_path
+#sim_cfg_ORDERS_RECORDS_FILE_PATH
 # transactions_dataset ={}
 
 def check_file_existance(File_path):
     try:
          with open(File_path, 'r') :
-            return True   
+            return True
     except:
         return False
 
 
 
 def get_inventory_dataset():
-    inventory_file = sim_cfg.inventory_file
-    
-    while not check_file_existance(inventory_file):
-        print("  Waiting for inventory_file", end='\r', flush=True)
+    INVENTORY_FILE = sim_cfg.INVENTORY_FILE
+
+    while not check_file_existance(INVENTORY_FILE):
+        print("  Waiting for INVENTORY_FILE", end='\r', flush=True)
         time.sleep(0.3)
 
-    with open(inventory_file, 'r') as file:
+    with open(INVENTORY_FILE, 'r') as file:
         data=file.read()   #aqui entra como str
 
         data=json.loads(data)         #rebenta aqui com :    00
-        df1 = pd.DataFrame([]) 
+        df1 = pd.DataFrame([])
         for actor in data:
             for prod_list in data[actor]:
                 for prod in prod_list:
                     df2 = pd.DataFrame( [ [ actor, prod, prod_list[prod] ]  ]  , columns=["Ator","Product", "Quantity"] )
-                df1=df1.append(df2) 
+                df1=df1.append(df2)
         file.close
-    
+
         # with open("inventario.txt", 'a') as f:
         #     f.write(df1.to_string())   #aqui entra como str
 
@@ -72,15 +72,15 @@ inventory_dataset= get_inventory_dataset()
 inventory_dataset_columns = inventory_dataset.columns
 
 def get_transactions_dataset():
-    
-    transactions_file = sim_cfg.transactions_record_file
-    
+
+    transactions_file = sim_cfg.TRANSCTIONS_RECORDS_FILE
+
     while not check_file_existance(transactions_file):
         print("Waiting for transactions_file", end='\r', flush = True)
         time.sleep(0.1)
 
     with open(transactions_file, 'r') as file:
-        data=file.read()+"{}]"  #fecha o array 
+        data=file.read()+"{}]"  #fecha o array
 
         return pd.read_json(data)
 
@@ -92,18 +92,18 @@ transactions_dataset =  get_transactions_dataset()
 
 def get_actors_oders():
     orders_datasets={}
-    dir_files=os.listdir(sim_cfg.orders_record_path)
+    dir_files=os.listdir(sim_cfg.ORDERS_RECORDS_FILE_PATH)
 
     for file in dir_files:
         if file[0:6] == "orders":
-            orders_datasets[file[:-4]] = pd.read_csv(sim_cfg.orders_record_path + file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
+            orders_datasets[file[:-4]] = pd.read_csv(sim_cfg.ORDERS_RECORDS_FILE_PATH + file, names=["Time", "Product", "Qty","Client","Order_id","Status"] )
 
             # elif file[0:12] == "transactions":
-            #     transactions_dataset =  pd.read_json('transactions_record_file.json' )
+            #     transactions_dataset =  pd.read_json('TRANSCTIONS_RECORDS_FILE.json' )
     return orders_datasets
 
 # actores_main_dataset = get_actors_oders()
-# 
+#
 # nr_of_actors=len(actores_main_dataset)
 
 def update_open_orders_dataset():
@@ -114,14 +114,14 @@ def update_open_orders_dataset():
     for actor in actores_main_dataset:
         actor_dataset = actores_main_dataset[actor]
         open_orders_a1 = actor_dataset[actor_dataset["Status"]!=1]
-        
+
         open_orders_dataset["open_"+str(actor)]=open_orders_a1
 
 
     return open_orders_dataset
 
 
-# Define Modal - Botão top ritgh 
+# Define Modal - Botão top ritgh
 with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
     howto_md = f.read()
 
@@ -227,7 +227,7 @@ Inventory_card = dbc.Card(
         dbc.CardBody(
             dbc.Row(
                 dbc.Col(
-                    
+
                         dash_table.DataTable(
                             id="inventory-table",
                             columns=[
@@ -236,7 +236,7 @@ Inventory_card = dbc.Card(
                             data=inventory_dataset.to_dict('records')
 ,
                         ),
-                    
+
                 )
             )
         ),
@@ -264,7 +264,7 @@ def create_actor_table():
                 dbc.CardBody(
                     dbc.Row(
                         dbc.Col(
-                            
+
                                 dash_table.DataTable(
                                     id=str(actor)+"-table",
                                     columns=[
@@ -272,7 +272,7 @@ def create_actor_table():
                                         ],
                                     data=dataset.to_dict('records')
         ,
-                               style_table={'height': '200px', 'overflowY': 'auto'} ),      
+                               style_table={'height': '200px', 'overflowY': 'auto'} ),
                         )
                     )
               ),
@@ -284,7 +284,7 @@ actors_tables =  create_actor_table().object
 
 
 left_card = dbc.Card(
-    actors_tables  
+    actors_tables
 )
  ## TRANSACTIONS
 
@@ -294,7 +294,7 @@ transactions_card = dbc.Card(
         dbc.CardBody(
             dbc.Row(
                 dbc.Col(
-                    
+
                         dash_table.DataTable(
                             id="transactions-table",
                             columns=[
@@ -303,7 +303,7 @@ transactions_card = dbc.Card(
                             data=transactions_dataset.to_dict('records')
 ,
                         ),
-                    
+
                 )
             )
         ),
@@ -316,7 +316,7 @@ app.layout = html.Div(
         header,
         dbc.Container(
             [dbc.Row(
-                [dbc.Col(  html.Div(left_card, id="actors_data_table", className="actors_row") ,  md=6), 
+                [dbc.Col(  html.Div(left_card, id="actors_data_table", className="actors_row") ,  md=6),
             dbc.Col(
                      html.Div( [ Inventory_card,
                                 transactions_card])
@@ -361,7 +361,7 @@ def update_actors_tables(n):
     Output("transactions-table", "data"),
      Input('interval-component', 'n_intervals'))
 def update_transactions_table(n):
-    transactions_dataset = get_transactions_dataset() 
+    transactions_dataset = get_transactions_dataset()
     return transactions_dataset.to_dict('records')
 
 

@@ -1,20 +1,46 @@
-﻿20,Checking transctions to receive
-22,Receiving transactions
-23,Checking space for new transactions
-24,Adding to inventory (receive transaction)
-29,Reception finished
-,
-30,Checking transctions to send
-31,Sending orders from stock
-39,Sending finished
-,
-40,started managing stock
-41,
-42, trying to manufacture
-43,"Calculating max possible production"""
-44,Witout raw material for production
-,
-45,production order placed for
-46,Concerting ingredients
-48,Production Finished
-49,Manage stock finished
+﻿20,Checking transctions to receive
+21,Com encomendas para receber
+23,Sem espaço para encomendas
+24,A Registar encomendas recebidas
+25,
+26,
+27,
+28,
+29,Finished transactions reception
+30,A verificar encomendas para enviar
+31,A enviar encomenda
+32,
+33,produto com stock
+34,a remover do inventario
+35,criar a transação
+36,a remover das encomendas
+37,Envio de encomendas terminado
+38,
+39,sem stock para enviar
+40,Started stock management
+41,processing waiting orders
+42,trying to manufacture product
+43,  Calculating max possible production
+44,witout raw material
+45,  production order placed for
+46,  A converter ingredientes)
+47,  Production Finished
+48,Manutacture finished with sucess
+49, Manage stock finished)
+50,
+51,
+52,
+53,
+54,
+55,
+56,
+57,
+58,
+59,
+60,execute todays orders
+61,
+62,
+63,
+64,
+65,placing orders
+66,

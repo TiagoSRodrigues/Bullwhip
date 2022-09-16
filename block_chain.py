@@ -30,7 +30,7 @@
             
             for order in orders_data:
                 
-            inventory_data = inventory_data + self.get_product_inventory(product=item[1])
+            inventory_data = inventory_data + self.get_product_stock(product=item[1])
 
             block_array.append(item[1:2])
             # ["Time", "Product", "Qty","Client","Order_id","Status"]

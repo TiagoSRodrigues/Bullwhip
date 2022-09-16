@@ -1,35 +1,81 @@
-import  os
+""" This document contains the base configuration for the simulation
 
-directory_path = __file__[:-28].replace('\\','//')
+    This excludes the actors configurations
+    that are in the actors_configurations.json file,
+    inside the simulator folder
+"""
+
+import os
+import gc
+
+##################################################
+# Directories 
+    
+
+
+DIRECTORY_PATH = __file__[:-28].replace('\\','//')
 
 #Files Directories
-actors_configuration_file=directory_path + "//simulator//actors_configuration.json"
-logs_file_location = directory_path + '//data//logs//'
-source_data =  directory_path + '//data//input//input_data.csv'
-Configuration_backups= directory_path + '//data//Configuration backups//'
+ACTORS_CONFIG_FILE=DIRECTORY_PATH + "//simulator//actors_configuration.json"
+BACKUP_FOLDER= DIRECTORY_PATH + "//data//Backups"
+CONFIGS_BACKUP= BACKUP_FOLDER + "//Configuration backups//"
+LOG_FILES_PATH = DIRECTORY_PATH + '//data//logs//'
 
 
-simulation_status_file = directory_path + '//data//records//simulation_status_file.json'
+#files path
+SOURCE_DATA_PATH =  DIRECTORY_PATH + '//data//input//data_amplified.csv'
 
-#paramenters   ##LOGS: DEBUG,  INFO, WARNING                #not in use: ERROR, CRITICAL
-Logging_level="DEBUG"
+ORDERS_RECORDS_FILE_PATH = DIRECTORY_PATH + '//data//records//'
+FINAL_EXPORT_FILES_PATH = DIRECTORY_PATH + '//data//exports//'
 
-orders_record_file = directory_path + '//data//records//orders_record.csv'
-orders_record_path = directory_path + '//data//records//'
-transactions_record_file = directory_path + '//data//records//transactions_record_file.json'
+ORDERS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//orders_record.csv'
+TRANSCTIONS_RECORDS_FILE = DIRECTORY_PATH + '//data//records//TRANSCTIONS_RECORDS_FILE.json'
 
-inventory_file = directory_path + '//data//records//inventory_file.json'
+INVENTORY_FILE = DIRECTORY_PATH + '//data//records//INVENTORY_FILE.json'
+SIM_STATUS_FILE_PATH = DIRECTORY_PATH + "//data//records//simulations_stats.json"
+
+##################################################
+# logging 
+
+#Max number of logs to save, if all = False
+NUMBER_OF_HISTORY_LOGFILES= 10
+
+#Define if the logs are printed in the terminal while running 
+LOGGING_LEVEL="INFO"  # "DEGUB" "WARNING" "INFO"
+PRINT_LOGS_IN_TERMINAL=False
+TERMINAL_PRINTTING_LOG_LEVEL="INFO"
+
+
+if PRINT_LOGS_IN_TERMINAL:
+    os.system('cls' if os.name == 'nt' else 'clear')
+gc.collect()
 
 
 
+##################################################
+# Simulation Configuration
 
-#Max number of logs to save, if all = False 
-nr_of_log_to_save= 10
 
-#Define if the logs are printed in the terminal while running
-print_log_in_terminal=True
-Terminal_printting_level="INFO"
 
-#Run tests before simulations
-Run_tests=False
+#DB types | 1 = mongodb  | 2 = local files
+DB_TYPE = 2
+
+INPUT_DATA_TYPE = "file" #file or constant
+MINIMUM_DAILY_ORDERS = 1000
+MAXIMUM_DAILY_ORDERS = 1000
+# limits days to simulate,  to run all date use "all"
+DAYS_TO_SIMULATE = "all"
+
+
+# in order to see the evolutions of the simulation, increase the sleep time
+TIME_SLOWDOWN = 0 #seconds
+
+# Simulations modes:  | traditional = 1 | Machine learnning = 2 | blockchain = 3  |
+SIMULATION_MODE = 3
+
+PRODUCTION_METHOD = 1 # 1 = produces immediately when receive raw mat. | 2 = produces for delivery
+
+#
+PLAY_SOUND = False
+
 

@@ -1,5 +1,9 @@
+import inspect
+from sys import stderr
+import numpy as np
 from . import logging_management as logs
 import simulation_configuration as sim_cfg
+
 logs.log(debug_msg="Started transactions.py")
 #############################################################################################################
 #       Classe que contem todas as funções associadas às transações entre atores                            #
@@ -11,82 +15,214 @@ class transactionsClass:
     this class handle any transactions action"""
     def __init__(self, simulation):
         self.open_transactions =  []
-        self.delivered_transactions =[]     
-        self.transaction_id = 0 
+        self.delivered_transactions =[]
+        self.transaction_id = 0
         self.simulation = simulation
+
+
+
+    def get_transactions_stats(self, actor_id, product:int, history_days:int):
+        actor_id, product, history_days = int(actor_id), int(product), int(history_days)
+        """
+        copia a lista de transações entregues
+        extai a coluna das quantidades
+        retorna a média e o std
+        """
+        logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f" actor {actor_id}, product {product} history {history_days} " )
+        #apagar logs.log(debug_msg= f"| GET TRANSACTION  | Transactions  | actor id  {actor_id} ")
         
-        #Start transaction log
-        with open(sim_cfg.transactions_record_file, 'a') as file:
-            # file.write("[{'transaction_id': 0, 'deliver_day': 0, 'sending_day': 0, 'receiver': 0, 'sender': 0, 'product': 0, 'quantity': 0, 'delivered': 'True', 'recording_time': 0}")
-            file.write("[")
+        transaction_list=[]
+        
+        for item in self.delivered_transactions:
 
-
-    def add_transaction(self, order_id, sender, receiver, quantity, product, deliver_date, sending_date):
-        logs.log(debug_msg="| TRANSACTION ADDED| Transactions  |   sender {} receiver {} quantity {} product {} deliver_date {} sending_date {}".format( sender, receiver, quantity, product, deliver_date, sending_date))
-        self.transaction_id = self.transaction_id + 1
+            if int(item["receiver"])  == actor_id:
+                # logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver", line=f"{item['receiver']},\n")                              
                 
-        transaction_info={"deliver_day":deliver_date,
-                "order_id": order_id,
-                "sending_day":sending_date,
-                "receiver":receiver,
-                "sender":sender,
-                "product":product,
-                "quantity": quantity,
-                "delivered": 0,
-                "last_update": self.simulation.time
-                }
+                if int(item["product"]) == product:
+                    logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2", line=f" time {self.simulation.time} - h {history_days}  = {self.simulation.time - history_days} || time { self.simulation.time }  - u  {item['update_day']} -> {self.simulation.time - int(item['update_day'])}  || {(self.simulation.time - history_days)  } >= {(self.simulation.time - int(item['update_day']))} { (self.simulation.time - history_days) >= (self.simulation.time - int(item['update_day']))},\n")
+                    
+                    transaction_list.append( item['transit_time'] )
+                    
+                    
+                    # if (self.simulation.time - history_days) >= (self.simulation.time - int(item["update_day"])):
+                    
+                    # if (self.simulation.time - history_days) <= 0 :
+                    #     transaction_list.append( item )
+        if len(transaction_list) == 0:
+            return False
+        if len(transaction_list) <= history_days:
+            t_array = np.array(transaction_list)
+            # calculate mean and std
         
+            
+            return t_array.mean(), t_array.std()
+        if len(transaction_list) == 0:
+             return False
+        else:
+            t_array = np.array(transaction_list[:-history_days])
+            #apagar if  t_array.mean() == 0:
+            #     print(f"day {self.simulation.time}")
+            #     print(self.delivered_transactions)
+            #     raise Exception("mean is zero")
+            return t_array.mean(), t_array.std()
+            
+            # print("ssss",transaction_list)
         
+        # else:
+            # print("xxxxxx",transaction_list)
+            # #calculate mean and std
+            
+        # transaction_array=np.array(transaction_list)
+        
+
+        # if len(transaction_array) < 2:
+        #     logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f" ERROR, transactions stats failed actor {actor_id} product {product} - " )
+            #apagar for trans in self.delivered_transactions:
+            #     logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f"{trans}" )
+            
+            # if self.simulation.time > 100:
+            #     for el in inspect.stack():
+            #         for i in el:
+            #             print(i)
+            # return False
+
+
+
+        # times=[]
+        # for t in transaction_array:
+        #     times.append(t['lead_time'])
+
+        # avg = np.array(times).mean()
+        # std = np.array(times).std()
+
+
+        # logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f"transactions  mean:{avg} std:{std}" )
+
+        # return avg, std
+   
+    def get_transaction_by_id(self, transaction_id):
+        try:
+            for record in self.open_transactions:
+                if record['transaction_id'] == transaction_id:
+                    return record
+        except:
+            raise Exception("Transaction requested is not in open transactions")
+
+    def get_todays_transactions(self, actor):
+        """ Este método está obsuleto, não deve ser utilizado, pode deixar encomendas atrasadas no limbo
+        """
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
+
+        pending_transactions=[]
+
+        for record in self.open_transactions:
+            if record['receiver'] == actor.id:
+                if record['deliver_day'] == self.simulation.time:
+                    pending_transactions.append(record['transaction_id'])
+
+        return pending_transactions
+
+
+    def get_delivering_transactions(self, actor):
+        # self.check_transactions_integrity()
+        """Verifica que existe alguma encomenda no registo com dia de entrega igual ou anterior ao presente
+
+        Returns:
+            list: lsita com id das transações transações
+        """
+
+        #apagar logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
+
+        pending_transactions=[]
+
+        for record in self.open_transactions:
+            if (record['deliver_day'] <= self.simulation.time ) and  (record['receiver'] == actor.id):
+                pending_transactions.append(record['transaction_id'])
+
+
+        logs.new_log(day=self.simulation.time, actor=actor.id, file= "transactions", function="get_delivering_transactions", debug_msg = f"today shod be delivered: {len(pending_transactions)} transactions" )
+        return pending_transactions
+
+
+    # SETTERS
+
+
+    def add_transaction(self, transaction_info):#, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
+        
+        self.validate_transaction_schema(transaction_info)
+        logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_opened{self.simulation.simulation_id}.csv", line=f"{transaction_info},\n")
+        self.transaction_id = self.transaction_id + 1
+        # logs.log(debug_msg=f"| TRANSACTION ADDED| Transactions  | transactions_id {self.transaction_id}  transaction info: {transaction_info} ")
+        logs.new_log(day=self.simulation.time,file= "transactions", function="add_transaction", actor= transaction_info["sender"], debug_msg="Transaction added -> {}".format(transaction_info))
+
+
         values_to_add =  transaction_info
         values_to_add["transaction_id"]= self.transaction_id  #!isto é para ficar até a DB estar a funcionar
-        
-        self.open_transactions.append(values_to_add)
-        self.simulation.update_simulation_stats("transactions_opened")
-        self.add_to_orders_log( record=values_to_add)
 
+        #adiciona ao registo interno
+        self.open_transactions.append(values_to_add)
+
+        #adiciona à db 
         self.update_database( self.transaction_id, transaction_info, delivered=False)
-        #logs.new_log("Transactions", "add_transaction" , [ sender, receiver, quantity, product, deliver_date, sending_date])
-        
+
+        self.simulation.update_simulation_stats("transactions_opened")
+
+        return self.transaction_id
+
     def update_database(self, transaction_id, transaction_info=None, delivered=None):
         """Atualiza a base de dados, se não existir o registo cria-o, se existir altera o estado
         """
+        logs.new_log(day=self.simulation.time,file= "transactions", function="add_transaction", actor= transaction_info["sender"], debug_msg=f"transaction id  {transaction_id}, tansaction info { transaction_info}, delivered {delivered} ")
 
         if not delivered:
             if not self.simulation.mongo_db.add_transaction_to_db(self.transaction_id, transaction_info):
-                print("erro a adicionar transação à DB")
-                raise Exception
+                raise Exception("Error adding transaction to DB")
         if delivered==1:
             try:
-                self.simulation.mongo_db.update_transaction_on_db(self.transaction_id)
+                self.simulation.mongo_db.update_transaction_on_db(self.transaction_id,transaction_info )
             except:
                 raise Exception("Error, updating database")
-            
+
         if (transaction_info is None) and (delivered == None):
             raise Exception("Erro no update, só pode ter um None | transaction_id: {}, transaction_info:{}, delivered:{}".format(transaction_id, transaction_info, delivered))
-        
-    def record_delivered(self,transaction_id ):
-        logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id)) 
-        
+
+    def update_transaction(self,transaction_id ):
+        logs.new_log(day=self.simulation.time,file= "transactions", function="update_transaction", actor= " ", debug_msg="Updating transaction  -> {}".format(transaction_id))
+
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
+                self.validate_transaction_schema(record)
                 record['delivered']=1
-                record['recording_time']=self.simulation.time
-                
+                record['update_day']=self.simulation.time
+                record['lead_time']= self.simulation.time - record['order_criation_day']
+                record['transit_time']= record["deliver_day"] - record['order_criation_day']
+
                 self.delivered_transactions.append(record)
                 self.open_transactions.remove(record)
-               
-                #self.add_to_orders_log(record = record) #!obsulento com a db
-                self.update_database(transaction_id,  delivered=1)
+                
+                self.update_database(transaction_id,  delivered=1, transaction_info=record)
+
+
+                self.simulation.mongo_db.add_to_db(colection_name="t_bkup", data=record)
+                logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f"sucesseful delivered Trasaction: {record}" )
                 self.simulation.update_simulation_stats("transactions_delivered")
 
+                logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_closed{self.simulation.simulation_id}.csv", line=f"{record},\n")
                 return True
 
-        print("Trasaction {} not found!! in \n{}".format(transaction_id,self.open_transactions))
-        logs.log(info_msg="| TRANSACTION DLVRD| Transactions  | transaction_id   Trasaction {} not found!!".format(transaction_id))
+        logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f" ERROR, transactions failed Trasaction: {transaction_id} not found!! | open transactions: {self.open_transactions}" )
+        return False
+
+    def validate_transaction_schema(self, transaction_dict):
+        # validate the schema of the transaction
+        reference={"deliver_day": int, "order_id": int, "order_criation_day":int, "sending_day":int, "receiver": int, "sender": int, "product": int, "quantity": int, "transit_time": int, "lead_time": int, "theoretical_lead": int, "update_day": int, "delivered": int, "transaction_id": int }
         
-        
+        if transaction_dict.keys() != reference.keys():
+            raise Exception(f"Error, transaction schema not valid invalid -> {transaction_dict}")
+
+
     def show_all_transactions(self):
-        print("\n\nall open transactions\n",self.open_transactions, "\n\n all delivered transactions\n",self.delivered_transactions,"\n\n")    
+        print("\n\nall open transactions\n",self.open_transactions, "\n\n all delivered transactions\n",self.delivered_transactions,"\n\n")
 
     def show_transactions_record(self, record_object, title=None):
         print("\n",title,"\n")
@@ -100,99 +236,92 @@ class transactionsClass:
                 if key == "sender" and isinstance(value, int): value             = f'{int(value):02d}'
                 if key == "product" and isinstance(value, int): value            = f'{int(value):04d}'
                 if key == "quantity" and isinstance(value, int): value           = f'{int(value):03d}'
-                
+
                 if isinstance(value, int) and value < 10:
                     value = ""+str(value)
 
-            
+
             print(string)
-            
-    def get_transaction_by_id(self, id):
-        try:
-            for record in self.open_transactions:
-                if record['transaction_id'] == id:
-                    return record
-        except:
-            raise Exception("Transaction requested is not in open transactions")
-
-    def get_todays_transactions(self, actor):
-        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.name ))
-
-        pending_transactions=[]
-
-        for record in self.open_transactions:
-            if record['deliver_day']== self.simulation.time  and  record['receiver'] == actor.id:
-                pending_transactions.append(record['transaction_id'])
-        #print(self.open_transactions)
-        return pending_transactions
 
 
-######################foda-se
-        
-    def add_to_orders_log(self, record = dict): #  record_time são recording_time  
-        
-        recordstr=str(record).replace("'", '"').replace("False", str('"'+"False"+'"')).replace(" True", str(' "'+"True"+'"'))
-
-        #self.simulation.mongo_db.add_to_simulation_db(collection_name="transactions",value= record )
-        with open(sim_cfg.transactions_record_file, 'a') as file:
-
-            file.write("\n" +str(recordstr)+"," )
 
 
     def deliver_to_final_client(self):
-        logs.log(debug_msg="| FUNCTION         | Transactions  | deliver_to_final_client : ")
 
         customer = self.simulation.get_actor_by_id(0) #retorna o objecto actor zero (ou customer)
-        # print("temp deliver to final cc",customer.actor_inventory.main_inventory)
-        
-        #print("temp "customer.actor_inventory.main_inventory)
-        
-        transactions_to_deliver=self.get_todays_transactions(customer)
-        #print(transactions_to_deliver)
+
+
+
+        transactions_to_deliver=self.get_delivering_transactions(customer)
+        if not transactions_to_deliver: 
+            logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg="Any deliver for final cliente ")
+
+        logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"t : {transactions_to_deliver}, ator {customer.id} ")
         try:
             for trans in transactions_to_deliver:
                 transaction_info = self.get_transaction_by_id(trans)
-                # print( "sssss", transaction_info["product"], transaction_info["quantity"])
-                #print(transaction_info)
-                customer.actor_inventory.add_to_inventory( product  = transaction_info["product"], quantity = transaction_info["quantity"])
 
-                self.record_delivered(trans)
-                logs.log(debug_msg="| Customer transac | Transactions  | deliver_to_final_client  transaction: {}   transaction info: {}".format( trans ,transaction_info ))
-     
+                customer.receive_transaction( transaction_info["transaction_id"])
+
+                logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"delivered: {transaction_info}  ")
+
         except:
-            print(">>>>>>>>",transactions_to_deliver)
-            print(self.open_transactions)
+            logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"ERROR customer não recebeu encomenda  ")
             raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
+
+
+
+    def check_transactions_integrity(self):
+        logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"  ")
+
+        open = self.open_transactions
+        delivered = self.delivered_transactions
+        
+        id = self.transaction_id
+        today = self.simulation.time
+        
+        open_trasactions_ids_set = set()
+        open_trasactions_ids = []
+        
+        open_trasactions_order_set =set()
+        open_trasactions_order = []
+        
+        delivered_transaction_ids = []
+        delivered_transaction_order = []
+        
+        
+        for d in delivered:
+            delivered_transaction_ids.append(d['transaction_id'])
+            delivered_transaction_order.append(d['order_id'])
             
-
-##############################################################################################
-#      funções relacionadas com operações realizadas pelo actor da cadeia de valor           #
-##############################################################################################
-# from main import simulation_id
-# from actors import ClassOrdersRecord
-
-
-
-'''        estrutura
-            [
-                {
-                    "transaction_id":"id",
-                    "deliver_day":"ddd",
-                    "sending_day":"ddd",
-                    "receiver":"actor_id",
-                    "sender":"actor_id",
-                    "product":"product_id",
-                    "quantity": "int",
-                    "delivered": False
-                    }
-            ]
-
-            ''' 
-        # for i in range(1,10,1):
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-        #     self.add_transaction(sender=0, receiver=1, quantity=23, product=1002, deliver_date=i, sending_date=i-1)
-
-        # print(self.open_transactions)
-
+        for o in open:
+            open_trasactions_ids.append(o['transaction_id'])
+            open_trasactions_ids_set.add(o['transaction_id'])
+            open_trasactions_order.append(o['order_id'])
+            open_trasactions_order_set.add(o['order_id'])
+            
+        
+        # for trans in delivered:
+        #     print(trans)
+        
+        
+        if len(open_trasactions_ids_set) != len(open_trasactions_ids):
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"ERROR, open trasactions ids are not unique")
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"set: {open_trasactions_ids_set}")
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"list: {open_trasactions_ids}")
+                        
+            raise Exception("ERROR, open trasactions ids are not unique") 
+       
+    
+        if len(open_trasactions_order_set) != len(open_trasactions_order):
+            print("set:" ,open_trasactions_order_set)
+            print("list:" ,open_trasactions_order)
+            
+            
+            
+            
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"ERROR, open trasactions order are not unique")
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"set: {open_trasactions_order_set}")
+            logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"list: {open_trasactions_order}")
+            raise Exception("ERROR, open trasactions order are not unique")
+       

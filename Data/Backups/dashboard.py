@@ -2,10 +2,10 @@ import os
 import pathlib
 
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output, State
-import dash_table
+from dash import dash_table
 import plotly.graph_objs as go
 import dash_daq as daq
 
@@ -258,7 +258,7 @@ def generate_modal():
                         The sparkline on top panel and control chart on bottom panel show Shewhart process monitor using mock data.
                         The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will
                         trigger alerts instantly for a detailed checkup.
-                        
+
                         Operators may stop measurement by clicking on `Stop` button, and edit specification parameters by clicking specification tab.
 
                     """

@@ -1,18 +1,18 @@
 import pandas as pd
-            
+
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import os, sys, json
-from dash_html_components.Title import Title 
+from dash_html_components.Title import Title
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-import dash_table
-try: import simulation_configuration as sim_cfg 
-except: 
+from dash import dash_table
+try: import simulation_configuration as sim_cfg
+except:
     sys.path.append('N:/TESE/Bullwhip')
-    import simulation_configuration as sim_cfg 
+    import simulation_configuration as sim_cfg
 
 class dashboard_data():
     def __init__(self, simulation_object, options=None):
@@ -29,21 +29,21 @@ class dashboard_data():
         self.update_datasets(self.simulation)
         #actors data
 
-        
+
         self.create_dashboard(self.simulation)
-    #isto vai precisar de ser otimizado!!! mas até lá good enough 
+    #isto vai precisar de ser otimizado!!! mas até lá good enough
     def update_datasets(self, simulation ):
         self.simulation = simulation
 
         time =  self.simulation.time
 
-        self.open_transactions  = self.simulation.ObejctTransationsRecords.open_transactions 
-        self.delivered_transactions  = self.simulation.ObejctTransationsRecords.delivered_transactions 
+        self.open_transactions  = self.simulation.ObejctTransationsRecords.open_transactions
+        self.delivered_transactions  = self.simulation.ObejctTransationsRecords.delivered_transactions
 
-        self.transaction_id         = self.simulation.ObejctTransationsRecords.transaction_id 
-    #   
+        self.transaction_id         = self.simulation.ObejctTransationsRecords.transaction_id
+    #
         self.actors_collection=self.simulation.actors_collection
-        
+
         for actor in self.actors_collection:
             name , id = actor.name , actor.id
             Open_Orders, closed_orders = actor.actor_stock_record.Open_Orders_Record, actor.actor_stock_record.closed_orders_record
@@ -62,7 +62,7 @@ class dashboard_data():
         data=data.replace("'", '"')
         data=data.replace("False", str('"'+"False"+'"'))
         data=data.replace("True", str('"'+"True"+'"'))
-        
+
         return pd.read_json(data)
 
     def create_dashboard(self, simulation):
@@ -77,7 +77,7 @@ class dashboard_data():
         # Format the Table columns
         transactions_columns=transactions_dataset.columns
         # print(columns)
-        # Define Modal - Botão top ritgh 
+        # Define Modal - Botão top ritgh
         with open("N:/TESE/Bullwhip/dashboard/assets/modal.md", "r") as f:
             howto_md = f.read()
 
@@ -206,7 +206,7 @@ class dashboard_data():
                 dbc.CardBody(
                     dbc.Row(
                         dbc.Col(
-                            
+
                                 dash_table.DataTable(
                                     id="transactions-table",
                                     columns=[
@@ -215,7 +215,7 @@ class dashboard_data():
                                     data=transactions_dataset.to_dict('records')
         ,
                                 ),
-                            
+
                         )
                     )
                 ),
@@ -260,7 +260,6 @@ class dashboard_data():
         app.run_server(debug=True)
         #     Input('interval-component', 'n_intervals'))
     def update_table(self):
-        
+
         transactions_dataset = pd.read_json(self.get_transactions_dataset() )
         return self.create_dashboard.transactions_dataset.to_dict('records')
-    

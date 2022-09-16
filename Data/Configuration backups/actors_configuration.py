@@ -4,7 +4,7 @@ actors= {
             "Id": 1,
             "Name": "Retalhista",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -48,7 +48,7 @@ actors= {
             "Id": 2,
             "Name": "Distribuidor",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -85,7 +85,7 @@ actors= {
             "Id": 3,
             "Name": "Fábrica de Cerveja",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -119,7 +119,7 @@ actors= {
             "Id": 4,
             "Name": "Fábrica de Malte",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -138,7 +138,7 @@ actors= {
             "Id": 5,
             "Name": "Fornecedor de Lupulo",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -154,7 +154,7 @@ actors= {
             "Id": 6,
             "Name": "Fornecedor de levedura",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -170,7 +170,7 @@ actors= {
             "Id": 7,
             "Name": "Fornecedor de Cevada",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -186,7 +186,7 @@ actors= {
             "Id": 8,
             "Name": "Fornecedor de Garrafas",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -205,7 +205,7 @@ actors= {
             "Id": 9,
             "Name": "Fábrica de Cidra",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -225,7 +225,7 @@ actors= {
             "Id": 10,
             "Name": "Fornecedor de Maças",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -241,7 +241,7 @@ actors= {
             "Id": 11,
             "Name": "Fornecedor de Açucar",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -257,7 +257,7 @@ actors= {
             "Id": 12,
             "Name": "Garrafeira",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
@@ -276,7 +276,7 @@ actors= {
             "Id": 13,
             "Name": "Adega",
             "Time_Average": 2,
-            "Time_variance": 3,
+            "time_deviation": 3,
             "Max_inventory": 60,
             "Reorder_history_days": 7,
             "Products": [
