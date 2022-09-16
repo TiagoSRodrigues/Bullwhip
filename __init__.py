@@ -1,8 +1,10 @@
 # Version 10
 
 import logging
+import os
 from time import perf_counter
 from inspect import stack
+import sys
 import simulation_configuration as sim_cfg
 from simulator import main as main
 from simulator import easter_eggs as ee
@@ -13,6 +15,11 @@ from simulator import logging_management as logs
 from simulator import final_stats
 from simulator import database
 
+
+args= list(sys.argv)
+if len(args) > 1:
+    sim_cfg.ACTORS_CONFIG_FILE=[2]
+    sim_cfg.SIMULATION_MODE = [1]
 start_time = perf_counter()
 
 # print the simulation start header 
@@ -24,7 +31,9 @@ logs.log(debug_msg="|day | actor | file | function | msg   <-- log format")
 # data input
 input_data = data_input.get_input( input_type = sim_cfg.INPUT_DATA_TYPE,
                                   days=sim_cfg.DAYS_TO_SIMULATE,
-                                  filepath=sim_cfg.SOURCE_DATA_PATH )
+                                  filepath=sim_cfg.SOURCE_DATA_PATH,
+                                   min=sim_cfg.MINIMUM_DAILY_ORDERS,
+                                   max=sim_cfg.MAXIMUM_DAILY_ORDERS,)
 
 
 
@@ -72,25 +81,17 @@ logs.log(info_msg="Simulation time = "+str(perf_counter()-start_time))
 
 logs.log(info_msg="Calculating final stats")
 
+simulation_stats=final_stats.calculate_simulations_stats(simulation=Object_Simulation)
 if sim_cfg.DB_TYPE == 1:
-    simulation_stats=final_stats.calculate_simulations_stats(simulation=Object_Simulation)
-    simulation_stats.add_open_itens_to_db(Object_Simulation)
-    simulation_stats.add_delivered_transactions_to_td(Object_Simulation)
-    simulation_stats.db_connection.add_runtime_to_stats_db( round(perf_counter()-start_time, 2) )
-    simulation_stats.db_connection.add_simulation_stats_to_db(stat_value= Object_Simulation.simulation_stats)
-    simulation_stats.db_connection.save_stats( Object_Simulation.simulation_id)
-    simulation_stats.db_connection.export_db(sim_cfg.FINAL_EXPORT_FILES_PATH)
-    
+    simulation_stats.save_final_stats_on_db
 if sim_cfg.DB_TYPE == 2:
-    Object_Simulation.export_db(sim_cfg.FINAL_EXPORT_FILES_PATH)
+    simulation_stats.extract_results()
     
-    
-import os
 
 #termina simulação
 Object_Simulation.change_simulation_status(status=99)
 
-Object_Simulation.show_simulation_stats()
+# Object_Simulation.show_simulation_stats()
 #registos de tempos e final
 if sim_cfg.PRINT_LOGS_IN_TERMINAL:ee.final_prints(start_time)
 

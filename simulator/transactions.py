@@ -150,7 +150,7 @@ class transactionsClass:
     def add_transaction(self, transaction_info):#, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
         
         self.validate_transaction_schema(transaction_info)
-
+        logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_opened{self.simulation.simulation_id}.csv", line=f"{transaction_info},\n")
         self.transaction_id = self.transaction_id + 1
         # logs.log(debug_msg=f"| TRANSACTION ADDED| Transactions  | transactions_id {self.transaction_id}  transaction info: {transaction_info} ")
         logs.new_log(day=self.simulation.time,file= "transactions", function="add_transaction", actor= transaction_info["sender"], debug_msg="Transaction added -> {}".format(transaction_info))
@@ -187,7 +187,7 @@ class transactionsClass:
             raise Exception("Erro no update, só pode ter um None | transaction_id: {}, transaction_info:{}, delivered:{}".format(transaction_id, transaction_info, delivered))
 
     def update_transaction(self,transaction_id ):
-        logs.log(debug_msg="| TRANSACTION REMVD| Transactions  | transaction_id "+str(transaction_id))
+        logs.new_log(day=self.simulation.time,file= "transactions", function="update_transaction", actor= " ", debug_msg="Updating transaction  -> {}".format(transaction_id))
 
         for record in self.open_transactions:
             if record['transaction_id']==transaction_id:
@@ -207,6 +207,7 @@ class transactionsClass:
                 logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f"sucesseful delivered Trasaction: {record}" )
                 self.simulation.update_simulation_stats("transactions_delivered")
 
+                logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_closed{self.simulation.simulation_id}.csv", line=f"{record},\n")
                 return True
 
         logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f" ERROR, transactions failed Trasaction: {transaction_id} not found!! | open transactions: {self.open_transactions}" )

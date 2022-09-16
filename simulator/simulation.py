@@ -1,6 +1,6 @@
 import inspect
 from random import random
-from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns, blockchian
+from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
 
@@ -274,5 +274,6 @@ class ClassSimulation:
             for p in s["products"]:
                 safety_stock = p["safety_stock"]
                 if safety_stock < max_input:
-                    raise Exception(f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
+                    print((f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}"))
+                    # raise Exception(f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
         return True

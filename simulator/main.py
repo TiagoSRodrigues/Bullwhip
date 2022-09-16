@@ -50,7 +50,6 @@ def main(input_data, simulation):
         #apagar logs.new_log(day=simulation.time, actor=" ", function="main", file="main",info_msg="|")
         #apagar logs.new_log(day=simulation.time, actor=" ", function="main", file="main",info_msg="|      Day "+str(simulation.time) )
         #apagar logs.new_log(day=simulation.time, actor=" ", function="main", file="main",info_msg="|")
-
         first_element.receive_order(supplier=int(first_element.id), quantity = int(quantity), product=1001, client = 0  )
 
         for actor in simulation.actors_collection:
@@ -80,6 +79,7 @@ def main(input_data, simulation):
                         raise Exception("Error in actor stock management")
                         
             #apagar print( actor.id, actor.actor_inventory.main_inventory, "yap")
+            actor.actor_inventory.save_inventory()
 
         simulation.time += 1
         simulation.update_simulation_stats("days_passed")

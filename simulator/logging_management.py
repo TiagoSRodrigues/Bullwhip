@@ -9,6 +9,7 @@
 
 import os
 import gc
+import shutil
 import time
 import logging
 import inspect
@@ -179,6 +180,15 @@ def delete_old_logs(folder=None, file=None,  NUMBER_OF_HISTORY_LOGFILES=None):
         # if sim_cfg.PRINT_LOGS_IN_TERMINAL:
         #     print("No files to delete")
 
+def clean_folder(folder_path, backup_folder_path):
+    """Backups and Deletes all files in a folder"""
+    
+    for file in os.listdir(folder_path):
+        shutil.copyfile(f"{folder_path}\\{file}", f"{backup_folder_path}\\{file}")
+        
+        os.remove(f"{folder_path}\\{file}")
+        
+        
 
 ##Ainda n está implemnetado, a idea é fazer uma barra deprogresso
 # def simulation_time(x):
@@ -267,8 +277,7 @@ def pretty(d, indent=0):
 delete_old_logs( folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = sim_cfg.NUMBER_OF_HISTORY_LOGFILES)
 
     #https://www.webfx.com/tools/emoji-cheat-sheet/
-delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver" )
-delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2" )
+# delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2" )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_1.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_2.csv"           )
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_3.csv"           )
@@ -277,6 +286,7 @@ delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_rece
 # delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_6.csv"           )
 # delete_old_logs( file = sim_cfg.INVENTORY_FILE          )
 
+clean_folder("N:\\TESE\\Bullwhip\\data\\exports", sim_cfg.BACKUP_FOLDER)
 
 
 delete_old_logs( file = sim_cfg.TRANSCTIONS_RECORDS_FILE)

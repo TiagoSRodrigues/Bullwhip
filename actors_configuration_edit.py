@@ -1,3 +1,7 @@
+import json
+import time
+import simulation_configuration  as sim_cfg
+
 actors= {
     "actors":
     [
@@ -6,29 +10,19 @@ actors= {
             "name": "Retailer",
             "time_average": 5,
             "time_deviation": 1,
-            "max_inventory": 100000000,
-            "safety_factor": 2.33,
+            "max_inventory": 100_000_000,
+            "safety_factor": 1.33,
             "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 300000,
-                    "safety_stock": 60000,
+                    "initial_stock": 10_000,
+                    "safety_stock": 1000,
                     "composition":
                     {
                         2001: 1
-                    }
-                },
-                  {
-                    "name": "ProductAA",
-                    "id": 1002,
-                    "initial_stock": 300000,
-                    "safety_stock": 60000,
-                    "composition":
-                    {
-                        2001: 2
                     }
                 }
 
@@ -39,16 +33,16 @@ actors= {
             "name": "Distributor",
             "time_average": 5,
             "time_deviation": 1,
-            "max_inventory": 100000000,
-            "safety_factor": 2.33,
+            "max_inventory": 100_000_000,
+            "safety_factor": 1.33,
             "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 300000,
-                    "safety_stock": 60000,
+                    "initial_stock": 10_000,
+                    "safety_stock": 1000,
                     "composition":
                     {
                         3001: 1
@@ -61,16 +55,16 @@ actors= {
             "name": "Factory",
             "time_average": 5,
             "time_deviation": 1,
-            "max_inventory": 100000000,
-            "safety_factor": 2.33,
+            "max_inventory": 100_000_000,
+            "safety_factor": 1.33,
             "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 300000,
-                    "safety_stock": 60000,
+                    "initial_stock": 10_000,
+                    "safety_stock": 1000,
                     "composition":
                     {
                         4001: 1
@@ -83,16 +77,16 @@ actors= {
             "name": "Raw Material Supplier",
             "time_average": 5,
             "time_deviation": 1,
-            "max_inventory": 100000000,
-            "safety_factor": 2.33,
+            "max_inventory": 100_000_000,
+            "safety_factor": 1.33,
             "reorder_history_size":30,
             "products":
             [
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 300000,
-                    "safety_stock": 60000,
+                    "initial_stock": 10_000,
+                    "safety_stock": 1000,
                     "composition":
                     {
                         5001: 1
@@ -106,7 +100,7 @@ actors= {
             "time_average": 5,
             "time_deviation": 1,
             "max_inventory": 9999999999,
-            "safety_factor": 2.33,
+            "safety_factor": 1.33,
             "reorder_history_size":30,
             "products":
             [
@@ -123,19 +117,25 @@ actors= {
 }
 
 
-def Save_Configurations(actors):
-    import json, json,  time
-    import simulation_configuration  as sim_cfg
+####
+# Casos de teste
+# A- stock inicial = 0      | safety_factor = 1.33
+# B- stock inicial = 100000 | safety_factor = 1.33
+# C - stock inicial = 0     | safety_factor = 2.33
+# D - stock inicial = 100000| safety_factor = 2.33
+#
 
-    with open(sim_cfg.ACTORS_CONFIG_FILE,"w") as file:
-        file.write(json.dumps(actors))
+filename = sim_cfg.DIRECTORY_PATH+ "//simulator//actors_configuration_b.json"
 
-    with open(sim_cfg.CONFIGS_BACKUP+time.strftime("ACTORS_CONFIG_FILE "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w") as fp:
-        fp.write(json.dumps(actors,indent=4, sort_keys=True))
+def save_configurations(actors_dict):
+    """valida e guarda as configurações"""
 
-    print("actors_configuration.json updated!")
+    with open(filename,"w", encoding="utf-8") as file:
+        file.write(json.dumps(actors_dict))
 
-Save_Configurations(actors)
+    with open(sim_cfg.CONFIGS_BACKUP+time.strftime("ACTORS_CONFIG_FILE "+"%Y%m%d_%H-%M-%S"+".json", time.localtime()),"w", encoding="utf-8") as file:
+        file.write(json.dumps(actors_dict,indent=4, sort_keys=True))
 
+    print(f"{filename} updated!")
 
-#Todo: adicionar uma função para verificar se os ids n se repetem
+save_configurations(actors)
