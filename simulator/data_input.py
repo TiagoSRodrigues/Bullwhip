@@ -67,7 +67,7 @@ def get_raw_data(filepath):
             except:
                 not_values.append(row)
 
-    if not_values: 
+    if not_values:
         logs.log(debug_msg = f"values not included: {not_values}")
     return values
 

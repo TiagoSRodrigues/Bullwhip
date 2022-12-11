@@ -1,0 +1,182 @@
+{
+    "actors": [
+        {
+            "id": 1,
+            "name": "Retailer",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductA",
+                    "id": 1001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "2001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Distributor",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductB",
+                    "id": 2001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "3001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Factory",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductC",
+                    "id": 3001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "4001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Raw Material Supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductD",
+                    "id": 4001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "5001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Raw Material Supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductD",
+                    "id": 5001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "6001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Raw Material Supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductD",
+                    "id": 6001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "7001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Raw Material Supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductD",
+                    "id": 7001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "8001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Raw Material Supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 100000000,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductD",
+                    "id": 8001,
+                    "initial_stock": 12050,
+                    "safety_stock": 12050,
+                    "composition": {
+                        "9001": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Base Raw Material supplier",
+            "time_average": 5,
+            "time_deviation": 1,
+            "max_inventory": 9999999999999999,
+            "safety_factor": 1.29,
+            "reorder_history_size": 30,
+            "products": [
+                {
+                    "name": "ProductE",
+                    "id": 9001,
+                    "initial_stock": 9999999999999999,
+                    "safety_stock": 999999999,
+                    "reorder_history_size": 7
+                }
+            ]
+        }
+    ]
+}

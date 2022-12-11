@@ -1,2 +1,0 @@
-{'deliver_day': 7, 'order_id': 1000001, 'order_criation_day': 1, 'sending_day': 1, 'receiver': 0, 'sender': 1, 'product': 1001, 'quantity': 11763, 'transit_time': -1, 'lead_time': -1, 'theoretical_lead': 6, 'update_day': 1, 'transaction_id': -1, 'delivered': 0},
-{'deliver_day': 8, 'order_id': 1000002, 'order_criation_day': 2, 'sending_day': 2, 'receiver': 0, 'sender': 1, 'product': 1001, 'quantity': 11783, 'transit_time': -1, 'lead_time': -1, 'theoretical_lead': 6, 'update_day': 2, 'transaction_id': -1, 'delivered': 0},

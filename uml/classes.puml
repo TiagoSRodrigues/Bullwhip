@@ -1,0 +1,30 @@
+@startuml classes
+set namespaceSeparator none
+class "ClassInventory" as Bullwhip.simulator.inventory.ClassInventory {
+}
+class "ClassOrdersRecord" as Bullwhip.simulator.orders_records.ClassOrdersRecord {
+}
+class "ClassSimulation" as Bullwhip.simulator.simulation.ClassSimulation {
+}
+class "ClassSupplyChain" as Bullwhip.simulator.supply_chain.ClassSupplyChain {
+}
+class "ClassTests" as Bullwhip.simulator.tests.ClassTests {
+}
+class "MongoDB" as Bullwhip.simulator.database.MongoDB {
+}
+class "actor" as Bullwhip.simulator.actors.actor {
+}
+class "calculate_simulations_stats" as Bullwhip.simulator.final_stats.calculate_simulations_stats {
+}
+class "local_db" as Bullwhip.simulator.database.local_db {
+}
+class "transactionsClass" as Bullwhip.simulator.transactions.transactionsClass {
+}
+Bullwhip.simulator.database.MongoDB --* Bullwhip.simulator.final_stats.calculate_simulations_stats : db_connection
+Bullwhip.simulator.database.MongoDB --* Bullwhip.simulator.simulation.ClassSimulation : mongo_db
+Bullwhip.simulator.database.local_db --* Bullwhip.simulator.simulation.ClassSimulation : mongo_db
+Bullwhip.simulator.inventory.ClassInventory --* Bullwhip.simulator.actors.actor : actor_inventory
+Bullwhip.simulator.orders_records.ClassOrdersRecord --* Bullwhip.simulator.actors.actor : actor_orders_record
+Bullwhip.simulator.supply_chain.ClassSupplyChain --* Bullwhip.simulator.simulation.ClassSimulation : Object_supply_chain
+Bullwhip.simulator.transactions.transactionsClass --* Bullwhip.simulator.simulation.ClassSimulation : ObejctTransationsRecords
+@enduml

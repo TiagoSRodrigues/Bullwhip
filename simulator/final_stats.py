@@ -9,7 +9,7 @@ class calculate_simulations_stats():
     def __init__(self, simulation) -> None:
         self.simulation=simulation
         if sim_cfg.DB_TYPE == 1:
-            self.db_connection = database.MongoDB( self.simulation,drop_history=False)
+            self.db_connection = database.MongoDB(self.simulation,drop_history=False)
 
         self.calculate_actors_stats()
 
@@ -75,42 +75,50 @@ class calculate_simulations_stats():
                 return data
 
 
-        
-        files_in_folder = os.listdir(sim_cfg.FINAL_EXPORT_FILES_PATH)
+        files_in_folder = os.listdir(self.simulation.simulation_results_folder)
+        string1 = "  Final results exports  "
 
+        # validation parameters
+        has_transactions = False
+        has_inventory = False
+        has_transactions = False
+        
         for file in files_in_folder:
             if "transactions_closed" in file:
-                    trans_data=read_inventory_file((sim_cfg.FINAL_EXPORT_FILES_PATH + file))
-        transactions = pd.read_json(trans_data, orient="split")
-        transactions.sort_values(by=["deliver_day", "receiver"], inplace=True)
-        transactions.index = transactions["transaction_id"]         
+                has_transactions = True
+                trans_data=read_inventory_file((self.simulation.simulation_results_folder + file))
+                transactions = pd.read_json(trans_data, orient="split")
+                transactions.sort_values(by=["deliver_day", "receiver"], inplace=True)
+                transactions.index = transactions["transaction_id"]
+
         
+        if has_transactions:
+            string1 += "\n|-------> Transações\n"
+            string1 += f"Lead Time - média: {transactions[['lead_time']].mean()[0]:,.{0}f} dias\n".replace(',', ' ')
+            string1 += f"Lead Time - std: {transactions[['lead_time']].std()[0]:,.{0}f} dias\n".replace(',', ' ')
+            string1 += f"Quantidade encomendada - avg: {transactions[['quantity']].mean()[0]:,.{0}f} unidades\n".replace(',', ' ')
+            string1 += f"Quantidade encomendada - std: {transactions[['quantity']].std()[0]:,.{0}f} unidades \n".replace(',', ' ')
+            string1 += f"Quantidade encomendada - min: {transactions[['quantity']].min()[0]:,.{0}f} unidades \n".replace(',', ' ')
+            string1 += f"Quantidade encomendada - max: {transactions[['quantity']].max()[0]:,.{0}f} unidades \n".replace(',', ' ')
+            string1 += f"Quantidade encomendada total: {transactions[['quantity']].sum()[0]:,.{0}f} unidades \n".replace(',', ' ')
+
+
+
         inventory_files = {} 
         i=0
         for file in files_in_folder:
             if "inventory" in file:
                 if "actor_" in file:
                     inventory_files[f"actor_{i}"] = file
-                    i+=1        
-        string1="  Final results exports  "
-        string1.__add__("\n|-------> Transações\n")
-        string1.__add__(f"Lead Time - média: {transactions[['lead_time']].mean()[0]:,.{0}f} dias\n".replace(',', ' '))
-        string1.__add__(f"Lead Time - std: {transactions[['lead_time']].std()[0]:,.{0}f} dias\n".replace(',', ' '))
-        string1.__add__(f"Quantidade encomendada - avg: {transactions[['quantity']].mean()[0]:,.{0}f} dias\n".replace(',', ' '))
-        string1.__add__(f"Quantidade encomendada - std: {transactions[['quantity']].std()[0]:,.{0}f} dias \n".replace(',', ' '))
-        string1.__add__(f"Quantidade encomendada - min: {transactions[['quantity']].min()[0]:,.{0}f} dias \n".replace(',', ' '))
-        string1.__add__(f"Quantidade encomendada - max: {transactions[['quantity']].max()[0]:,.{0}f} dias \n".replace(',', ' '))
-        string1.__add__(f"Quantidade encomendada total: {transactions[['quantity']].sum()[0]:,.{0}f} dias \n".replace(',', ' '))
-            
-            
-        # for actor, inv in inventories.items():
-        #     print(actor, f"Inventário médio : {inventories[actor].mean()[0]:,.{0}f} unidades \n".replace(',', ' ')+
-        #           actor, f"Inventário máximo : {inventories[actor].max()[0]:,.{0}f} unidades \n".replace(',', ' '))
+                    i+=1
+                    has_inventory = True
+        
+                        
 
 
         inventories={}
         for actor, inv in inventory_files.items():
-            inicial_data = read_inventory_file(sim_cfg.FINAL_EXPORT_FILES_PATH + inventory_files[actor])
+            inicial_data = read_inventory_file(self.simulation.simulation_results_folder + inventory_files[actor])
             inventories[actor] = pd.read_json(inicial_data, orient="split")
             inventories[actor] = pd.concat([inventories[actor].drop(['inventory'], axis=1), inventories[actor]['inventory'].apply(pd.Series)], axis=1)
 
@@ -125,19 +133,25 @@ class calculate_simulations_stats():
             for col in inventories[actor].columns:
                 if col != "day":
                     # print("a", actor, "c", col, "d",  inventories[actor])
-                    string1.__add__(f"{actor} {col} -média: {inventories[actor][col].mean():,.{0}f} unidades \n".replace(',', ' '))
-                    string1.__add__(f"{actor} {col} -máximo: {inventories[actor][col].max():,.{0}f} unidades \n".replace(',', ' '))
-                    string1.__add__(f"{actor} {col} -mínimo: {inventories[actor][col].min():,.{0}f} unidades \n".replace(',', ' '))
-                    string1.__add__(f"{actor} {col} -desvio padrão: {inventories[actor][col].std():,.{0}f} unidades \n".replace(',', ' '))
-                    string1.__add__(f"{actor} {col} -total: {inventories[actor][col].sum():,.{0}f} unidades\n".replace(',', ' '))        
+                    string1 += f"{actor} {col} -média: {inventories[actor][col].mean():,.{0}f} unidades \n".replace(',', ' ')
+                    string1 += f"{actor} {col} -máximo: {inventories[actor][col].max():,.{0}f} unidades \n".replace(',', ' ')
+                    string1 += f"{actor} {col} -mínimo: {inventories[actor][col].min():,.{0}f} unidades \n".replace(',', ' ')
+                    string1 += f"{actor} {col} -desvio padrão: {inventories[actor][col].std():,.{0}f} unidades \n".replace(',', ' ')
+                    string1 += f"{actor} {col} -total: {inventories[actor][col].sum():,.{0}f} unidades\n".replace(',', ' ')
+        
+        
+        
+        
         if file_name:
-            save_to_file(file_name=sim_cfg.FINAL_EXPORT_FILES_PATH+file, data=string1 )
-                    
+            save_to_file(file_name = self.simulation.simulation_results_folder +file_name, data=string1 )
+        
+        
 
-    def save_final_stats_on_db(simulation):
-            simulation.add_open_itens_to_db(Object_Simulation)
-            simulation.add_delivered_transactions_to_td(Object_Simulation)
-            simulation.db_connection.add_runtime_to_stats_db( round(perf_counter()-start_time, 2) )
-            simulation.db_connection.add_simulation_stats_to_db(stat_value= Object_Simulation.simulation_stats)
-            simulation.db_connection.save_stats( Object_Simulation.simulation_id)
-            simulation.db_connection.export_db(sim_cfg.FINAL_EXPORT_FILES_PATH)
+    def save_final_stats_on_db(Object_Simulation, final_time):
+            Object_Simulation.add_open_itens_to_db(Object_Simulation)
+            Object_Simulation.add_delivered_transactions_to_td(Object_Simulation)
+            Object_Simulation.db_connection.add_runtime_to_stats_db(round(final_time, 2) )
+            Object_Simulation.db_connection.add_simulation_stats_to_db(stat_value= Object_Simulation.simulation_stats)
+            Object_Simulation.db_connection.save_stats(Object_Simulation.simulation_id)
+            Object_Simulation.db_connection.export_db(self.simulation.simulation_results_folder)
+

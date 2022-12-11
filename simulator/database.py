@@ -62,7 +62,7 @@ class MongoDB:
                 )
             return True
         except:
-            print( "error on add_transaction_to_db - data:" ,transaction_id, transaction_data)
+            print("error on add_transaction_to_db - data:" ,transaction_id, transaction_data)
             return False
 
     def update_transaction_on_db(self, transaction_id, transaction_info):
@@ -130,7 +130,7 @@ class MongoDB:
                 {"_id":order_id},{"$set":{"status":1, "close_time":self.simulation.time}}
                 )
         )
-    #!apagar
+
     # def get_actor_orders(self, actor_id):
     #     collection_name="orders_"+str(actor_id)
     #     self.simulation_db[collection_name].find()
@@ -151,12 +151,12 @@ class MongoDB:
             for key, value in actor.actor_inventory.main_inventory.items():
                 # if type(value)== type(np.int32()):value=int(value)
 
-                if isinstance( value, dict):
+                if isinstance(value, dict):
                     value_dict={}
                     for sub_key, sub_value in value.items():
-                        # print(sub_value, type ( sub_value))
+                        # print(sub_value, type (sub_value))
                         # if type(sub_value)== type(np.int32()): value=int(sub_value)
-                        if isinstance( sub_value, dict):
+                        if isinstance(sub_value, dict):
                             pass
 
             actor_inv[str(key)] = value
@@ -322,12 +322,12 @@ class MongoDB:
     def add_maney_to_db(self, colection_name, data):
         self.simulation_db[colection_name].insert_many(data)
 
-    def export_db(self, FINAL_EXPORT_FILES_PATH):
+    def export_db(self, directory_path):
         collections = self.simulation_db.list_collection_names()
 
         for collection in collections:
             df = pd.DataFrame(list(self.simulation_db[collection].find()))
-            df.to_csv( FINAL_EXPORT_FILES_PATH + collection + ".csv", index=False)
+            df.to_csv(directory_path + collection + ".csv", index=False)
 
 
 
@@ -450,14 +450,14 @@ class local_db:
         return True
 
 
-    def export_db(self, FINAL_EXPORT_FILES_PATH):
-        with open(f"{FINAL_EXPORT_FILES_PATH}transactions_{logs.get_timestamp()}.json", 'w') as fp:
+    def export_db(self, directory_path):
+        with open(f"{directory_path}transactions_{logs.get_timestamp()}.json", 'w') as fp:
             json.dump(self.transactions, fp)
 
 
         # print(f"            {len(self.transactions)} tansactions exported")
 
-        with open(f"{FINAL_EXPORT_FILES_PATH}orders_{logs.get_timestamp()}.csv", "w", newline='') as f:
+        with open(f"{directory_path}orders_{logs.get_timestamp()}.csv", "w", newline='') as f:
             header = "Criation_Time, Product, Quantity, Client, Order_id, Status, Notes-fornecedor\n"
             f.write(str(header))
             writer = csv.writer(f, delimiter=',')
@@ -469,7 +469,7 @@ class local_db:
         self.simulation.simulation_stats_exported["transactions_exported"]=      len(self.transactions)
         self.simulation.simulation_stats_exported["inventory_records_exported"]=len(self.inventory_history)
 
-        with open(f"{FINAL_EXPORT_FILES_PATH}inventory_history_{logs.get_timestamp()}.json", 'w') as fp:
+        with open(f"{directory_path}inventory_history_{logs.get_timestamp()}.json", 'w') as fp:
             json.dump(self.inventory_history, fp)
 
         # print(f"            {len(self.orders)} inventory records exported")

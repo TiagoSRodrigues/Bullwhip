@@ -67,4 +67,3 @@ if simulation_configuration.RUN_TESTS:
 # criar registos
 # transações
 #validar registos
-#
