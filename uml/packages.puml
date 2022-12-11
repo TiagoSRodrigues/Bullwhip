@@ -1,0 +1,43 @@
+@startuml packages
+set namespaceSeparator none
+package "Bullwhip" as Bullwhip {
+}
+package "Bullwhip.actors_configuration_edit" as Bullwhip.actors_configuration_edit {
+}
+package "Bullwhip.after_run_analysis" as Bullwhip.after_run_analysis {
+}
+package "Bullwhip.simulation_configuration" as Bullwhip.simulation_configuration {
+}
+package "Bullwhip.simulator" as Bullwhip.simulator {
+}
+package "Bullwhip.simulator.actors" as Bullwhip.simulator.actors {
+}
+package "Bullwhip.simulator.data_input" as Bullwhip.simulator.data_input {
+}
+package "Bullwhip.simulator.database" as Bullwhip.simulator.database {
+}
+package "Bullwhip.simulator.easter_eggs" as Bullwhip.simulator.easter_eggs {
+}
+package "Bullwhip.simulator.final_stats" as Bullwhip.simulator.final_stats {
+}
+package "Bullwhip.simulator.inventory" as Bullwhip.simulator.inventory {
+}
+package "Bullwhip.simulator.logging_management" as Bullwhip.simulator.logging_management {
+}
+package "Bullwhip.simulator.main" as Bullwhip.simulator.main {
+}
+package "Bullwhip.simulator.orders_records" as Bullwhip.simulator.orders_records {
+}
+package "Bullwhip.simulator.simulation" as Bullwhip.simulator.simulation {
+}
+package "Bullwhip.simulator.supply_chain" as Bullwhip.simulator.supply_chain {
+}
+package "Bullwhip.simulator.tests" as Bullwhip.simulator.tests {
+}
+package "Bullwhip.simulator.transactions" as Bullwhip.simulator.transactions {
+}
+Bullwhip --> Bullwhip.simulator
+Bullwhip.actors_configuration_edit --> Bullwhip.simulation_configuration
+Bullwhip.simulator.tests --> Bullwhip.simulator.logging_management
+Bullwhip.simulator.tests --> Bullwhip.simulator.simulation
+@enduml

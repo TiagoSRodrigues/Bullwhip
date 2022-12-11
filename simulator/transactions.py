@@ -29,57 +29,56 @@ class transactionsClass:
         retorna a média e o std
         """
         logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f" actor {actor_id}, product {product} history {history_days} " )
-        #apagar logs.log(debug_msg= f"| GET TRANSACTION  | Transactions  | actor id  {actor_id} ")
-        
+
         transaction_list=[]
-        
+
         for item in self.delivered_transactions:
 
             if int(item["receiver"])  == actor_id:
-                # logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver", line=f"{item['receiver']},\n")                              
-                
+                # logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver", line=f"{item['receiver']},\n")
+
                 if int(item["product"]) == product:
-                    logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2", line=f" time {self.simulation.time} - h {history_days}  = {self.simulation.time - history_days} || time { self.simulation.time }  - u  {item['update_day']} -> {self.simulation.time - int(item['update_day'])}  || {(self.simulation.time - history_days)  } >= {(self.simulation.time - int(item['update_day']))} { (self.simulation.time - history_days) >= (self.simulation.time - int(item['update_day']))},\n")
-                    
-                    transaction_list.append( item['transit_time'] )
-                    
-                    
+                    # logs.append_line_to_file(file_path= "N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2", line=f" time {self.simulation.time} - h {history_days}  = {self.simulation.time - history_days} || time { self.simulation.time }  - u  {item['update_day']} -> {self.simulation.time - int(item['update_day'])}  || {(self.simulation.time - history_days)  } >= {(self.simulation.time - int(item['update_day']))} { (self.simulation.time - history_days) >= (self.simulation.time - int(item['update_day']))},\n")
+
+                    transaction_list.append(item['transit_time'] )
+
+
                     # if (self.simulation.time - history_days) >= (self.simulation.time - int(item["update_day"])):
-                    
+
                     # if (self.simulation.time - history_days) <= 0 :
-                    #     transaction_list.append( item )
+                    #     transaction_list.append(item )
         if len(transaction_list) == 0:
             return False
         if len(transaction_list) <= history_days:
             t_array = np.array(transaction_list)
             # calculate mean and std
-        
-            
+
+
             return t_array.mean(), t_array.std()
         if len(transaction_list) == 0:
              return False
         else:
             t_array = np.array(transaction_list[:-history_days])
-            #apagar if  t_array.mean() == 0:
+
             #     print(f"day {self.simulation.time}")
             #     print(self.delivered_transactions)
             #     raise Exception("mean is zero")
             return t_array.mean(), t_array.std()
-            
+
             # print("ssss",transaction_list)
-        
+
         # else:
             # print("xxxxxx",transaction_list)
             # #calculate mean and std
-            
+
         # transaction_array=np.array(transaction_list)
-        
+
 
         # if len(transaction_array) < 2:
         #     logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f" ERROR, transactions stats failed actor {actor_id} product {product} - " )
-            #apagar for trans in self.delivered_transactions:
+
             #     logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f"{trans}" )
-            
+
             # if self.simulation.time > 100:
             #     for el in inspect.stack():
             #         for i in el:
@@ -99,7 +98,7 @@ class transactionsClass:
         # logs.new_log(day=self.simulation.time, actor=actor_id, file= "transactions", function="get_transactions_stats", debug_msg=f"transactions  mean:{avg} std:{std}" )
 
         # return avg, std
-   
+
     def get_transaction_by_id(self, transaction_id):
         try:
             for record in self.open_transactions:
@@ -111,7 +110,7 @@ class transactionsClass:
     def get_todays_transactions(self, actor):
         """ Este método está obsuleto, não deve ser utilizado, pode deixar encomendas atrasadas no limbo
         """
-        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
+        logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format(actor.id ))
 
         pending_transactions=[]
 
@@ -131,7 +130,7 @@ class transactionsClass:
             list: lsita com id das transações transações
         """
 
-        #apagar logs.log(debug_msg="| Customer transac | Transactions  | getting transactions for actor: {}".format( actor.id ))
+
 
         pending_transactions=[]
 
@@ -148,9 +147,9 @@ class transactionsClass:
 
 
     def add_transaction(self, transaction_info):#, order_id, order_creation,  sender, receiver, quantity, product, deliver_date, sending_date):
-        
+
         self.validate_transaction_schema(transaction_info)
-        logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_opened{self.simulation.simulation_id}.csv", line=f"{transaction_info},\n")
+        logs.append_line_to_file(file_path=f"{self.simulation.simulation_results_folder}transactions_opened{self.simulation.simulation_id}.csv", line=f"{transaction_info},\n")
         self.transaction_id = self.transaction_id + 1
         # logs.log(debug_msg=f"| TRANSACTION ADDED| Transactions  | transactions_id {self.transaction_id}  transaction info: {transaction_info} ")
         logs.new_log(day=self.simulation.time,file= "transactions", function="add_transaction", actor= transaction_info["sender"], debug_msg="Transaction added -> {}".format(transaction_info))
@@ -162,8 +161,8 @@ class transactionsClass:
         #adiciona ao registo interno
         self.open_transactions.append(values_to_add)
 
-        #adiciona à db 
-        self.update_database( self.transaction_id, transaction_info, delivered=False)
+        #adiciona à db
+        self.update_database(self.transaction_id, transaction_info, delivered=False)
 
         self.simulation.update_simulation_stats("transactions_opened")
 
@@ -199,7 +198,7 @@ class transactionsClass:
 
                 self.delivered_transactions.append(record)
                 self.open_transactions.remove(record)
-                
+
                 self.update_database(transaction_id,  delivered=1, transaction_info=record)
 
 
@@ -207,7 +206,7 @@ class transactionsClass:
                 logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f"sucesseful delivered Trasaction: {record}" )
                 self.simulation.update_simulation_stats("transactions_delivered")
 
-                logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}transactions_closed{self.simulation.simulation_id}.csv", line=f"{record},\n")
+                logs.append_line_to_file(file_path=f"{self.simulation.simulation_results_folder}transactions_closed{self.simulation.simulation_id}.csv", line=f"{record},\n")
                 return True
 
         logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="update_transaction", debug_msg=f" ERROR, transactions failed Trasaction: {transaction_id} not found!! | open transactions: {self.open_transactions}" )
@@ -216,7 +215,7 @@ class transactionsClass:
     def validate_transaction_schema(self, transaction_dict):
         # validate the schema of the transaction
         reference={"deliver_day": int, "order_id": int, "order_criation_day":int, "sending_day":int, "receiver": int, "sender": int, "product": int, "quantity": int, "transit_time": int, "lead_time": int, "theoretical_lead": int, "update_day": int, "delivered": int, "transaction_id": int }
-        
+
         if transaction_dict.keys() != reference.keys():
             raise Exception(f"Error, transaction schema not valid invalid -> {transaction_dict}")
 
@@ -253,7 +252,7 @@ class transactionsClass:
 
 
         transactions_to_deliver=self.get_delivering_transactions(customer)
-        if not transactions_to_deliver: 
+        if not transactions_to_deliver:
             logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg="Any deliver for final cliente ")
 
         logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"t : {transactions_to_deliver}, ator {customer.id} ")
@@ -261,13 +260,13 @@ class transactionsClass:
             for trans in transactions_to_deliver:
                 transaction_info = self.get_transaction_by_id(trans)
 
-                customer.receive_transaction( transaction_info["transaction_id"])
+                customer.receive_transaction(transaction_info["transaction_id"])
 
                 logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"delivered: {transaction_info}  ")
 
         except:
             logs.new_log(day=self.simulation.time, actor=0, file= "transactions", function="deliver_to_final_client", debug_msg = f"ERROR customer não recebeu encomenda  ")
-            raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format( customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
+            raise Exception("Customer Deliver error actor {} transaction {} of a list{}".format(customer.id, self.get_transaction_by_id(trans),transactions_to_deliver ))
 
 
 
@@ -276,52 +275,51 @@ class transactionsClass:
 
         open = self.open_transactions
         delivered = self.delivered_transactions
-        
+
         id = self.transaction_id
         today = self.simulation.time
-        
+
         open_trasactions_ids_set = set()
         open_trasactions_ids = []
-        
+
         open_trasactions_order_set =set()
         open_trasactions_order = []
-        
+
         delivered_transaction_ids = []
         delivered_transaction_order = []
-        
-        
+
+
         for d in delivered:
             delivered_transaction_ids.append(d['transaction_id'])
             delivered_transaction_order.append(d['order_id'])
-            
+
         for o in open:
             open_trasactions_ids.append(o['transaction_id'])
             open_trasactions_ids_set.add(o['transaction_id'])
             open_trasactions_order.append(o['order_id'])
             open_trasactions_order_set.add(o['order_id'])
-            
-        
+
+
         # for trans in delivered:
         #     print(trans)
-        
-        
+
+
         if len(open_trasactions_ids_set) != len(open_trasactions_ids):
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"ERROR, open trasactions ids are not unique")
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"set: {open_trasactions_ids_set}")
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"list: {open_trasactions_ids}")
-                        
-            raise Exception("ERROR, open trasactions ids are not unique") 
-       
-    
+
+            raise Exception("ERROR, open trasactions ids are not unique")
+
+
         if len(open_trasactions_order_set) != len(open_trasactions_order):
             print("set:" ,open_trasactions_order_set)
             print("list:" ,open_trasactions_order)
-            
-            
-            
-            
+
+
+
+
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"ERROR, open trasactions order are not unique")
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"set: {open_trasactions_order_set}")
             logs.new_log(day=self.simulation.time, actor= " ", file= "transactions", function="check_transactions_integrity", debug_msg = f"list: {open_trasactions_order}")
             raise Exception("ERROR, open trasactions order are not unique")
-       

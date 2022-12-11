@@ -6,62 +6,23 @@
   médio: level == INFO    == 20 Regita os eventos principais para acompanhar detalhes da simulação
   alto:  level == DEBUG   == 10 Regista todos os eventos da simulação
 """
-
 import os
 import gc
 import shutil
 import time
 import logging
 import inspect
-from pprint import pprint
 import simulation_configuration  as sim_cfg
+from pprint import pprint
+from inspect import stack
 
-
-#create the log file
-
-
+# create the log file
 
 logging.basicConfig(filename=sim_cfg.LOG_FILES_PATH+'log_'+time.strftime("%Y%m%d_%H-%M-%S",time.localtime())+'.log',
         level=sim_cfg.LOGGING_LEVEL,
-         format='%(asctime)s %(levelname)s %(message)s')
+        format='%(asctime)s %(levelname)s %(message)s',
+        encoding="UTF-8")
 
-#TODO  #!APAGAR se n der problemas
-# getattr(logging, sim_cfg.LOGGING_LEVEL.lower() )("--->   Simulation Started   <----") 
-
-# def new_log(action, args="", notes=""):
-#     """Automaticamente cria um registo de log com a seguinte estrutura:
-#     |                    |                              |                                       |                                 |                       |
-#     |<-------20--------->|<------------30-------------->|<------------- variável -------------->|<--------    variável  --------->|                       |
-#     |    file name       |      called_function         |         calling_funcion               |               args              |        notes          |
-
-#     """
-#     log_level = logging.root.level
-#     print("\n\n\n\n\n")
-#     for el in stack():
-#         print(el)
-
-
-#     """
-#     called_function=stack()[0][3]
-#     calling_funcion=stack()[1][3]
-#     frame = stack()[1]
-#     module = inspect.getmodule(frame[0])
-#     file_name = module.__file__.split("\\")[-1]
-
-#     colummn_size=30
-#     #string sizes
-#     file_size, action_size, args_size, notes_size = len(file_name),len(action),len(args),len(notes)
-#     if (file_size or action_size) > colummn_size:
-#         print("WARNNING! log size is too big", file_size, action_size)
-
-#     record_str="| {}{}| {}{}| {}{}| {} | {}|".format(file_name, (20-file_size)*" ",
-#                                                 called_function, (colummn_size-action_size)*" ",
-#                                                 calling_funcion, (colummn_size-action_size)*" ",
-#                                                 args, notes )
-
-#     logging.debug(record_str)
-#     print(record_str)
-#     """
 def show_function_tree():
     """ DEBUG FUNCTION
         prints the stack of instructions that rise to the error """
@@ -84,22 +45,22 @@ def new_log(file, function, day="",  actor="", state="", debug_msg = None, info_
     actor_str = "{}".format(actor)
     actor_state = "{:2}".format(state)
 
-    # if parameter is none, set to ""
-    if debug_msg is None: debug_msg = ""
-    if info_msg is None: info_msg = ""
-    if warning_msg is None: warning_msg = ""
+    
+    if debug_msg:
+            logging.debug( f"|{day_str} | {actor_str} |  {actor_state}| {file_str}| {function_str}| {debug_msg}")
+    elif info_msg:
+            logging.info(f"|{day_str} | {actor_str} |  {actor_state}| {file_str}| {function_str}| {info_msg}")
+    else:
+            logging.warning( f"|{day_str} | {actor_str} |  {actor_state}| {file_str}| {function_str}| {warning_msg}")
 
-    record = f"|{day_str} | {actor_str} |  {actor_state}| {file_str}| {function_str}| {debug_msg}{info_msg}{warning_msg}"
+    
 
-    logging.debug(record)
 
 
 def log(debug_msg = None, info_msg = None, warning_msg = None):
-    """writes the log strings to files
+    """ writes the log strings to files
 
     """
-
-
     #Receive the logging level from envirement
     log_level = logging.root.level
 
@@ -138,11 +99,6 @@ def log(debug_msg = None, info_msg = None, warning_msg = None):
         if info_msg != None:
             logging.info(str(info_msg))
 
-
-
-
-
-
 def save_to_file(file_name, data, format=None):
     """Saves the data to a file
 
@@ -150,19 +106,17 @@ def save_to_file(file_name, data, format=None):
         file_name (string): name of the file
         data (string): data to be saved
     """
-    with open(file_name, "w") as f:
+    with open(file_name, "w", encoding="UTF-8") as f:
         f.write(str(data))
-
-
-
 
 def append_line_to_file(file_path, line, insert_time=False):
     """Appends a line to a file"""
     with open(file_path, "a") as file:
         file.write(line)
 
-#this funcion delete old logs, to avoid excessive trash
 def delete_old_logs(folder=None, file=None,  NUMBER_OF_HISTORY_LOGFILES=None):
+    ''' Funcion delete old logs, to avoid excessive trash
+    ''' 
     try:
         if folder != None:
             arr = os.listdir(sim_cfg.LOG_FILES_PATH)
@@ -177,24 +131,16 @@ def delete_old_logs(folder=None, file=None,  NUMBER_OF_HISTORY_LOGFILES=None):
             os.remove(file)
     except FileNotFoundError:
         log(debug_msg = "No files to delete")
-        # if sim_cfg.PRINT_LOGS_IN_TERMINAL:
-        #     print("No files to delete")
+
 
 def clean_folder(folder_path, backup_folder_path):
     """Backups and Deletes all files in a folder"""
-    
     for file in os.listdir(folder_path):
-        shutil.copyfile(f"{folder_path}\\{file}", f"{backup_folder_path}\\{file}")
-        
-        os.remove(f"{folder_path}\\{file}")
-        
-        
-
-##Ainda n está implemnetado, a idea é fazer uma barra deprogresso
-# def simulation_time(x):
-#     steps = [1,2,3,4,5,6,7,8,9,10,11]
-#     for i in tqdm(steps):
-#         pass
+        try:
+            shutil.copyfile(f"{folder_path}\\{file}", f"{backup_folder_path}\\{file}")
+            os.remove(f"{folder_path}\\{file}")
+        except:
+            pass
 
 def get_stack():
     """ DEBUG FUNCTION
@@ -204,7 +150,7 @@ def get_stack():
     for i in inspect.stack():
         function_tree.append([ i[1].split("\\")[-1],i[3] ])
     print(function_tree)
-    return 
+    return
 
 
 def get_full_stack():
@@ -218,13 +164,13 @@ def print_day(simulation, quantity):
 def show_object_attributes(object):
 
 
-    print( 3*"\n","Attributes of",object,"\n" )
-    pprint( vars(object) )
-    print( 3*"\n" )
+    print(3*"\n","Attributes of",object,"\n" )
+    pprint(vars(object) )
+    print(3*"\n" )
 
 def open_object(object):
     print(10*"======","\n\n DIR:")
-    print( type(object), "\n" )
+    print(type(object), "\n" )
     for el in dir(object):
         print(el)
     print(10*"======","\n\n VARS")
@@ -259,34 +205,16 @@ def save_all_objects():
         errors=0
         for el in gc.get_objects():
             try:
-                filehandle.write( str(el)+'\n')
+                filehandle.write(str(el)+'\n')
             except:
                 errors+=1
-        filehandle.write( '\n and more '+str(errors)+" Errors")
+        filehandle.write('\n and more '+str(errors)+" Errors")
 
 
-def pretty(d, indent=0):
-    import emoji
-    for key, value in d.items():
-        print(' ' * indent + str(key))
-        if isinstance(value, dict):
-            pretty(value, indent+1)
-        else:
-            print( emoji.emojize('  :shell: ' , use_aliases=True ) * (indent+1) + str(value))
 
-delete_old_logs( folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = sim_cfg.NUMBER_OF_HISTORY_LOGFILES)
 
-    #https://www.webfx.com/tools/emoji-cheat-sheet/
-# delete_old_logs(file="N:\\TESE\\Bullwhip\\data\\logs\\tmp\\get_transactions_receiver2" )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_1.csv"           )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_2.csv"           )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_3.csv"           )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_4.csv"           )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_5.csv"           )
-# delete_old_logs( file = sim_cfg.ORDERS_RECORDS_FILE_PATH+   "orders_record_6.csv"           )
-# delete_old_logs( file = sim_cfg.INVENTORY_FILE          )
+
 
 clean_folder("N:\\TESE\\Bullwhip\\data\\exports", sim_cfg.BACKUP_FOLDER)
-
-
-delete_old_logs( file = sim_cfg.TRANSCTIONS_RECORDS_FILE)
+delete_old_logs(folder = sim_cfg.LOG_FILES_PATH, NUMBER_OF_HISTORY_LOGFILES = sim_cfg.NUMBER_OF_HISTORY_LOGFILES)
+delete_old_logs(file = sim_cfg.TRANSCTIONS_RECORDS_FILE)

@@ -3,12 +3,13 @@ from random import random
 from . import actors, orders_records, inventory, supply_chain as sc, logging_management as logs, transactions as tns
 from . import database
 import datetime, yaml, time, pandas as pd, simulation_configuration as sim_cfg, json
-
+import os
+import shutil
 # from dashboard import dashboard_data as ds
 
 # from simulation_configuration import *
 
-logs.log(debug_msg="Started simulation.py")
+logs.log(info_msg="Started simulation.py")
 
 
 ## check if testes are configurated to run
@@ -17,7 +18,7 @@ class ClassSimulation:
     def __init__(self, stock_management_mode, actors_configs):
         self.stock_management_mode = stock_management_mode   # Modos | traditional = 1 | blockchain = 2  | Machine learnning = 3
         self.simulation_status = "0-Created"
-        self.simulation_id=time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+        self.simulation_id=time.strftime("%Y%m%d_%H%M%S", time.localtime())
         self.time=1
         self.simulation_stats={
                     "orders_opened":0,
@@ -25,9 +26,13 @@ class ClassSimulation:
                     "transactions_opened":0,
                     "transactions_delivered":0,
                     "days_passed":0}
+
+        self.simulation_results_folder = f"{sim_cfg.FINAL_EXPORT_FILES_PATH}sim_{self.simulation_id}//"
+        self.actors_configs = actors_configs
+        self.create_export_folder()
+        shutil.copy(src=actors_configs, dst=self.simulation_results_folder+"actors_configs.json")
         
         self.simulation_stats_exported={}
-
         self.order_priority = "faster"  # prioridades: fifo, faster
         #create mongodb
 
@@ -50,32 +55,42 @@ class ClassSimulation:
         # self.blockchain= blockchian.blockchain(self)
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
-        
-        logs.new_log(file="simulation", function="construction", actor=0, debug_msg=" Supply Chain  "+str( self.Object_supply_chain.supply_chain_structure))
+
+        logs.new_log(file="simulation", function="construction", actor=0, info_msg=" Supply Chain  "+str(self.Object_supply_chain.supply_chain_structure))
         self.ObejctTransationsRecords = tns.transactionsClass(self)
-
-
         self.mongo_db.create_db_stats_document(self.simulation_id)
 
-        logs.log(debug_msg="| status           | Simulation created")
-
         self.sleep_time = 0
-        self.create_actors( ACTORS_CONFIG_FILE = actors_configs)
+        self.create_actors(ACTORS_CONFIG_FILE = actors_configs)
+        logs.new_log(file="simulation", function="construction", actor=0, info_msg= f"Simulation created with id: {self.simulation_id}   ")
 
 
-
-    #Import Configurations
-    # Esta função vai buscar a lista dos atores ao ficheiro de configuração
     # trata-se apenas de uma lista dos atores presentes na configuração, sem ordem definida
+    # Esta função vai buscar a lista dos atores ao ficheiro de configuração
 
+    def create_export_folder(self):
+        """Create the folder to export the simulation results"""
+        if not os.path.exists(self.simulation_results_folder):
+            os.makedirs(self.simulation_results_folder)
+           
+        configs ={
+            "simulation_id": self.simulation_id,
+            "Simulation_mode": self.stock_management_mode,
+            "days": sim_cfg.DAYS_TO_SIMULATE,
+            "actors": self.actors_configs
+        }
+        
+        with open(self.simulation_results_folder+"simulation_config.yaml", "w") as file:
+            yaml.dump(configs, file)
 
+            
     def update_inventory_history(self):
         for actor in self.actors_collection:
             record = {"day": self.time,
                       "actor"  : actor.id,
                       "data": actor.get_actor_inventory()}
             self.inventory_history.append(record)
-        
+
 
     def add_to_actors_collection(self, actor):
         self.actors_collection.append(actor)
@@ -105,7 +120,7 @@ class ClassSimulation:
 
 
         for actor_id in actors_list:
-            logs.new_log(file="simulation", function="create_actors", actor=actor_id,day=0,  debug_msg= self.get_actor_parameters(configs_dict, actor_id))
+            logs.new_log(file="simulation", function="create_actors", actor=actor_id,day=0,  info_msg= self.get_actor_parameters(configs_dict, actor_id))
 
             name, a_id, avg, var, max_inventory, products, safety_factor, reorder_history_size = self.get_actor_parameters(configs_dict, actor_id)
 
@@ -116,7 +131,7 @@ class ClassSimulation:
 
             #add to supply chain != da lista de atores
             self.Object_supply_chain.add_to_supply_chain(a_id)
-            logs.new_log(state=" ", file="simulation", function="get_actors_configurations", actor=actor_id, debug_msg="Object_supply_chain add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
+            logs.new_log(state=" ", file="simulation", function="get_actors_configurations", actor=actor_id, info_msg="Object_supply_chain add_to_supply_chain actor "+str(a_id)+" Added to supply chain   |SC:"+str(self.Object_supply_chain.get_supply_chain()))
 
 
             self.add_to_actors_collection(actor_object)
@@ -128,8 +143,8 @@ class ClassSimulation:
         for actor in self.actors_collection:
             if actor.id == int(actor_id):
                 return {"average_time": actor.average_time, "deviation_time" : actor.deviation_time}
-                
-        
+
+
         return self.get_actor_by_id(actor_id).get_actor_default_parameters()
 
 
@@ -156,7 +171,7 @@ class ClassSimulation:
         self.record_simulation_status(status)
 
     def record_simulation_status(self,simulation_status):
-        logs.log(debug_msg="The simulation status changed to "+str(simulation_status))
+        logs.new_log(actor=" ", day=self.time,file="simulation", function="record_simulation_status",   info_msg="The simulation status changed to "+str(simulation_status))
 
     def get_actor_by_id(self, actor_id):
         for actor in self.actors_collection:
@@ -170,7 +185,7 @@ class ClassSimulation:
         print(" ------------------------------------------------")
         for key, value in self.simulation_stats.items():
             print("          ",key,":",value)
-        
+
         print(" ------------------------------------------------")
         for key, value in self.simulation_stats_exported.items():
             print("          ",key,":",value)
@@ -182,14 +197,15 @@ class ClassSimulation:
             actor.actor_state = 0
 
     def speed(self):
+        if self.sleep_time == 0:
+            return False
         time.sleep(self.sleep_time)
 
 
 
     #---------------------------------------------------------------------------------------------------------------------Dashboard
     def update_global_inventory(self, actor_id, product, qty):
-        logs.log()
-        logs.new_log(state=" ", file="actors", function="update_global_inventory", actor=actor_id, debug_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor {} product {} qty{} inventory:{}".format( actor_id, product, qty,self.global_inventory) )
+        logs.new_log(state=" ", file="actors", function="update_global_inventory", actor=actor_id, info_msg="| Refresh Inventory| Simulation    | Updating Global Inventory  actor {} product {} qty{} inventory:{}".format(actor_id, product, qty,self.global_inventory) )
 
         try:
             inventory_dict = self.global_inventory
@@ -213,7 +229,7 @@ class ClassSimulation:
                     # print("STEP  3")
 
                     # print("produtct {} not in enventoty {}".format(product_id,  inventory[actor_id] ))
-                    inventory_dict[actor_id].append( {product_id:quantity} )
+                    inventory_dict[actor_id].append({product_id:quantity} )
 
 
                 #Existe ator e produto
@@ -242,7 +258,7 @@ class ClassSimulation:
     def update_simulation_stats(self, stat):
         # esta função serve para validar os resultados finais da simulação. doble check dos numeros
 
-        self.simulation_stats[stat] = int( self.simulation_stats[stat] ) + 1
+        self.simulation_stats[stat] = int(self.simulation_stats[stat] ) + 1
         data=dict(self.simulation_stats)
         self.mongo_db.add_to_db_stats_log(stat_value= data)
 
@@ -253,8 +269,8 @@ class ClassSimulation:
 
         transactions_integrity = self.simulation_stats_exported["transactions_exported"] == self.simulation_stats["transactions_opened"] + self.simulation_stats["transactions_delivered"]
         print("           transactions_integrity:",transactions_integrity, "Δ", self.simulation_stats["transactions_opened"] + self.simulation_stats["transactions_delivered"] - self.simulation_stats_exported["transactions_exported"]  )
-        
-        
+
+
     def save_simulation_stats(self):
         data=dict(self.simulation_stats)
 
@@ -275,6 +291,8 @@ class ClassSimulation:
             for p in s["products"]:
                 safety_stock = p["safety_stock"]
                 if safety_stock < max_input:
-                    print((f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}"))
+                    logs.new_log(file="simulation", function="validate_data_compatibilty", actor=" ", day=self.time, info_msg=  f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
                     # raise Exception(f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
+
+
         return True

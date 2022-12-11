@@ -18,7 +18,7 @@ class ClassOrdersRecord:
         #             1 - sended
         #             5 - waiting for order raw_material
         #             9 - sended
-        
+
         #Acho que o nome n vai servir para nada,
         # columns = ["Criation Time", "Product", "Qty", "Client", "Order_id", "Status", "Notes"]
         # columns = [        0,            1       2      3           4           5        6   ]
@@ -34,33 +34,33 @@ class ClassOrdersRecord:
 
         logs.new_log(file="orders_records", actor=self.actor.id, function="constructor", debug_msg= f" orders records created : {self.actor.id}")
 
-        #                                  """  
+        #                                  """
         #                                  doh
 
 
 
 
-        #                                                                                  tttt                                                                   
-        #                                                                              ttt:::t                                                                   
-        #                                                                              t:::::t                                                                   
-        #                                                                              t:::::t            
+        #                                                                                  tttt
+        #                                                                              ttt:::t
+        #                                                                              t:::::t
+        #                                                                              t:::::t
         #                                  ggggggggg   ggggg    eeeeeeeeeeee    ttttttt:::::tttttttttttttt
         #                                  g:::::::::ggg::::g  ee::::::::::::ee  t:::::::::::::::::tt:::::
         #                                  g:::::::::::::::::g e::::::eeeee:::::eet:::::::::::::::::tt::::
         #                                  g::::::ggggg::::::gge::::::e     e:::::etttttt:::::::tttttttttt
-        #                                  g:::::g     g:::::g e:::::::eeeee::::::e      t:::::t          
-        #                                  g:::::g     g:::::g e:::::::::::::::::e       t:::::t          
-        #                                  g:::::g     g:::::g e::::::eeeeeeeeeee        t:::::t          
+        #                                  g:::::g     g:::::g e:::::::eeeee::::::e      t:::::t
+        #                                  g:::::g     g:::::g e:::::::::::::::::e       t:::::t
+        #                                  g:::::g     g:::::g e::::::eeeeeeeeeee        t:::::t
         #                                  g::::::g    g:::::g e:::::::e                 t:::::t    tttttt
         #                                  g:::::::ggggg:::::g e::::::::e                t::::::tttt:::::t
-        #                                  g::::::::::::::::g  e::::::::eeeeeeee        tt::::::::::::::t 
-        #                                  gg::::::::::::::g   ee:::::::::::::e          tt:::::::::::tt  
-        #                                      gggggggg::::::g     eeeeeeeeeeeeee            ttttttttttt  
-        #                                              g:::::g                                                               
-        #                                  gggggg      g:::::g                                                               
-        #                                  g:::::gg   gg:::::g                                                                                                                        
-        #                                  g::::::ggg:::::::g                                                                                                                        
-        #                                  gg:::::::::::::g                                                                                                                                                             
+        #                                  g::::::::::::::::g  e::::::::eeeeeeee        tt::::::::::::::t
+        #                                  gg::::::::::::::g   ee:::::::::::::e          tt:::::::::::tt
+        #                                      gggggggg::::::g     eeeeeeeeeeeeee            ttttttttttt
+        #                                              g:::::g
+        #                                  gggggg      g:::::g
+        #                                  g:::::gg   gg:::::g
+        #                                  g::::::ggg:::::::g
+        #                                  gg:::::::::::::g
 
         #                                  """
 
@@ -111,20 +111,20 @@ class ClassOrdersRecord:
         if order:
             return order[2]
         if order_id:
-            return self.get_order_by_id(order_id=order_id)[2] 
+            return self.get_order_by_id(order_id=order_id)[2]
 
     def get_waiting_stock(self):
         stock = 0
         for order in self.orders_waiting_stock:
             stock += self.get_order_quantity(order_id=order)
         return stock
-    
+
     def get_orders_waiting_stock(self):
         return self.orders_waiting_stock
 
     def get_orders_sequence(self):
         def get_id(l):
-                return l[-3]
+            return l[-3]
 
         open_orders = self.open_orders_record
         open_orders.sort(key=get_id)
@@ -179,7 +179,7 @@ class ClassOrdersRecord:
 
     def get_orders_history(self, history_days=0):
         """
-        extrai todas as encomendas do entro do intervalo temporal 
+        extrai todas as encomendas do entro do intervalo temporal
         """
         if history_days is None:
             return self.orders_history
@@ -191,27 +191,27 @@ class ClassOrdersRecord:
         return orders
 
 
-                                       
-        #                                        """                                         tttt          
-                                                                                       # ttt:::t          
-                                                                                       # t:::::t          
-                                                                                       # t:::::t          
-                                                   # ssssssssss       eeeeeeeeeeee    ttttttt:::::ttttttt    
-        #                                        ss::::::::::s    ee::::::::::::ee  t:::::::::::::::::t    
-        #                                        ss:::::::::::::s  e::::::eeeee:::::eet:::::::::::::::::t    
-        #                                        s::::::ssss:::::se::::::e     e:::::etttttt:::::::tttttt    
-        #                                        s:::::s  ssssss e:::::::eeeee::::::e      t:::::t          
-        #                                        s::::::s      e:::::::::::::::::e       t:::::t          
-                                                   # s::::::s   e::::::eeeeeeeeeee        t:::::t          
+
+        #                                        """                                         tttt
+                                                                                       # ttt:::t
+                                                                                       # t:::::t
+                                                                                       # t:::::t
+                                                   # ssssssssss       eeeeeeeeeeee    ttttttt:::::ttttttt
+        #                                        ss::::::::::s    ee::::::::::::ee  t:::::::::::::::::t
+        #                                        ss:::::::::::::s  e::::::eeeee:::::eet:::::::::::::::::t
+        #                                        s::::::ssss:::::se::::::e     e:::::etttttt:::::::tttttt
+        #                                        s:::::s  ssssss e:::::::eeeee::::::e      t:::::t
+        #                                        s::::::s      e:::::::::::::::::e       t:::::t
+                                                   # s::::::s   e::::::eeeeeeeeeee        t:::::t
         #                                        ssssss   s:::::s e:::::::e                 t:::::t    tttttt
         #                                        s:::::ssss::::::se::::::::e                t::::::tttt:::::t
         #                                        s::::::::::::::s  e::::::::eeeeeeee        tt::::::::::::::t
         #                                        s:::::::::::ss    ee:::::::::::::e          tt:::::::::::tt
-        #                                        sssssssssss        eeeeeeeeeeeeee            ttttttttttt  
-                                       
+        #                                        sssssssssss        eeeeeeeeeeeeee            ttttttttttt
+
         #                                        """
-                                       
-                                       
+
+
     def set_order_state_to_waiting(self, order=None, order_id=None):
         logs.new_log(file="orders_records", actor=self.actor.id, function="set_order_state_to_waiting", debug_msg= f"order: {order} order id {order_id}")
 
@@ -239,7 +239,7 @@ class ClassOrdersRecord:
             if order[-3] == order_id:
                 order[-2] = status
 
-   
+
     def add_to_open_orders(self,  product, qty, client, notes=None):
         if notes is None:
             notes={}
@@ -254,7 +254,7 @@ class ClassOrdersRecord:
         #[ creation Time,  Product , Qty , Client , Order_id, Status, notes]
         to_add = [self.actor.simulation.time  ,product, qty,  client, self.last_order_id, 0,notes]
 
-        if self.get_order_by_id( self.last_order_id) is not False:
+        if self.get_order_by_id(self.last_order_id) is not False:
 
             logs.new_log(day=self.actor.simulation.time, actor=self.actor.id, function="add_to_open_orders", file="actors" , debug_msg= "ERROR Ordem duplicada product {product} quantity {qty} client {client} notes {notes}  ")
             raise Exception("ordem duplicada")
@@ -272,9 +272,9 @@ class ClassOrdersRecord:
                                                        order_id=self.last_order_id,
                                                        status= 0 )
 
-        self.check_orders_integrity()  
+        self.check_orders_integrity()
         self.actor.simulation.update_simulation_stats("orders_opened")
-        logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}orders_open_actor_{self.actor.id}_{self.actor.simulation.simulation_id}.csv", line=f"{','.join(str(e) for e in to_add)},\n")
+        logs.append_line_to_file(file_path=f"{self.actor.simulation.simulation_results_folder}orders_open_actor_{self.actor.id}_{self.actor.simulation.simulation_id}.csv", line=f"{','.join(str(e) for e in to_add)},\n")
 
 
     def close_order(self,  order_id):
@@ -307,14 +307,14 @@ class ClassOrdersRecord:
                 self.open_orders_record.remove(record)
                 self.closed_orders_record.append(record)
                 order= self.get_order_by_id(order_id=order_id )
-                
+
                 self.actor.simulation.update_simulation_stats("orders_closed")
 
-                #self.add_to_orders_log( product=order[1], quantity=order[2], client= order[3], order_id=order[-3], status =1)
+                #self.add_to_orders_log(product=order[1], quantity=order[2], client= order[3], order_id=order[-3], status =1)
                 self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-3])
-                logs.append_line_to_file(file_path=f"{sim_cfg.FINAL_EXPORT_FILES_PATH}orders_closed_actor_{self.actor.id}_{self.actor.simulation.simulation_id}.csv", line=f"{','.join(str(e) for e in record)},\n")
+                logs.append_line_to_file(file_path=f"{self.actor.simulation.simulation_results_folder}orders_closed_actor_{self.actor.id}_{self.actor.simulation.simulation_id}.csv", line=f"{','.join(str(e) for e in record)},\n")
 
-        self.check_orders_integrity()  
+        self.check_orders_integrity()
         logs.new_log(file="orders_records", actor=self.actor.id, function="close_order", debug_msg= f"close_order order {str(order_id)} removed from actor {str(self.actor.id)} {str(self.open_orders_record)}")
 
 
@@ -334,12 +334,12 @@ class ClassOrdersRecord:
             if len(order_list)>1:
                  for i in range(len(order_list)):
                     inial_list.append(self.get_order_id(order_list[i]))
-                
-                
+
+
             sorted_list= sorted(inial_list)
             if sorted_list != inial_list:
                 raise Exception(f"integrity error in {list_name} -> {order_list} ")
-                
+
             #     #se for o header passa à frente
                 #     if order_list[i][5] < 0:
                 #         continue
@@ -347,12 +347,12 @@ class ClassOrdersRecord:
                 #     #compara 2 a 2 se o segundo vem a seguir ao primeito (1, 2 -> ok 1,3 -> not ok)
                 #     a=order_list[i][-3]
                 #     b=order_list[i+1][-3]
-                    
+
                 #     if a+1 != b:
                 #         self.actor.simulation.export_db(sim_cfg.FINAL_EXPORT_FILES_PATH)
-                        
+
                 #         print(f"ERRO NA SEQUENCIA DE ORDENS {1+a} != { b}")
-                        
+
                 #         for order in order_list:
                 #             print(f"{order} -> {order_list[i][5]}")
 

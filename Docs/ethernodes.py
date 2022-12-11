@@ -19,12 +19,12 @@ columns = "columns[0]\
 [data]=lastUpdate&columns[7][name]=&columns[7][searchable]=true&columns[7][orderable]=true&columns[7][search][value]=&columns[7][search][regex]=false&columns[8]\
 [data]=inSync&columns[8][name]=&columns[8][searchable]=true&columns[8][orderable]=true&columns[8][search][value]=&columns[8][search][regex]=false&order[0][column]=0&order[0][dir]=asc"
 
-def prepare_invoke_request( columns, start, end):
+def prepare_invoke_request(columns, start, end):
     url= "https://ethernodes.org/data?draw=2&{}&start={}&length={}&search[value]=&search[regex]=false&_=1659869648696".format(columns, start, end)
     req = requests.get(url=url)
-    return req.text  
-        
-    
+    return req.text
+
+
 def save_to_file(data, filename):
     with open(filename, "w") as f:
         f.write(data)
@@ -43,14 +43,14 @@ def get_new_data():
 def load_data_from_json(filename):
     with open(filename, "r") as f:
         data= json.loads(f.read())
-        return data 
+        return data
 
 def save_data_to_json(data, filename):
     data=str(data).replace("'", '"')
     with open(DATA_DIRECTORY+"\\"+filename, 'w') as outfile:
         json.dump(data, outfile)
     print("file {} saved".format(filename))
-    
+
 
 
 def load_data_to_pandas(directory):
@@ -62,7 +62,7 @@ def load_data_to_pandas(directory):
                     load_data_from_json(directory+"\\"+file)["data"]
             )
         )
-        
+
     return pd.concat(data)
 
 main_df = load_data_to_pandas(DATA_DIRECTORY)
@@ -78,11 +78,11 @@ def get_continent(col):
     try:
         cn_a2_code =  country_name_to_country_alpha2(col)
     except:
-        cn_a2_code = 'Unknown' 
+        cn_a2_code = 'Unknown'
     try:
         cn_continent = country_alpha2_to_continent_code(cn_a2_code)
     except:
-        cn_continent = 'Unknown' 
+        cn_continent = 'Unknown'
     return (cn_a2_code, cn_continent)
 
 
@@ -109,7 +109,7 @@ def geolocate(country):
 #         str(df_countries.loc[country][0])+","+\
 #         str(geolocate(country))+","+\
 #         str(df_countries.loc[country]["id"]) + ","
-    
+
 #     clean_country_data = clean_country_data+new_line+"\n"
 
 # print("print:\n",clean_country_data, len(clean_country_data))
@@ -136,4 +136,4 @@ fig = px.scatter_mapbox(map_data,
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-fig.show()
+ig.show()

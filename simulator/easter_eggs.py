@@ -1,13 +1,12 @@
 import time
 import math
-from playsound import playsound
 import simulation_configuration as sim_cfg
 def print_start(LOGGING_LEVEL):
     if not sim_cfg.PRINT_LOGS_IN_TERMINAL:
         return
     else:
         print("\n ================================================ ")
-        print( f"                Simulation Started ")
+        print(f"                Simulation Started ")
         print("\n ================================================ ")
         print(f"           Logging at level: {sim_cfg.LOGGING_LEVEL}:")
         if sim_cfg.DB_TYPE == 1:
@@ -59,19 +58,6 @@ def print_sucess():
                                                                             \n")
 
 
-def play_final_sound():
-    path=r"N:\\TESE\Bullwhip\data\audio\super_mario_stage_clear.mp3"
-    try:
-        playsound(path)
-    except:
-        playsound(path)
-
-def play_error_sound():
-    path="N:\\TESE\\Bullwhip\\data\\audio\\super_mario_dies.mp3"
-    try:
-        playsound(path)
-    except:
-        playsound(path)
 
 
 def final_prints(start_time):

@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# automatic testings
+
+# data
+data/Backups/
+data/exports/
+data/results/
+Docs/eth_data/

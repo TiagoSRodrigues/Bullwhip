@@ -16,7 +16,7 @@ class ClassSupplyChain:
         self.simulation = simulation
         self.supply_chain_structure = []
         self.supply_chain_id="sc_"+str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
-        self.end_of_chain_actors =[] #TODO tinha aqui um 5, verificar se ao remove-lo n estragou nada
+        self.end_of_chain_actors =[]
 
         logs.new_log(state=" ", file="supply_chain", function="Constructor", actor= " ", debug_msg="id:"+str(self.supply_chain_id))
 
@@ -38,4 +38,4 @@ class ClassSupplyChain:
 
 
     #todo criar uma função para construir o SC a aprtir da leitura da configuração
-    # ciar um grafo a partir da analise da config
+   # ciar um grafo a partir da analise da config
