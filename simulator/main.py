@@ -28,8 +28,8 @@ def main(input_data, simulation):
                     info_msg= "new day <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
 
 
-        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", info_msg= f"global inventory | simulation    | global inventory{simulation.global_inventory}")
-        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", info_msg= f"global inventory | simulation    | open transctions{simulation.ObejctTransationsRecords.open_transactions}")
+        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", debug_msg= f"global inventory | simulation    | global inventory{simulation.global_inventory}")
+        logs.new_log(day=simulation.time, actor=" ", function="main", file="main", debug_msg= f"global inventory | simulation    | open transctions{simulation.ObejctTransationsRecords.open_transactions}")
 
 
         simulation.update_inventory_history()
@@ -50,10 +50,12 @@ def main(input_data, simulation):
 
 
 
-            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg= f"open orders{actor.actor_orders_record.open_orders_record[0:]} < open ")
-            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg= f"closed orders{actor.actor_orders_record.closed_orders_record} < closed ")
-            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg= f"orders_history{actor.actor_orders_record.orders_history} < hist")
-            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg= f"orders_waiting_stock{actor.actor_orders_record.orders_waiting_stock} wait")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"open orders{actor.actor_orders_record.open_orders_record} < open ")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"closed orders{actor.actor_orders_record.closed_orders_record} < closed ")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"orders_history{actor.actor_orders_record.orders_history} < hist")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", debug_msg= f"orders_waiting_stock{actor.actor_orders_record.orders_waiting_stock} wait")
+            logs.new_log(actor=actor.id, day=simulation.time, function="main", file="main", info_msg= f"orders_waiting_stock{len(actor.actor_orders_record.orders_waiting_stock)} \
+                orders open {len(actor.actor_orders_record.open_orders_record[0:])} closed orders {len(actor.actor_orders_record.closed_orders_record)} ")
 
             simulation.speed() ## SPEED
             if not actor.id==0:

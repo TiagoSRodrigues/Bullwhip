@@ -32,6 +32,9 @@ class ClassSupplyChain:
 
     def get_end_of_chain_actors(self):
         return [max(self.supply_chain_structure)]
+    
+    def get_middle_of_chain_actors(self):
+        return self.supply_chain_structure[1:-1]
 
         #isto não está rubusto apenas funciona para SC lineares
         #a função devia devolver uma lista dos elementos de fim de cadeia (que devem ter um inventário infinto)

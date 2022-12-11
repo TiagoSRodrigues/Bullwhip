@@ -86,13 +86,13 @@ class ClassInventory:
     def get_actor_inventory(self):
         return self.main_inventory
 
-    def get_product_safety_inventory(self, product_id):
-        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="get_product_safety_inventory", day=self.actor.simulation.time,  debug_msg= f" get_product_safety_inventory {str(self.actor.id)} product {str(product_id)}" )
+    def get_product_safety_stock(self, product_id):
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="get_product_safety_stock", day=self.actor.simulation.time,  debug_msg= f" get_product_safety_stock {str(self.actor.id)} product {str(product_id)}" )
 
         try:
             return self.main_inventory[product_id]["safety_stock"]
         except:
-            Exception("get_product_safety_inventory error:", self.main_inventory)
+            Exception("get_product_safety_stock error:", self.main_inventory)
 
     def get_product_stock(self, product_id:int):
         product_id = int(product_id)
@@ -171,16 +171,16 @@ class ClassInventory:
         return True
 
 
-    def set_product_safety_inventory(self, product_id, quantity):
-        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_safety_inventory", day=self.actor.simulation.time,debug_msg=  "actor{} product {} qty {}".format(self.actor.id, product_id, quantity ) )
+    def set_product_safety_stock(self, product_id, quantity):
+        logs.new_log(state=self.actor.actor_state, actor=self.actor.id, file="inventory", function="set_product_safety_stock", day=self.actor.simulation.time,debug_msg=  "actor{} product {} qty {}".format(self.actor.id, product_id, quantity ) )
 
         try:
             self.main_inventory[product_id]["safety_stock"] = quantity
             return True
         except:
-            print("get_product_safety_inventory error:", self.main_inventory)
-            logs.log(warning_msg="Error on get_product_safety_inventory, check product id "+str(product_id))
-            print("Error on get_product_safety_inventory")
+            print("get_product_safety_stock error:", self.main_inventory)
+            logs.log(warning_msg="Error on get_product_safety_stock, check product id "+str(product_id))
+            print("Error on get_product_safety_stock")
 
 
 

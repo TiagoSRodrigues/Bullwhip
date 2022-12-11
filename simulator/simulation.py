@@ -40,7 +40,7 @@ class ClassSimulation:
 
         # Lista que guarda todos os objectos atores
         self.actors_collection=[]
-
+        
         self.global_inventory={}
         #DashBoard
         # self.dashboard = ds.dashboard_data(self)
@@ -52,7 +52,7 @@ class ClassSimulation:
         elif sim_cfg.DB_TYPE == 2:
             self.mongo_db = database.local_db(self, drop_history=True)
 
-        # self.blockchain= blockchian.blockchain(self)
+        # self.blockchain= blockchain.blockchain(self)
         #create supply chain
         self.Object_supply_chain=sc.ClassSupplyChain(self)
 
@@ -62,7 +62,8 @@ class ClassSimulation:
 
         self.sleep_time = 0
         self.create_actors(ACTORS_CONFIG_FILE = actors_configs)
-        logs.new_log(file="simulation", function="construction", actor=0, info_msg= f"Simulation created with id: {self.simulation_id}   ")
+        
+        logs.new_log(file="simulation", function="construction", actor=0, info_msg= f"Simulation created with id: {self.simulation_id}  Simulation_mode: {self.stock_management_mode} ")
 
 
     # trata-se apenas de uma lista dos atores presentes na configuração, sem ordem definida
@@ -291,7 +292,7 @@ class ClassSimulation:
             for p in s["products"]:
                 safety_stock = p["safety_stock"]
                 if safety_stock < max_input:
-                    logs.new_log(file="simulation", function="validate_data_compatibilty", actor=" ", day=self.time, info_msg=  f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
+                    logs.new_log(file="simulation", function="validate_data_compatibilty", actor=" ", day=self.time, info_msg=  f"Safety stock is smaller than order quantity  -> increase safety stock  -> max input: {max_input}  safety stock: {safety_stock}")
                     # raise Exception(f"Safety stock is smaller than order quantity \n -> increase safety stock \n -> max input: {max_input}  safety stock: {safety_stock}")
 
 

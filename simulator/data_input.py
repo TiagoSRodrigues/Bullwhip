@@ -13,7 +13,7 @@ def get_input(input_type,  days=None, min=None, max=None, filepath=None):
         values=get_raw_data(filepath)
         if days == "all":
             return values
-        return values[-days:]
+        return values[-int(days):]
 
     if input_type == "file_old":
         good_values, errors, values = check_input_datafile()
@@ -23,7 +23,7 @@ def get_input(input_type,  days=None, min=None, max=None, filepath=None):
 
         if days == "all":
             return values
-        return values[-days:]
+        return values[-int(days):]
 
     if input_type == "constant":
         a = np.empty(days, dtype=np.int64)

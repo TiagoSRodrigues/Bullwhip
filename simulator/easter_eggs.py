@@ -1,7 +1,7 @@
 import time
 import math
 import simulation_configuration as sim_cfg
-def print_start(LOGGING_LEVEL):
+def print_start(LOGGING_LEVEL, configs_file):
     if not sim_cfg.PRINT_LOGS_IN_TERMINAL:
         return
     else:
@@ -17,7 +17,8 @@ def print_start(LOGGING_LEVEL):
             print("           Simulation mode:  Traditional")
         if sim_cfg.SIMULATION_MODE == 3:
             print("           Simulation mode:  Blockchain")
-            print(f"        Slowdown level:   {sim_cfg.TIME_SLOWDOWN}:")
+        print(f"        Slowdown level:   {sim_cfg.TIME_SLOWDOWN}:")
+        print(f"        configuration:   {configs_file}:")
         print("\n ================================================ ")
 
 

@@ -1,4 +1,4 @@
-'''Bullwhip Simulator  - Version 12
+'''Bullwhip Simulator  - Version 13
    https://github.com/TiagoSRodrigues/Bullwhip
 '''
 
@@ -25,9 +25,9 @@ def run_simulation(simulation_mode, actors_configs):
     
     # print the simulation start header
     if sim_cfg.PRINT_LOGS_IN_TERMINAL:
-        ee.print_start(sim_cfg.LOGGING_LEVEL)
+        ee.print_start(sim_cfg.LOGGING_LEVEL, configs_file=actors_configs)
 
-    logs.log(debug_msg="|day | actor | file | function | msg   <-- log format")
+    logs.new_log(day='day', actor='atr', file= 'file' ,function="function", debug_msg="|day | actor | file | function | msg   <-- log format")
 
     # data input
     input_data = data_input.get_input(
@@ -83,6 +83,7 @@ def run_simulation(simulation_mode, actors_configs):
     # Object_Simulation.show_simulation_stats()
     # registos de tempos e final
     if sim_cfg.PRINT_LOGS_IN_TERMINAL:
+        print(f"simulation id: {Object_Simulation.simulation_id}")
         ee.final_prints(start_time)
 
     logs.log(info_msg="--->   Simulation Ended   <----")
@@ -90,10 +91,11 @@ def run_simulation(simulation_mode, actors_configs):
     logging.shutdown()
     print("\ntamnho do log file: ", os.path.getsize(sim_cfg.LOG_FILES_PATH))
 
-
-for file in os.listdir(sim_cfg.ACTORS_CONFIGS_DIRECTORY):    
-    if file[-4:] == "json":
-        run_simulation(simulation_mode=1,
-                       actors_configs=sim_cfg.ACTORS_CONFIGS_DIRECTORY+file)
-        run_simulation(simulation_mode=3,
-                       actors_configs=sim_cfg.ACTORS_CONFIGS_DIRECTORY+file )
+files= []
+for f in os.listdir(sim_cfg.ACTORS_CONFIGS_DIRECTORY):
+    if f[-4:] == "json":
+        files.append(f)
+        
+for file in files:
+    run_simulation(simulation_mode=1, actors_configs=sim_cfg.ACTORS_CONFIGS_DIRECTORY+ file)
+    run_simulation(simulation_mode=3, actors_configs=sim_cfg.ACTORS_CONFIGS_DIRECTORY+ file )

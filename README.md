@@ -2,7 +2,13 @@
 
 ## Programa de simulação efeito chicote numa cadeia de distribuição
 
-## Ficheiros
+
+# Funcionamento:
+
+Executar o ficheiro Bullwhip/__init__.pt
+
+
+## Ficheiros principais
 
 > ### `__init__.py`
 
@@ -27,3 +33,4 @@ Esta classe gere o stock do ator.
 ### `transports.py`
 
 Ficheiro com as funções para executar encomentas e transferencias entre atores.
+

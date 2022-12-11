@@ -121,7 +121,7 @@ class ClassOrdersRecord:
 
     def get_orders_waiting_stock(self):
         return self.orders_waiting_stock
-
+        
     def get_orders_sequence(self):
         def get_id(l):
             return l[-3]
@@ -220,14 +220,14 @@ class ClassOrdersRecord:
 
         if order_id:
             self.orders_waiting_stock.add(order_id)
-            self.set_order_status(order_id= order_id, status=5)
+            self.set_order_status(order_id= order_id, status=6)
         if order:
             order_id=self.get_order_id(order=order)
             self.orders_waiting_stock.add(order_id)
-            self.set_order_status(order_id=order_id, status=5)
+            self.set_order_status(order_id=order_id, status=6)
 
 
-    def set_order_processed(self, order=None, order_id=None):
+    def set_order_state_to_processed(self, order=None, order_id=None):
         if order_id:
             self.set_order_status(order_id= order_id, status=9)
         if order:
@@ -244,11 +244,9 @@ class ClassOrdersRecord:
         if notes is None:
             notes={}
 
-        #logs.new_log(day=self.actor.simulation.time, actor=self.actor.id, function="add_to_open_orders", file="actors" , debug_msg= " tryng to add  product {product} quantity {qty} client {client} notes {notes}  ")
 
-        self.last_order_id += 1   #! Está aqui um possivel erro, last order_id = last_order+1, mas tmb pode estar certo
-        #initial status = 0
-        #print("temp adding order", self.last_order_id)
+        self.last_order_id += 1  
+     
 
            #   0                 1       2       3        4        5        6
         #[ creation Time,  Product , Qty , Client , Order_id, Status, notes]
@@ -295,7 +293,7 @@ class ClassOrdersRecord:
                 if i[-3] == -5:
                     continue
                 if i[-3] < order_id:
-                    logs.new_log(file="orders_records", actor=self.actor.id, function="close_order", debug_msg= f"ERRO nos oder id")
+                    logs.new_log(file="orders_records", actor=self.actor.id, function="close_order", debug_msg= f"ERRO no oder id")
                     raise Exception("ERRO",i[-3] ,"<", order_id)
 
             check_open_orders_sequence()
@@ -303,13 +301,13 @@ class ClassOrdersRecord:
         for record in self.open_orders_record:
             if record[-3] == order_id:
                 record[0] = time
-                record[-2] = 9
+                record[-2] = 9              #set_order_state_to_processed
                 self.open_orders_record.remove(record)
                 self.closed_orders_record.append(record)
                 order= self.get_order_by_id(order_id=order_id )
 
                 self.actor.simulation.update_simulation_stats("orders_closed")
-
+                self.orders_waiting_stock.discard(order_id)
                 #self.add_to_orders_log(product=order[1], quantity=order[2], client= order[3], order_id=order[-3], status =1)
                 self.actor.simulation.mongo_db.close_order_on_db(actor_id=self.actor.id, order_id=order[-3])
                 logs.append_line_to_file(file_path=f"{self.actor.simulation.simulation_results_folder}orders_closed_actor_{self.actor.id}_{self.actor.simulation.simulation_id}.csv", line=f"{','.join(str(e) for e in record)},\n")

@@ -1,5 +1,7 @@
 
+from multiprocessing.sharedctypes import Value
 from typing import final
+from unittest import result
 import yaml 
 import os
 import pandas as pd
@@ -71,6 +73,13 @@ def get_delivered_transactions(transactions=None):
         transactions = get_transactions_df(f"{simulation__results_path}\\{all_files['transactions'][0]}")
     return transactions[['quantity']].sum()[0], transactions[['quantity']].mean()[0], transactions[['quantity']].std()[0]
 
+
+def get_client_final_inventary(file_path):
+
+    transactions = get_transactions_df(file_path)
+    final_client = transactions[transactions['receiver']==0]
+    return  f"{final_client[['lead_time']].mean()[0]},{final_client[['lead_time']].std()[0]}, {final_client[['quantity']].sum()[0]}, {final_client[['theoretical_lead']].mean()[0]},{final_client[['theoretical_lead']].std()[0]}, {final_client[['delivered']].sum()[0]}\n"
+
 # orders
 def get_combined_orders_df():
     orders = pd.DataFrame()
@@ -136,8 +145,6 @@ def update_metrics():
 
 def pritty_print_final_metrics():
     update_metrics()
-    
-    
     configs= get_simulation_config()
     
     print(f"     Simulation Configs:","-"*100, sep="\n")
@@ -173,10 +180,16 @@ def pritty_print_final_metrics():
         print(file)
         
 def print_final_metrics():
+    
     update_metrics()
     
-    
     configs= get_simulation_config()
+    
+    
+    
+    actors_config_file = configs['actors'].split("//")[-1].split(".")[0]
+    
+    compiled= f"sim_{configs['simulation_id']} mode_{configs['Simulation_mode']} days_{configs['days']} {actors_config_file},"
     
     print(f"     Simulation Configs:","-"*100, sep="\n")
     print( 'actors:            ', configs['actors'])    
@@ -187,55 +200,44 @@ def print_final_metrics():
     print("\nFinal Metrics\n", "-"*50, sep="\n")
     
     
-    print(final_metrics.values())
-    # for metric, value in final_metrics.items():
-
-    #     m_len= len(metric)
+    for metric, value in final_metrics.items():
+        compiled += f"{value},"
+        m_len= len(metric)
         
-    #     title_len = 20
-    #     metric_len = 12
+        title_len = 20
+        metric_len = 12
     
-    #     if isinstance(value, float):
-    #         if value < 1000:
-    #             value_str = f"{value:.2f}"
-    #             spacing = " "*((title_len-m_len)+(metric_len - len(value_str)))
-    #             print(f"{metric}:{spacing}{value_str}")
-    #         else:
-    #             value_str = f"{value:,.{0}f}".replace(",", " ")
-    #             spacing = " "*((title_len-m_len)+(metric_len - len(value_str)))
-    #             print(f"{metric}:{spacing}{value_str}")
+        if isinstance(value, float):
+            if value < 1000:
+                value_str = f"{value:.2f}"
+                spacing = " "*((title_len-m_len)+(metric_len - len(value_str)))
+                print(f"{metric}:{spacing}{value_str}")
+            else:
+                value_str = f"{value:,.{0}f}".replace(",", " ")
+                spacing = " "*((title_len-m_len)+(metric_len - len(value_str)))
+                print(f"{metric}:{spacing}{value_str}")
                 
-    #     else:
-    #         value_str =  f"{value:,.{0}f}".replace(",", " ")
-    #         spacing = " "*((title_len-m_len)+(metric_len -len(value_str)))
-    #         print(f"{metric}:{spacing}{value_str}")
-    # print("\n\n\n")
-    # for file in files_read:
-    #     print(file)        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-#single analisys
-# simulation__results_path = "N:\\TESE\\Bullwhip\\data\\results\\sim_20220921_235829"
+        else:
+            value_str =  f"{value:,.{0}f}".replace(",", " ")
+            spacing = " "*((title_len-m_len)+(metric_len -len(value_str)))
+            print(f"{metric}:{spacing}{value_str}")
+    print("\n\n\n")
 
-# all_files = get_files_in_folder(simulation__results_path)
-
+    return compiled+"\n"
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 
 
@@ -243,14 +245,24 @@ def print_final_metrics():
 
 all_sims = [name for name in os.listdir("N:\\TESE\\Bullwhip\\data\\results\\")if os.path.isdir(os.path.join("N:\\TESE\\Bullwhip\\data\\results\\", name))]
 # print_final_metrics()
+results = "Results:\n lead_time_mean, lead_time std, quantity sum, theoretical_lead mean, theoretical_lead std, delivered sum \n"
+final_results = "final_results\n"
 for sim in all_sims:
-    
+
     print(sim)
     simulation__results_path = f"N:\\TESE\\Bullwhip\\data\\results\\{sim}"
     all_files = get_files_in_folder(simulation__results_path)
+    
+    results += print_final_metrics()
+    for key in all_files["transactions"]:
+        if "transactions_closed" in key:
+            
+    # # clear terminal
+
+            final_results += get_client_final_inventary(file_path=f"N:\\TESE\\Bullwhip\\data\\results\\{sim}\\{key}")
+
+# print(results)
 
 
-    # clear terminal 
-
-    print_final_metrics()
-
+print(results)
+print(final_results)

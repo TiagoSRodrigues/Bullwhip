@@ -3,8 +3,8 @@
         {
             "id": 1,
             "name": "Retailer",
-            "time_average": 5,
-            "time_deviation": 1,
+            "time_average": 1,
+            "time_deviation": 0.01,
             "max_inventory": 100000000,
             "safety_factor": 2.33,
             "reorder_history_size": 30,
@@ -12,7 +12,7 @@
                 {
                     "name": "ProductA",
                     "id": 1001,
-                    "initial_stock": 140390,
+                    "initial_stock": 281490,
                     "safety_stock": 140390,
                     "composition": {
                         "2001": 1
@@ -23,8 +23,8 @@
         {
             "id": 2,
             "name": "Distributor",
-            "time_average": 5,
-            "time_deviation": 1,
+            "time_average": 1,
+            "time_deviation": 0.01,
             "max_inventory": 100000000,
             "safety_factor": 2.33,
             "reorder_history_size": 30,
@@ -32,7 +32,7 @@
                 {
                     "name": "ProductB",
                     "id": 2001,
-                    "initial_stock": 140390,
+                    "initial_stock": 281490,
                     "safety_stock": 140390,
                     "composition": {
                         "3001": 1
@@ -43,8 +43,8 @@
         {
             "id": 3,
             "name": "Factory",
-            "time_average": 5,
-            "time_deviation": 1,
+            "time_average": 1,
+            "time_deviation": 0.01,
             "max_inventory": 100000000,
             "safety_factor": 2.33,
             "reorder_history_size": 30,
@@ -52,7 +52,7 @@
                 {
                     "name": "ProductC",
                     "id": 3001,
-                    "initial_stock": 140390,
+                    "initial_stock": 281490,
                     "safety_stock": 140390,
                     "composition": {
                         "4001": 1
@@ -63,8 +63,8 @@
         {
             "id": 4,
             "name": "Raw Material Supplier",
-            "time_average": 5,
-            "time_deviation": 1,
+            "time_average": 1,
+            "time_deviation": 0.01,
             "max_inventory": 100000000,
             "safety_factor": 2.33,
             "reorder_history_size": 30,
@@ -72,7 +72,7 @@
                 {
                     "name": "ProductD",
                     "id": 4001,
-                    "initial_stock": 140390,
+                    "initial_stock": 281490,
                     "safety_stock": 140390,
                     "composition": {
                         "5001": 1
@@ -83,8 +83,8 @@
         {
             "id": 5,
             "name": "Base Raw Material supplier",
-            "time_average": 5,
-            "time_deviation": 1,
+            "time_average": 1,
+            "time_deviation": 0.01,
             "max_inventory": 9999999999999999,
             "safety_factor": 2.33,
             "reorder_history_size": 30,
@@ -93,7 +93,7 @@
                     "name": "ProductE",
                     "id": 5001,
                     "initial_stock": 9999999999999999,
-                    "safety_stock": 999999999,
+                    "safety_stock": 999999,
                     "reorder_history_size": 7
                 }
             ]
