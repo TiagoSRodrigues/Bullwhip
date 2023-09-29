@@ -1,1 +1,9 @@
-
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: TiagoSRodrigues
+  annotations:
+    github.com/project-slug: /TiagoSRodrigues
+spec:
+  type: other
+  lifecycle: unknown
